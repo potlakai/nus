@@ -16,7 +16,7 @@ if (arg === "--help" || arg === "-h") {
     npx create-nus my-folder  create it somewhere else
 
   Then: drop your syllabus PDFs in school/raw/, run \`claude\`, type /setup.
-  Docs: https://github.com/pdaime/nus
+  Docs: https://github.com/potlakai/nus
 `);
   process.exit(0);
 }
@@ -26,7 +26,7 @@ const dest = path.resolve(process.cwd(), targetName);
 const template = path.join(__dirname, "..", "template");
 
 if (!fs.existsSync(template)) {
-  console.error("create-nus: template files are missing from this package. Please report this at https://github.com/pdaime/nus/issues");
+  console.error("create-nus: template files are missing from this package. Please report this at https://github.com/potlakai/nus/issues");
   process.exit(1);
 }
 
@@ -60,5 +60,5 @@ console.log(`
    Tomorrow morning: /brief
 
    Everything stays in plain files on your machine. No server, no account.
-   Useful? Star it so the next student finds it: https://github.com/pdaime/nus
+   Useful? Star it so the next student finds it: https://github.com/potlakai/nus
 `);

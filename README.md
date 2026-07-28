@@ -2,9 +2,9 @@
 
 **Jarvis for students. Drop in your syllabi, get an AI that runs your entire semester.**
 
-**Website:** [pdaime.github.io/nus](https://pdaime.github.io/nus/)
+**Website:** [potlakai.github.io/nus](https://potlakai.github.io/nus/)
 
-> ⭐ **If Nūs is useful to you, [star this repo](https://github.com/pdaime/nus).** Stars are how other students find it.
+> ⭐ **If Nūs is useful to you, [star this repo](https://github.com/potlakai/nus).** Stars are how other students find it.
 
 *Nūs* (from the Greek *noûs*, the mind) is an AI semester organizer built on Claude Code. Every "AI assistant" demo you've seen needs weeks of context before it's smart about you. Nūs gets there in 5 minutes, because as a student, your whole life is already written down in 3 to 5 PDFs. You just never had anything that read them.
 
@@ -26,12 +26,12 @@
    npx create-nus
    ```
 
-   (Prefer a zip? [Download Nūs](https://github.com/pdaime/nus/releases/latest) and unzip it instead.)
+   (Prefer a zip? [Download Nūs](https://github.com/potlakai/nus/releases/latest) and unzip it instead.)
 3. Drop your syllabus PDFs into `school/raw/`.
 4. Run `claude` in the folder and type `/setup`. Watch it build your semester.
 5. Tomorrow morning, type `/brief`.
 
-If it just built your semester in one shot, [leave a star](https://github.com/pdaime/nus) so the next student finds it too.
+If it just built your semester in one shot, [leave a star](https://github.com/potlakai/nus) so the next student finds it too.
 
 ## Privacy
 
@@ -43,4 +43,4 @@ I built a Jarvis-style AI system for myself on Claude Code. It knows my classes,
 
 ## Roadmap
 
-Canvas/Blackboard sync · GPA projections · Google Calendar dashboard · email triage · a hosted version that doesn't need Claude Code. Want one of these first? [Join the waitlist](https://pdaime.github.io/nus/) and tell us. Loudest requests get built first.
+Canvas/Blackboard sync · GPA projections · Google Calendar dashboard · email triage · a hosted version that doesn't need Claude Code. Want one of these first? [Join the waitlist](https://potlakai.github.io/nus/) and tell us. Loudest requests get built first.
