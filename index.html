@@ -241,7 +241,7 @@
     <a href="#roadmap" class="hidem">Roadmap</a>
     <a href="#faq" class="hidem">FAQ</a>
     <a href="#" id="gh" class="btn ghost">GitHub</a>
-    <a href="#" id="dl" class="btn solid" data-goatcounter-click="download-nav">Get Nūs free</a>
+    <a href="#" id="dl" class="btn solid" data-goatcounter-click="download-windows-nav">Download for Windows</a>
   </div>
 </nav>
 
@@ -257,11 +257,12 @@
     <p class="kicker hi">From the Greek <em style="font-style:italic">noûs</em>, the mind</p>
     <h1 class="wordmark hi" style="transition-delay:.1s">N<span class="mac">U</span>S</h1>
     <p class="tagline hi" style="transition-delay:.2s">Jarvis for students. <em>Your semester, run by an AI that knows you.</em></p>
-    <p class="hero-sub hi" style="transition-delay:.3s">Drop in your syllabi. It learns every deadline and grading rule, warns you about your worst weeks before they hit, and briefs you every morning.</p>
+    <p class="hero-sub hi" style="transition-delay:.3s">Drop in your syllabi. It learns every deadline and grading rule, warns you about your worst weeks before they hit, and turns a sentence like "push the calc homework to Friday" into the actual change.</p>
     <div class="hero-ctas hi" style="transition-delay:.4s">
-      <a href="#" id="dl2" class="btn solid" data-goatcounter-click="download-hero">Get Nūs free</a>
+      <a href="#" id="dl2" class="btn solid" data-goatcounter-click="download-windows-hero">Download for Windows</a>
       <a href="#" id="gh2" class="btn ghost" data-goatcounter-click="github-hero">View on GitHub</a>
     </div>
+    <p class="wl-note hi" style="transition-delay:.44s">Free desktop app, Windows. Runs on your own AI: Claude Code if you have it, or your own Anthropic key. Prefer the terminal? The original kit is one command:</p>
     <div class="npx-row hi" style="transition-delay:.45s">
       <button class="npx-pill" type="button" data-npx data-goatcounter-click="npx-copy-hero" aria-label="Copy the install command npx create-nus"><span class="dlr">$</span>&nbsp;npx create-nus<em>copy</em></button>
     </div>
@@ -339,9 +340,9 @@
     <div>
       <p class="sec-kicker rv">The ritual</p>
       <h2 class="rv d1">Running in 10 minutes.</h2>
-      <p class="lede rv d2">No build steps, no config, no account. One command and three moves.</p>
+      <p class="lede rv d2">Two ways in. The <b>desktop app</b> is the short one: download, open, drop in a syllabus, review what it read. No terminal, no account. The on-screen <b>Companion</b> comes with it, one install for both. The steps below are the original <b>terminal kit</b>, for people who would rather live in plain files they can read and edit.</p>
       <ol class="steps">
-        <li class="rv" data-gl="Α"><b>Install Claude Code</b><span>Free download from Anthropic. Needs a Claude subscription (the same ~$20/mo you may already spend on a chatbot).</span>
+        <li class="rv" data-gl="Α"><b>Install Claude Code</b><span>Free download from Anthropic. Needs a Claude subscription (the same ~$20/mo you may already spend on a chatbot). The desktop app can use this too, or your own Anthropic API key instead.</span>
           <div class="term-mini" aria-hidden="true"><div class="bar"><i></i><i></i><i></i></div><p><span class="dim">$ </span>npm install -g @anthropic-ai/claude-code
 <span class="wt">✓</span> claude is ready</p></div>
         </li>
@@ -355,7 +356,7 @@
           <div class="term-mini" aria-hidden="true"><div class="bar"><i></i><i></i><i></i></div><p><span class="dim">$ </span>claude
 <span class="dim">&gt; </span><span class="wt">/setup</span>
 Reading 4 syllabi… <span class="wt">✓</span>
-Every deadline mapped. Worst week flagged: <span class="wt">Oct 13–19</span>.</p></div>
+Every deadline mapped. Worst week flagged: <span class="wt">Oct 13 to 19</span>.</p></div>
         </li>
       </ol>
     </div>
@@ -406,7 +407,7 @@ Every deadline mapped. Worst week flagged: <span class="wt">Oct 13–19</span>.<
   <h2 class="rv d1">Know your mind.</h2>
   <p class="lede rv d2">Free, open source, yours. Or leave your email for the hosted app: no install, no Claude subscription, planned at $12/mo. It ships when it's real, and nobody gets charged before then.</p>
   <div class="hero-ctas rv d3">
-    <a href="#" id="dl3" class="btn solid" data-goatcounter-click="download-final">Get Nūs free</a>
+    <a href="#" id="dl3" class="btn solid" data-goatcounter-click="download-windows-final">Download for Windows</a>
     <a href="#" id="gh3" class="btn ghost" data-goatcounter-click="github-final">View on GitHub</a>
   </div>
   <div class="npx-row rv d3">
@@ -431,8 +432,9 @@ Every deadline mapped. Worst week flagged: <span class="wt">Oct 13–19</span>.<
 
   /* ---- repo + release links (release asset = public download counter) ---- */
   var repoUrl = "https://github.com/potlakai/nus";
-  var zip = repoUrl + "/releases/latest/download/nus-v1.0.0.zip";
-  ["dl","dl2","dl3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=zip; });
+  /* Stable asset name, so a version bump never 404s these buttons. */
+  var winInstaller = repoUrl + "/releases/latest/download/Nus-Setup.exe";
+  ["dl","dl2","dl3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winInstaller; });
   ["gh","gh2","gh3","gh4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=repoUrl; });
 
   /* ---- Tally ---- */
@@ -591,7 +593,7 @@ Every deadline mapped. Worst week flagged: <span class="wt">Oct 13–19</span>.<
   /* ---- npx terminal typing (setup steps) ---- */
   var NPX_LINES = [
     ['dim','$ '], ['wt','npx create-nus'], ['','\n\n'],
-    ['','  N Ū S — your semester brain is scaffolded.\n'],
+    ['','  N Ū S : your semester brain is scaffolded.\n'],
     ['','  12 files created '], ['wt','✓'], ['','\n'],
     ['dim','  → '], ['','cd nus']
   ];
