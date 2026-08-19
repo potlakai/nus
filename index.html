@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nūs | Jarvis for students</title>
-<meta name="description" content="Nūs is an AI semester organizer. Drop in your syllabi and it knows every deadline, warns you about your worst weeks, briefs you every morning, and levels you up like a game. Free and open source.">
+<meta name="description" content="Nūs is a desktop app that reads your syllabi, maps every deadline and grading rule, and turns plain requests into real changes you approve first. Runs on your own AI, on your own machine. Free and open source.">
 <meta property="og:title" content="Nūs | Jarvis for students">
-<meta property="og:description" content="Drop your syllabi in. It knows every deadline, briefs you every morning, and gives you daily quests. Free and open source.">
+<meta property="og:description" content="Drop in your syllabi. It maps every deadline, proposes the next move, and shows you the change before it makes it. Free, open source, and local.">
+<meta name="theme-color" content="#000000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
@@ -216,6 +217,10 @@
 
   @media (max-width:720px){
     .nav-links .hidem{display:none}
+    /* The download is the only CTA that has to survive here; GitHub lives in
+       the footer, and giving up its width stops the button being clipped. */
+    .nav-links #gh{display:none}
+    nav{padding-left:16px;padding-right:16px}
     .statue{height:52vh;margin-top:2vh}
     .hero{padding-bottom:12vh}
     .wordmark{font-size:clamp(64px,24vw,120px)}
@@ -236,7 +241,7 @@
   <a class="logo" href="#top">N<span class="mac">U</span>S</a>
   <div class="nav-links">
     <a href="#product" class="hidem">Product</a>
-    <a href="#brain" class="hidem">Second brain</a>
+    <a href="#companion" class="hidem">Companion</a>
     <a href="#how" class="hidem">Set-up</a>
     <a href="#roadmap" class="hidem">Roadmap</a>
     <a href="#faq" class="hidem">FAQ</a>
@@ -257,20 +262,12 @@
     <p class="kicker hi">From the Greek <em style="font-style:italic">noûs</em>, the mind</p>
     <h1 class="wordmark hi" style="transition-delay:.1s">N<span class="mac">U</span>S</h1>
     <p class="tagline hi" style="transition-delay:.2s">Jarvis for students. <em>Your semester, run by an AI that knows you.</em></p>
-    <p class="hero-sub hi" style="transition-delay:.3s">Drop in your syllabi. It learns every deadline and grading rule, warns you about your worst weeks before they hit, and turns a sentence like "push the calc homework to Friday" into the actual change.</p>
+    <p class="hero-sub hi" style="transition-delay:.3s">A desktop app that reads your syllabi, maps every deadline and grading rule, and turns a sentence like "push the calc homework to Friday" into the actual change. It shows you the change before it makes it, every time.</p>
     <div class="hero-ctas hi" style="transition-delay:.4s">
       <a href="#" id="dl2" class="btn solid" data-goatcounter-click="download-windows-hero">Download for Windows</a>
       <a href="#" id="gh2" class="btn ghost" data-goatcounter-click="github-hero">View on GitHub</a>
     </div>
-    <p class="wl-note hi" style="transition-delay:.44s">Free desktop app, Windows. Runs on your own AI: Claude Code if you have it, or your own Anthropic key. Prefer the terminal? The original kit is one command:</p>
-    <div class="npx-row hi" style="transition-delay:.45s">
-      <button class="npx-pill" type="button" data-npx data-goatcounter-click="npx-copy-hero" aria-label="Copy the install command npx create-nus"><span class="dlr">$</span>&nbsp;npx create-nus<em>copy</em></button>
-    </div>
-    <form class="capture hero-cap hi" style="transition-delay:.5s">
-      <input type="email" placeholder="you@school.edu" autocomplete="email" aria-label="Email for the hosted-app waitlist">
-      <button type="submit">Join the waitlist</button>
-    </form>
-    <p class="wl-note hi" style="transition-delay:.55s">Waitlist is for the hosted app: no install, no Claude subscription, planned at $12/mo. Not built yet and nobody gets charged. The kit above is free right now.</p>
+    <p class="wl-note hi" style="transition-delay:.44s">Free and open source. Windows today, no account, nothing leaves your machine. You bring the AI: Claude Code if you already have it, or your own Anthropic key.</p>
   </div>
 
   <div class="scroll-cue">scroll<i></i></div>
@@ -281,8 +278,8 @@
   <div class="track" id="mq">
     <span><b>Every deadline</b> mapped</span><span>·</span>
     <span><b>Crunch weeks</b> flagged early</span><span>·</span>
-    <span><b>Morning briefs</b> in 30 seconds</span><span>·</span>
-    <span><b>Daily quests</b> from real work</span><span>·</span>
+    <span><b>Nothing written</b> without your confirm</span><span>·</span>
+    <span><b>An overlay</b> that sees your screen</span><span>·</span>
     <span><b>100% local</b>, your data stays yours</span><span>·</span>
   </div>
 </div>
@@ -291,7 +288,7 @@
 <section id="product">
   <p class="sec-kicker rv">The product</p>
   <h2 class="rv d1">It knows your whole semester<br>in 5 minutes.</h2>
-  <p class="lede rv d2">Every AI assistant needs weeks of context before it's smart about you. As a student, your life is already written down in 4 PDFs. You just never had anything that read them.</p>
+  <p class="lede rv d2">Every AI assistant needs weeks of context before it is smart about you. As a student, your life is already written down in four PDFs. You just never had anything that read them.</p>
 
   <div class="term rv d3" id="term">
     <div class="bar"><i></i><i></i><i></i></div>
@@ -301,17 +298,30 @@
   <div class="grid">
     <div class="card wide rv">
       <div>
-        <code>/level</code><h3>Miyagi mode</h3>
-        <p>Pick any skill: public speaking, Java, writing. It builds a Lv1→Lv10 path and quietly weaves the daily reps into your quests. You don't grind; you just level.</p>
+        <code>Ask</code><h3>Say it plainly. Approve the change.</h3>
+        <p>Type "push the calc homework to Friday" or "email my professor about an extension". Nūs works out exactly which item you meant, then shows you the change as a proposal. It writes nothing until you press confirm, so it can be fast without being dangerous.</p>
       </div>
-      <div class="lvl">public-speaking.md<br>level: <b>3 · "Holds the room"</b><br>streak: 6 days<br>next rep: 90-sec story, no notes</div>
+      <div class="lvl">&gt; push the calc homework to Friday<br><br>Nūs wants to:<br><b>Move "Problem Set 4" to Fri Oct 17</b><br>matched: CALC II · Problem Set 4<br><br>[ Confirm ]  [ Cancel ]</div>
     </div>
-    <div class="card rv d1"><code>/setup</code><h3>Build your semester brain</h3><p>Drop syllabus PDFs in a folder. It extracts every deadline, exam, and grading rule, and flags your crunch weeks before they hit you.</p></div>
-    <div class="card rv d2"><code>/due</code><h3>"What's due tonight?"</h3><p>Instant answer from your actual syllabi, plus what's on deck this week.</p></div>
-    <div class="card rv d3"><code>/brief</code><h3>Morning brief</h3><p>Today, this week, what to start early. Readable in 30 seconds.</p></div>
-    <div class="card rv d4"><code>/quest</code><h3>Daily quests</h3><p>3 small pass/fail challenges a day from your real deadlines. Streaks included.</p></div>
-    <div class="card rv d5"><code>/capture</code><h3>It keeps learning you</h3><p>Dump notes, ideas, anything. It files everything and gets smarter about you daily.</p></div>
+    <div class="card rv d1"><code>Import</code><h3>It reads the syllabus</h3><p>Drop in the PDF. Every course, grading weight, exam, and deadline comes back in a table you check line by line before a single row is saved.</p></div>
+    <div class="card rv d2"><code>Map</code><h3>Your semester as a graph</h3><p>Every course, source, and open task as a node you can drag. The shape of your workload becomes something you can actually see.</p></div>
+    <div class="card rv d3"><code>Chat</code><h3>A thread that can act</h3><p>Ask what is due, or tell it to set something up. It answers from your real semester and takes actions through the same confirm step.</p></div>
+    <div class="card rv d4"><code>Email</code><h3>Drafts to your professor</h3><p>Pick the kind of help and the course; it writes the email in your voice, learned from how you already write. Open it in Gmail, or connect Outlook. You always press send.</p></div>
+    <div class="card rv d5"><code>GPA</code><h3>Honest projections</h3><p>It separates what you have actually earned from what is still assumed, and refuses to guess a grading weight it was never given.</p></div>
   </div>
+</section>
+
+<!-- ============ COMPANION ============ -->
+<section id="companion">
+  <p class="sec-kicker rv">The Companion</p>
+  <h2 class="rv d1">A knot of light that sits<br>on top of everything.</h2>
+  <p class="lede rv d2">The app is one half. The other half floats over your screen, sees the window you point it at, and listens when you switch it on. It ships inside the app, so there is one install for both.</p>
+  <div class="grid">
+    <div class="card rv d1"><code>Sees</code><h3>The screen you choose</h3><p>Ask about whatever is in front of you: a problem set, a slide, an error. It answers from what it can see plus what it knows about your semester.</p></div>
+    <div class="card rv d2"><code>Hears</code><h3>Only when you say so</h3><p>Switch listening on for a lecture or a meeting and it keeps a transcript you can search later. Off is the default, and one key stops it dead.</p></div>
+    <div class="card rv d3"><code>Stays</code><h3>Close the app, it remains</h3><p>The Knot keeps running on your desktop with every hotkey live, and the tray brings the dashboard back. One button removes it completely.</p></div>
+  </div>
+  <p class="lede rv d4" style="margin-top:38px"><b>Ctrl+Shift+Space</b> hides it. <b>Ctrl+Shift+K</b> hides just the mark and leaves everything working. <b>Ctrl+Shift+X</b> stops listening and vanishes in one stroke. Capture exclusion is presentation control, not concealment: follow the rules of every room you are in.</p>
 </section>
 
 <!-- ============ SECOND BRAIN ============ -->
@@ -319,7 +329,7 @@
   <div class="brain-copy">
     <p class="sec-kicker rv">The second brain</p>
     <h2 class="rv d1">Everything you drop in<br>becomes one mind.</h2>
-    <p class="lede rv d2">Syllabi, notes, goals, skills: Nūs files them as plain markdown and wires them together, so every answer knows your whole picture.</p>
+    <p class="lede rv d2">Syllabi, deadlines, tasks, and the things you tell it: Nūs wires them together into one picture, so every answer knows your whole semester instead of the last thing you typed.</p>
   </div>
   <canvas id="brainviz" aria-hidden="true"></canvas>
 </section>
@@ -331,7 +341,7 @@
   <span class="line rv d2">No account.</span>
   <span class="line ghosted rv d3">Privacy isn't a feature here.</span>
   <span class="line rv d4">It's the architecture.</span>
-  <p class="foot rv d5">Everything lives in plain markdown files on your machine. You can open and read every single one. Delete the folder and it's gone. Open source, so you don't have to take our word for it.</p>
+  <p class="foot rv d5">Everything lives in one database file on your machine, and the app shows you how big it is. The only calls that ever leave are to the AI provider you configured and the accounts you connected yourself. Cloud sync ships off. Delete the folder and it is gone.</p>
 </section>
 
 <!-- ============ HOW ============ -->
@@ -340,25 +350,28 @@
     <div>
       <p class="sec-kicker rv">The ritual</p>
       <h2 class="rv d1">Running in 10 minutes.</h2>
-      <p class="lede rv d2">Two ways in. The <b>desktop app</b> is the short one: download, open, drop in a syllabus, review what it read. No terminal, no account. The on-screen <b>Companion</b> comes with it, one install for both. The steps below are the original <b>terminal kit</b>, for people who would rather live in plain files they can read and edit.</p>
+      <p class="lede rv d2">Download, open, drop in a syllabus, check what it read. No terminal and no account. The on-screen Companion comes with it, one install for both.</p>
       <ol class="steps">
-        <li class="rv" data-gl="Α"><b>Install Claude Code</b><span>Free download from Anthropic. Needs a Claude subscription (the same ~$20/mo you may already spend on a chatbot). The desktop app can use this too, or your own Anthropic API key instead.</span>
-          <div class="term-mini" aria-hidden="true"><div class="bar"><i></i><i></i><i></i></div><p><span class="dim">$ </span>npm install -g @anthropic-ai/claude-code
-<span class="wt">✓</span> claude is ready</p></div>
+        <li class="rv" data-gl="Α"><b>Download and open it</b><span>One installer, or a portable build if you would rather not install anything. It is unsigned for now, so Windows shows a warning: choose More info, then Run anyway.</span>
+          <div class="dropzone" aria-hidden="true"><span class="fchip">Nus-Setup.exe</span><span class="fchip">Nus-Portable.exe</span><span class="fdest">Windows 10 and 11</span></div>
         </li>
-        <li class="rv d1" data-gl="Β"><b>Run <code>npx create-nus</code></b><span>One command scaffolds the whole kit. That folder <em>is</em> the product. Every file it writes is plain text you can read.</span>
+        <li class="rv d1" data-gl="Β"><b>Give it your AI</b><span>Claude reads your syllabi and powers Ask and chat. If you have <code>Claude Code</code>, Nūs finds it and there is nothing to paste. If not, put an Anthropic API key in Settings. It runs on Sonnet, so a semester costs cents rather than dollars.</span>
           <div class="term-mini" id="npxterm"><div class="bar"><i></i><i></i><i></i></div><div id="npxlines"></div></div>
         </li>
-        <li class="rv d2" data-gl="Γ"><b>Drop your syllabi in <code>school/raw/</code></b><span>PDFs straight from Canvas or your prof's email.</span>
-          <div class="dropzone" aria-hidden="true"><span class="fchip">calc-ii-syllabus.pdf</span><span class="fchip">chem-101.pdf</span><span class="fchip">econ-201.pdf</span><span class="fdest">→ school/raw/</span></div>
+        <li class="rv d2" data-gl="Γ"><b>Drop in a syllabus</b><span>The PDF straight from Canvas or your professor's email. Every course, weight, exam, and deadline comes back in a table you approve before anything is saved.</span>
+          <div class="dropzone" aria-hidden="true"><span class="fchip">calc-ii-syllabus.pdf</span><span class="fchip">chem-101.pdf</span><span class="fchip">econ-201.pdf</span><span class="fdest">→ review before save</span></div>
         </li>
-        <li class="rv d3" data-gl="Δ"><b>Run <code>claude</code>, type <code>/setup</code></b><span>Watch it build your whole semester. Tomorrow morning: <code>/brief</code>.</span>
-          <div class="term-mini" aria-hidden="true"><div class="bar"><i></i><i></i><i></i></div><p><span class="dim">$ </span>claude
-<span class="dim">&gt; </span><span class="wt">/setup</span>
-Reading 4 syllabi… <span class="wt">✓</span>
-Every deadline mapped. Worst week flagged: <span class="wt">Oct 13 to 19</span>.</p></div>
+        <li class="rv d3" data-gl="Δ"><b>Wake the Companion</b><span>The floating Knot needs its own key so live answers stay fast: a free <code>Gemini</code> key covers both its answers and listening. Paste it in Settings, Companion AI key. Then ask it anything on screen.</span>
+          <div class="term-mini" aria-hidden="true"><div class="bar"><i></i><i></i><i></i></div><p><span class="dim">Nūs </span><span class="wt">listening</span>  screen + voice active
+<span class="dim">&gt; </span>what did she just say the exam covers?
+<span class="wt">Chapters 4 to 7</span>, and she moved the review
+session to Thursday.</p></div>
         </li>
       </ol>
+      <p class="lede rv d4" style="margin-top:34px;font-size:14px">Prefer plain files you can read and edit? The original terminal kit still exists and is one command:</p>
+      <div class="npx-row rv d4" style="justify-content:flex-start">
+        <button class="npx-pill" type="button" data-npx data-goatcounter-click="npx-copy-how" aria-label="Copy the install command npx create-nus"><span class="dlr">$</span>&nbsp;npx create-nus<em>copy</em></button>
+      </div>
     </div>
     <div class="nous-ghost rv d2" aria-hidden="true">
       <div class="gl-stack"><span>Ν</span><span>Ο</span><span>Υ</span><span>Σ</span></div>
@@ -371,12 +384,12 @@ Every deadline mapped. Worst week flagged: <span class="wt">Oct 13 to 19</span>.
 <section id="roadmap">
   <p class="sec-kicker rv">The odyssey</p>
   <h2 class="rv d1">Semester one is the wedge.<br>The vision is your whole life.</h2>
-  <p class="lede rv d2">Built in public. Here's what's on the bench. Loudest waitlist requests get built first.</p>
+  <p class="lede rv d2">Built in public. GPA projection, the calendar, and the email drafter all shipped in the desktop app. Here is what is on the bench now, and the loudest requests get built first.</p>
   <div class="road">
-    <div class="rcard rv"><span class="tag">Next</span><h3>Canvas &amp; Blackboard sync</h3><p>Assignments pulled straight from your LMS. No PDFs needed.</p></div>
-    <div class="rcard rv d1"><span class="tag">Next</span><h3>GPA projections</h3><p>"Here's what your GPA could be", live from your grading rules and scores.</p></div>
-    <div class="rcard rv d2"><span class="tag">Soon</span><h3>Calendar dashboard</h3><p>Google Calendar connected. One screen that always knows your day.</p></div>
-    <div class="rcard rv d3"><span class="tag">Soon</span><h3>Email triage</h3><p>It reads the syllabus-week chaos in your inbox and drafts the replies. You approve every send.</p></div>
+    <div class="rcard rv"><span class="tag">Next</span><h3>macOS build</h3><p>The app is Windows only today. The Mac build is the most asked for thing and the next one out.</p></div>
+    <div class="rcard rv d1"><span class="tag">Next</span><h3>Canvas &amp; Blackboard sync</h3><p>Assignments pulled straight from your LMS, so a syllabus PDF stops being the starting point.</p></div>
+    <div class="rcard rv d2"><span class="tag">Soon</span><h3>A signed installer</h3><p>No more SmartScreen warning on first run. Boring, and the thing that makes it feel real.</p></div>
+    <div class="rcard rv d3"><span class="tag">Later</span><h3>Hosted, no keys</h3><p>Everything above without bringing your own AI. Planned at $12/mo. It does not exist yet.</p></div>
   </div>
 </section>
 
@@ -385,8 +398,10 @@ Every deadline mapped. Worst week flagged: <span class="wt">Oct 13 to 19</span>.
   <p class="sec-kicker rv">The oracle</p>
   <h2 class="rv d1">FAQ</h2>
   <details class="rv"><summary>Is this a cheating tool?</summary><p class="a">No. It plans, schedules, briefs, and quizzes you. It's built to refuse writing your assignment submissions, and it respects your school's AI policy. It even reads the policy out of your syllabus.</p></details>
-  <details class="rv"><summary>Why does it need Claude Code?</summary><p class="a">Claude Code is the engine. It lets an AI read your files, keep memory, and act like a real assistant instead of a chatbot. Don't want to install anything? Join the waitlist for the hosted app.</p></details>
-  <details class="rv"><summary>What does it cost?</summary><p class="a">Nūs is free and open source. Claude Code needs a Claude subscription (~$20/mo). If you're already paying for an AI chatbot, this replaces it with something that actually knows you.<br><br>The hosted app is planned at <strong>$12/mo, all inclusive</strong>: no install, no terminal, and no separate Claude subscription. It doesn't exist yet. The price is on this page so I can find out whether anyone would actually pay for it, and the waitlist charges you nothing. If you have an opinion on that number, <a href="https://github.com/potlakai/nus/discussions/1">tell me here</a>.</p></details>
+  <details class="rv"><summary>What do I need to run it?</summary><p class="a">Windows, and your own AI. Two keys, two jobs.<br><br><strong>Claude, for the desktop app.</strong> Syllabus reading, the Ask bar, and chat run on Claude, pinned to the mid-tier <strong>Sonnet</strong> model so it stays cheap. If <a href="https://claude.com/claude-code">Claude Code</a> is already installed, Nūs finds it and uses your subscription. If not, paste an Anthropic API key in Settings.<br><br><strong>Gemini, for the Companion overlay.</strong> The floating Knot runs on its own key so live answers stay fast. The free tier at <a href="https://aistudio.google.com/apikey">aistudio.google.com/apikey</a> covers both its answers and speech to text.<br><br>Both are encrypted on your device with the OS keychain and never leave it except to call the provider you chose.</p></details>
+  <details class="rv"><summary>What does it cost?</summary><p class="a">The app is free and open source. What you pay for is the AI behind it, and you pay it to Anthropic or Google, not to me.<br><br>If you already have a Claude subscription (~$20/mo), the desktop app uses it and costs you nothing extra. With an API key instead, you pay per use on Sonnet, which for reading a few syllabi and asking questions is cents, not dollars. The Companion's Gemini key has a free tier that most students never exceed.<br><br>A hosted version with no keys at all is planned at <strong>$12/mo</strong>. It does not exist yet. The price is on this page so I can find out whether anyone would actually pay it, and the waitlist charges you nothing. If you have an opinion on that number, <a href="https://github.com/potlakai/nus/discussions/1">tell me here</a>.</p></details>
+  <details class="rv"><summary>Is it really only Windows?</summary><p class="a">For now, yes. The app is built on Electron so a Mac build is not a rewrite, it is a build target and a round of testing. It is the next thing on the roadmap. If you are on a Mac and want it, say so in the box below and it moves up.</p></details>
+  <details class="rv"><summary>Why does Windows warn me about the download?</summary><p class="a">Because the installer is not code signed yet. A signing certificate costs money and I would rather ship first and sign once people are actually using it. Choose <em>More info</em> then <em>Run anyway</em>. If that is a dealbreaker, the source is on GitHub and you can build it yourself.</p></details>
   <details class="rv"><summary>What does "Nūs" mean?</summary><p class="a">It's the Greek word <em>noûs</em>: mind, intellect, the thing that perceives what matters. The ancients argued about where it came from. We just built one for your semester.</p></details>
   <details class="rv"><summary>Who made this?</summary><p class="a">A student at UT Dallas. I built a Jarvis-style AI system that runs my own semester. The first time it warned me about a crunch week I hadn't noticed, I decided every student should have one.</p></details>
   <details class="rv" open>
@@ -405,7 +420,7 @@ Every deadline mapped. Worst week flagged: <span class="wt">Oct 13 to 19</span>.
 <section class="final">
   <p class="sec-kicker rv">Get Nūs</p>
   <h2 class="rv d1">Know your mind.</h2>
-  <p class="lede rv d2">Free, open source, yours. Or leave your email for the hosted app: no install, no Claude subscription, planned at $12/mo. It ships when it's real, and nobody gets charged before then.</p>
+  <p class="lede rv d2">Free, open source, yours. Windows, and your own AI key. If you would rather wait for a version that needs no keys at all, leave your email: it ships when it is real, and nobody gets charged before then.</p>
   <div class="hero-ctas rv d3">
     <a href="#" id="dl3" class="btn solid" data-goatcounter-click="download-windows-final">Download for Windows</a>
     <a href="#" id="gh3" class="btn ghost" data-goatcounter-click="github-final">View on GitHub</a>
@@ -536,16 +551,16 @@ Every deadline mapped. Worst week flagged: <span class="wt">Oct 13 to 19</span>.
 
   /* ---- terminal typing ---- */
   var LINES = [
-    ['dim','$ '], ['wt','/due'], ['','  tonight\n'],
+    ['dim','Ask Nūs  '], ['wt','what should I start tonight?\n'],
     ['','\n'],
-    ['','Due '], ['wt','tonight (Mon Jul 7)'], ['',':\n'],
+    ['','Due '], ['wt','tonight'], ['',':\n'],
     ['','  CALC II · problem set 4\n'],
     ['','  CHEM 101 · lab report draft\n'],
     ['','\n'],
-    ['wt','⚠ Heads up: '], ['','your worst week of the semester\n'],
-    ['','starts Monday: 3 exams + a project stacked\n'],
-    ['','in the same 7 days. Tonight\'s HW is the study\n'],
-    ['','material. Do it properly.']
+    ['wt','Heads up: '], ['','your worst week of the semester\n'],
+    ['','starts Monday. Three exams and a project stacked\n'],
+    ['','in the same seven days, and tonight\'s homework is\n'],
+    ['','the study material. Do that one properly.']
   ];
   var termBox = document.getElementById("termlines");
   function renderTermInstant(){
@@ -604,10 +619,10 @@ Every deadline mapped. Worst week flagged: <span class="wt">Oct 13 to 19</span>.
 
   /* ---- npx terminal typing (setup steps) ---- */
   var NPX_LINES = [
-    ['dim','$ '], ['wt','npx create-nus'], ['','\n\n'],
-    ['','  N Ū S : your semester brain is scaffolded.\n'],
-    ['','  12 files created '], ['wt','✓'], ['','\n'],
-    ['dim','  → '], ['','cd nus']
+    ['dim','Settings '], ['','· AI provider\n\n'],
+    ['','  Claude Code found on this machine '], ['wt','✓'], ['','\n'],
+    ['','  model: '], ['wt','claude-sonnet-5'], ['','\n'],
+    ['dim','  → '], ['','nothing to paste. You are set.']
   ];
   var npxBox = document.getElementById("npxlines");
   function renderNpxInstant(){
@@ -699,12 +714,12 @@ Every deadline mapped. Worst week flagged: <span class="wt">Oct 13 to 19</span>.
     course() + " exam · " + pick(DAY),
     "HW " + ri(2, 9) + " · §" + ri(2, 6) + "." + ri(1, 4),
     "GPA " + (2.9 + Math.random() * 1.1).toFixed(2),
-    pick(["public-speaking","writing","java","chess","guitar"]) + " · Lv" + ri(2, 6),
-    "reading streak · " + ri(3, 21) + "d",
+    "lab report · draft",
+    "extension email · sent",
     "office hours · " + pick(DAY),
     "study group · " + ri(5, 9) + "pm",
     pick(["notes/startup-idea.md","notes/lecture-12.md","notes/rabbit-hole.md"]),
-    "crunch week ⚠","syllabus.pdf","/brief","/quest","/due tonight"
+    "crunch week","syllabus.pdf","exam · ch 4-7","session transcript","move to Friday"
   ];
   var nodes = LABELS.map(function(t, i){
     return {
