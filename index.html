@@ -352,7 +352,7 @@
       <h2 class="rv d1">Running in 10 minutes.</h2>
       <p class="lede rv d2">Download, open, drop in a syllabus, check what it read. No terminal and no account. The on-screen Companion comes with it, one install for both.</p>
       <ol class="steps">
-        <li class="rv" data-gl="Α"><b>Download and open it</b><span>One installer, or a portable build if you would rather not install anything. It is unsigned for now, so Windows shows a warning: choose More info, then Run anyway.</span>
+        <li class="rv" data-gl="Α"><b>Download and open it</b><span>One <a href="#" id="portable" style="color:#fff;text-decoration:underline;text-underline-offset:3px">installer or a portable build</a> if you would rather not install anything. It is unsigned for now, so Windows shows a warning: choose More info, then Run anyway.</span>
           <div class="dropzone" aria-hidden="true"><span class="fchip">Nus-Setup.exe</span><span class="fchip">Nus-Portable.exe</span><span class="fdest">Windows 10 and 11</span></div>
         </li>
         <li class="rv d1" data-gl="Β"><b>Give it your AI</b><span>Claude reads your syllabi and powers Ask and chat. If you have <code>Claude Code</code>, Nūs finds it and there is nothing to paste. If not, put an Anthropic API key in Settings. It runs on Sonnet, so a semester costs cents rather than dollars.</span>
@@ -368,7 +368,7 @@
 session to Thursday.</p></div>
         </li>
       </ol>
-      <p class="lede rv d4" style="margin-top:34px;font-size:14px">Prefer plain files you can read and edit? The original terminal kit still exists and is one command:</p>
+      <p class="lede rv d4" style="margin-top:34px;font-size:14px">Prefer plain files you can read and edit? The original <a href="#" id="kit" style="color:#fff;text-decoration:underline;text-underline-offset:3px">terminal kit</a> still exists and is one command:</p>
       <div class="npx-row rv d4" style="justify-content:flex-start">
         <button class="npx-pill" type="button" data-npx data-goatcounter-click="npx-copy-how" aria-label="Copy the install command npx create-nus"><span class="dlr">$</span>&nbsp;npx create-nus<em>copy</em></button>
       </div>
@@ -435,7 +435,7 @@ session to Thursday.</p></div>
 </section>
 
 <footer>
-  Nūs · free &amp; open source · <a href="#" id="gh4">GitHub</a> · <a href="https://github.com/potlakai/nus/discussions/1">Give feedback</a> · <a href="https://tally.so/r/44qgKO" id="wl2">Waitlist</a> · <a href="privacy.html">Privacy</a>
+  Nūs · free &amp; open source (MIT) · <a href="#" id="gh4">Desktop app</a> · <a href="#" id="kit2">Terminal kit</a> · <a href="https://github.com/potlakai/nus/discussions/1">Give feedback</a> · <a href="https://tally.so/r/44qgKO" id="wl2">Waitlist</a> · <a href="privacy.html">Privacy</a>
   <p class="credit">Statue: <em>Marble head of an athlete</em>, The Met Open Access (CC0).</p>
 </footer>
 
@@ -445,12 +445,17 @@ session to Thursday.</p></div>
   var TALLY_ID = "44qgKO";
   var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---- repo + release links (release asset = public download counter) ---- */
-  var repoUrl = "https://github.com/potlakai/nus";
-  /* Stable asset name, so a version bump never 404s these buttons. */
-  var winInstaller = repoUrl + "/releases/latest/download/Nus-Setup.exe";
+  /* ---- repo + release links (release asset = public download counter) ----
+     The desktop app has its own repo; the kit repo stays linked from the
+     footer. Stable asset names, so a version bump never 404s these buttons. */
+  var appRepo = "https://github.com/potlakai/nus-desktop";
+  var kitRepo = "https://github.com/potlakai/nus";
+  var winInstaller = appRepo + "/releases/latest/download/Nus-Setup.exe";
+  var winPortable = appRepo + "/releases/latest/download/Nus-Portable.exe";
   ["dl","dl2","dl3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winInstaller; });
-  ["gh","gh2","gh3","gh4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=repoUrl; });
+  ["gh","gh2","gh3","gh4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=appRepo; });
+  ["portable","portable2"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winPortable; });
+  ["kit","kit2"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=kitRepo; });
 
   /* ---- Tally ---- */
   var s = document.createElement("script");
