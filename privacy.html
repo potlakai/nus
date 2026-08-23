@@ -3,48 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%230b0d16%27/%3E%3Ctext x=%2732%27 y=%2744%27 font-family=%27Georgia,serif%27 font-size=%2734%27 fill=%27%23fff%27 text-anchor=%27middle%27%3E%CE%BD%3C/text%3E%3C/svg%3E">
 <title>Privacy | Nūs</title>
 <meta name="description" content="How Nūs handles data: the app runs entirely on your machine, and this website collects almost nothing.">
 <meta name="robots" content="index,follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
 <style>
-  :root{
-    --bg:#000; --panel:#0a0a0a; --border:#1d1d1d; --border2:#2a2a2a;
-    --text:#f2f2f2; --muted:#8f8f8f; --dim:#565656; --radius:16px;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  ::selection{background:#fff;color:#000}
-  body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;line-height:1.7}
-  a{color:var(--text);text-decoration:underline;text-underline-offset:3px}
-  a:hover{color:#fff}
-  nav{display:flex;justify-content:space-between;align-items:center;padding:20px clamp(20px,4vw,48px);border-bottom:1px solid var(--border)}
-  .logo{font-family:Syne,sans-serif;font-weight:800;font-size:22px;letter-spacing:.12em;display:inline-flex;text-decoration:none}
-  .logo .mac{position:relative}
-  .logo .mac::after{content:"";position:absolute;top:-1px;left:15%;width:70%;height:2px;background:#fff}
+  body{line-height:1.7}
+  nav.solid{position:static}
+  a{text-decoration:underline;text-underline-offset:3px}
   nav a.back{color:var(--muted);font-size:14px;text-decoration:none}
-  nav a.back:hover{color:#fff}
   main{max-width:720px;margin:0 auto;padding:clamp(60px,10vh,100px) 24px 80px}
-  .kicker{font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--dim);margin-bottom:18px}
-  h1{font-family:Syne,sans-serif;font-size:clamp(32px,6vw,52px);font-weight:700;letter-spacing:-.02em;line-height:1.08;margin-bottom:10px}
-  .eff{color:var(--dim);font-size:13px;margin-bottom:40px}
-  h2{font-family:Syne,sans-serif;font-size:20px;font-weight:700;margin:44px 0 10px}
-  p,li{color:var(--muted);font-size:15px}
+  h1{font-size:clamp(34px,6vw,54px);letter-spacing:-.02em;line-height:1.08;margin-bottom:10px}
+  .eff{color:var(--muted);font-size:13px;margin-bottom:40px}
+  main h2{font-size:24px;margin:44px 0 10px}
+  p,li{color:#3a3f52;font-size:15px}
   main p+p{margin-top:12px}
   ul{margin:10px 0 0 20px}
   li{margin:6px 0}
-  .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-top:16px}
+  .card{background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-top:16px}
   .card b{color:var(--text)}
-  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#fff;background:#161616;border:1px solid var(--border);border-radius:6px;padding:1px 7px;font-size:13px}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--blue-deep);background:var(--blue-soft);border-radius:6px;padding:1px 7px;font-size:13px}
   strong{color:var(--text)}
-  footer{border-top:1px solid var(--border);padding:44px 24px;color:var(--dim);font-size:13px;text-align:center}
-  footer a{color:var(--muted)}
 </style>
 </head>
 <body>
 
-<nav>
+<nav class="solid">
   <a class="logo" href="index.html">N<span class="mac">U</span>S</a>
   <a class="back" href="index.html">← Back to Nūs</a>
 </nav>
@@ -52,49 +40,45 @@
 <main>
   <p class="kicker">The fine print</p>
   <h1>Privacy Policy</h1>
-  <p class="eff">Effective July 10, 2026 · applies to the Nūs app and this website (potlakai.github.io/nus)</p>
+  <p class="eff">Effective August 22, 2026 · applies to the Nūs app and this website (potlakai.github.io/nus)</p>
 
-  <p>Nūs was built around one idea: <strong>we shouldn't be able to see your data.</strong> The app has no server, no database, and no accounts, so most privacy policies' scariest sections simply don't apply here. This page explains, plainly, what little is touched and by whom.</p>
+  <p>Nūs was built around one idea: <strong>your coursework should stay on your device.</strong> The desktop app uses a local database and managed local source files. Optional Nūs accounts use Supabase for identity and subscription status, but Nūs does not upload your syllabi, tasks, Companion transcripts, or chat history to that account.</p>
 
   <h2>1. The Nūs app</h2>
   <div class="card">
-    <p><b>Nūs itself collects nothing.</b> No telemetry, no analytics, no phoning home. Your syllabi, deadlines, notes, and goals live as plain text files on your own machine. You can open and read every file it writes. Delete the folder and it's gone. The source code is public, so you don't have to take our word for it.</p>
+    <p><b>Your semester content stays local.</b> Courses, deadlines, tasks, imports, chats, and Companion transcripts live in the Nūs data folder on your computer. Nūs accounts store an email address, user identifier, and subscription status in Supabase. Stripe processes payment details when you choose to buy Pro; Nūs does not receive or store your full card number. Local crash logs may record technical diagnostics such as the app version and error stack, but are designed not to include imported content.</p>
   </div>
-  <p>One thing to understand: Nūs runs on <strong>Claude Code</strong>, Anthropic's AI tool. When you ask Nūs to read a syllabus or write a brief, that content is processed by Anthropic's Claude models under your own Claude account. That relationship is between you and Anthropic and is governed by <a href="https://www.anthropic.com/legal/privacy" rel="noopener">Anthropic's Privacy Policy</a>. We never see any of it.</p>
-  <p>Installing via <code>npx create-nus</code> downloads the kit from the npm registry (run by GitHub); npm's standard download logs apply, same as installing any package.</p>
+  <p>Account identity and subscription records are kept while your account is active and as needed to operate or document the subscription. You can ask to have your Nūs account data deleted using the contact address below. Stripe may retain payment and transaction records under its own legal obligations and privacy terms.</p>
+  <p>One thing to understand: Nūs uses the AI provider you configure. When you ask Nūs to read a syllabus or answer a question, the relevant content is processed by that provider under your account and its privacy terms. Nūs currently supports Claude for the desktop assistant and Gemini or another configured provider for the Companion. Nūs does not proxy those prompts through its own model server.</p>
+  <p>Downloading the installer from GitHub Releases is subject to GitHub's standard download logs, same as any file hosted there. The installer checks GitHub Releases for updates when you run it; that request carries the app version and nothing about your content.</p>
 
   <h2>2. This website</h2>
   <p>The site is a static page hosted on GitHub Pages. It uses:</p>
   <ul>
     <li><strong>GoatCounter</strong> for basic, privacy-friendly analytics: page views, referrers, browser type, and country, in aggregate. No cookies, no advertising identifiers, no cross-site tracking, and nothing that builds a profile of you. See <a href="https://www.goatcounter.com/help/privacy" rel="noopener">GoatCounter's privacy policy</a>.</li>
     <li><strong>GitHub Pages</strong> for hosting. GitHub may log standard technical data (like IP addresses) to serve and secure the site, per the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" rel="noopener">GitHub Privacy Statement</a>.</li>
-    <li><strong>Google Fonts</strong> to load the site's two typefaces; your browser requests the font files from Google's servers (<a href="https://policies.google.com/privacy" rel="noopener">Google's privacy policy</a>).</li>
+    <li><strong>Google Fonts</strong> to load the site's typeface; your browser requests the font files from Google's servers (<a href="https://policies.google.com/privacy" rel="noopener">Google's privacy policy</a>).</li>
   </ul>
 
-  <h2>3. The waitlist and idea form</h2>
-  <p>If you choose to join the hosted-app waitlist or submit a feature idea, the form is run by <strong>Tally</strong> (<a href="https://tally.so/help/privacy-policy" rel="noopener">Tally's privacy policy</a>). We receive what you type, usually just an email address.</p>
-  <ul>
-    <li><strong>What we use it for:</strong> telling you when the hosted app ships, and reading your feature requests. That's it.</li>
-    <li><strong>What we never do:</strong> sell it, share it, or send you unrelated marketing.</li>
-    <li><strong>Retention:</strong> kept until the hosted app launches or you ask us to remove it, whichever comes first.</li>
-    <li><strong>Legal basis (GDPR):</strong> your consent, which you can withdraw at any time by emailing us.</li>
-  </ul>
+  <h2>3. Accounts, Pro, and the idea form</h2>
+  <p>Signing in on this site (on the Account page) uses the same Supabase project as the app. Supabase receives your email address and, if you use Google, the identity Google returns; it stores your email, a user identifier, and your plan. Buying Pro sends you to <strong>Stripe Checkout</strong> on Stripe's own pages (<a href="https://stripe.com/privacy" rel="noopener">Stripe's privacy policy</a>); the card never passes through this site or the app. Your browser keeps your Nūs session in local storage until you sign out.</p>
+  <p>The idea box on the home page is saved in your own browser and copied to your clipboard; nothing is sent anywhere until you paste it into the public GitHub discussion thread yourself.</p>
 
   <h2>4. Your rights</h2>
-  <p>Depending on where you live (including under the EU/UK GDPR and the California CCPA/CPRA), you have the right to access, correct, delete, or export the personal data we hold about you, to object to or restrict its processing, and to withdraw consent. Since the only personal data we can hold is a voluntarily submitted email address, exercising these rights is simple: email us and we'll handle it, normally within 30 days. You also have the right to complain to your local data protection authority.</p>
+  <p>Depending on where you live (including under the EU/UK GDPR and the California CCPA/CPRA), you may have rights to access, correct, delete, or export personal data we hold about you, to object to or restrict its processing, and to withdraw consent. This may include your Nūs account email, user identifier, subscription status, and information you submit through a form. Email us and we will respond to a verified request as required by applicable law. You may also have the right to complain to your local data protection authority.</p>
 
   <h2>5. Children</h2>
-  <p>This site and the waitlist are not directed at children under 13 (or the equivalent minimum age where you live), and we don't knowingly collect their data. If you believe a child submitted an email, contact us and we'll delete it.</p>
+  <p>Nūs, this site, and its forms are not directed at children under 13 (or the equivalent minimum age where you live), and we do not knowingly collect their data. If you believe a child submitted personal information, contact us and we will delete it.</p>
 
   <h2>6. Changes</h2>
-  <p>If this policy changes (for example, when the hosted app launches with real accounts, it will get its own, longer policy), the update will be posted here with a new effective date.</p>
+  <p>If Nūs or its services change, this policy will be updated here with a new effective date.</p>
 
   <h2>7. Contact</h2>
   <p>Questions, or want your data removed? Email <a href="mailto:pranavfromthegrowth@gmail.com">pranavfromthegrowth@gmail.com</a>.</p>
 </main>
 
 <footer>
-  Nūs · free &amp; open source · <a href="https://github.com/potlakai/nus">GitHub</a> · <a href="index.html">Home</a>
+  Nūs · <a href="index.html">Home</a> · <a href="pro.html">Account</a> · <a href="https://github.com/potlakai/nus-desktop">Desktop app on GitHub</a>
 </footer>
 
 <script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

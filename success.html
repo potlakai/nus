@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%230b0d16%27/%3E%3Ctext x=%2732%27 y=%2744%27 font-family=%27Georgia,serif%27 font-size=%2734%27 fill=%27%23fff%27 text-anchor=%27middle%27%3E%CE%BD%3C/text%3E%3C/svg%3E">
+<title>Nūs Pro is on</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0a0c11">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+  body{min-height:100vh;display:flex;flex-direction:column}
+  .wrap{flex:1;display:grid;place-items:center;padding:110px 20px 60px;text-align:center}
+  .card-done{width:min(560px,100%);background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:20px;padding:40px 36px}
+  .mark{width:74px;height:74px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 40% 35%, #2738bf, #151927);color:#fff;font-family:var(--serif);font-size:30px;box-shadow:0 16px 40px rgba(53,73,229,.28);animation:pop .7s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes pop{from{opacity:0;transform:scale(.6)}}
+  h1{font-size:38px;margin-bottom:10px}
+  .lede{margin:0 auto}
+  .ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .small{margin-top:18px;font-size:13px;color:var(--muted)}
+  .small a{text-decoration:underline;text-underline-offset:3px}
+  @media (prefers-reduced-motion: reduce){.mark{animation:none}}
+</style>
+</head>
+<body>
+<nav id="nav" class="solid">
+  <a class="logo" href="index.html">N<span class="mac">U</span>S</a>
+  <div class="nav-links"><a href="index.html#pricing" class="hidem">Pricing</a><a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" class="btn solid">Download for Windows</a></div>
+</nav>
+<div class="wrap">
+  <div class="card-done">
+    <div class="mark">ν</div>
+    <p class="sec-kicker">Payment received</p>
+    <h1>Pro is on.</h1>
+    <p class="lede">Open Nūs on your PC and it picks the plan up on its own. The caps are gone the moment the app checks in, no restart needed.</p>
+    <div class="ctas">
+      <a class="btn solid" href="nus-desktop://billing/success" id="open-app">Open Nūs</a>
+      <a class="btn ghost" href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe">Install the app</a>
+    </div>
+    <p class="small">Nothing happened when you clicked Open Nūs? Start the app from your desktop and go to <b>Settings → Plan → Refresh plan</b>. Receipts come from Stripe. Cancel any time from <a href="pro.html">your account</a>.</p>
+  </div>
+</div>
+<footer>Nūs · <a href="index.html">Home</a> · <a href="pro.html">Account</a> · <a href="privacy.html">Privacy</a></footer>
+<script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

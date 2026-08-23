@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%230b0d16%27/%3E%3Ctext x=%2732%27 y=%2744%27 font-family=%27Georgia,serif%27 font-size=%2734%27 fill=%27%23fff%27 text-anchor=%27middle%27%3E%CE%BD%3C/text%3E%3C/svg%3E">
+<title>Get Nūs Pro</title>
+<meta name="description" content="Sign in to your Nūs account and upgrade to Pro. $9.99 a month, cancel any time. Pro turns on in the desktop app the moment checkout completes.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0a0c11">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+  body{min-height:100vh;display:flex;flex-direction:column}
+  .wrap{flex:1;display:grid;place-items:center;padding:110px 20px 60px}
+  .pane{width:min(960px,100%);display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+  @media (max-width:820px){.pane{grid-template-columns:1fr}}
+  .box{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:18px;padding:30px 32px}
+  .box.dark{background:radial-gradient(130% 170% at 10% 0%, #1a2140 0%, #0b0d16 60%);color:#eceaf2;border-color:rgba(255,255,255,.08)}
+  .box.dark h2,.box.dark .price{color:#fff}
+  .box.dark .lede,.box.dark li{color:#b7bccf}
+  .box h2{font-size:30px;margin-bottom:8px}
+  .box .lede{font-size:15px}
+  .price{font-family:var(--serif);font-size:44px;letter-spacing:-.02em;line-height:1;margin:18px 0 4px}
+  .price span{font-family:var(--sans);font-size:14px;color:var(--muted);letter-spacing:0}
+  .box.dark .price span{color:#9aa0bb}
+  ul.perks{list-style:none;display:grid;gap:8px;margin-top:18px}
+  ul.perks li{position:relative;padding-left:18px;font-size:14px}
+  ul.perks li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+  .box.dark ul.perks li::before{background:#8ea0ff}
+  .fine{margin-top:22px;font-size:12.5px;color:var(--muted)}
+  .box.dark .fine{color:#8a90aa}
+  .auth{display:grid;gap:10px;margin-top:18px}
+  .auth input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--text);font-size:14px;font-family:inherit}
+  .auth input:focus{outline:none;border-color:rgba(53,73,229,.55);box-shadow:0 0 0 3px rgba(53,73,229,.14)}
+  .auth .row{display:flex;gap:8px;flex-wrap:wrap}
+  .auth .row .btn{flex:1 1 140px;justify-content:center}
+  .divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;margin:4px 0}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+  .status{min-height:20px;margin-top:10px;font-size:13px;color:#4d5266}
+  .status.bad{color:#b9473f}
+  .status.good{color:#1b6e57}
+  .who{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:13px}
+  .who b{display:block;font-size:14px}
+  .who button{border:0;background:none;color:var(--muted);font-size:12px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-family:inherit}
+  .big{width:100%;justify-content:center;padding:14px 22px;font-size:15px;margin-top:14px}
+  .hidden{display:none!important}
+  .steps{display:grid;gap:10px;margin-top:16px;font-size:13.5px;color:#3a3f52}
+  .steps div{display:flex;gap:12px;align-items:flex-start}
+  .steps i{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:700;background:var(--blue-soft);color:#26337e}
+</style>
+</head>
+<body>
+<nav id="nav" class="solid">
+  <a class="logo" href="index.html">N<span class="mac">U</span>S</a>
+  <div class="nav-links">
+    <a href="index.html#pricing" class="hidem">Pricing</a>
+    <a href="index.html#faq" class="hidem">FAQ</a>
+    <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" class="btn solid" data-goatcounter-click="download-windows-pro">Download for Windows</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="pane">
+    <div class="box dark">
+      <p class="sec-kicker" style="color:#8c93bc">Nūs Pro</p>
+      <h2>The same app, with the caps off.</h2>
+      <p class="lede">Free runs a full semester. Pro is for the student who hits the limits.</p>
+      <div class="price">$9.99<span>&nbsp;a month</span></div>
+      <ul class="perks">
+        <li>Unlimited AI syllabus imports</li>
+        <li>Unlimited Ask and chat questions</li>
+        <li>Companion with no daily limit</li>
+        <li>Full Companion history, searchable</li>
+        <li>Google Calendar and Outlook connected together</li>
+        <li>Unlimited create-task automation rules</li>
+        <li>2 GB of local storage</li>
+        <li>Pro follows your account to any PC</li>
+        <li>New features first</li>
+      </ul>
+      <p class="fine">Cancel any time from Settings in the app or from the Stripe billing portal. You keep Pro until the end of the period you paid for. You still bring your own AI key on both plans.</p>
+    </div>
+
+    <div class="box">
+      <div id="step-signin">
+        <p class="sec-kicker">Step 1 of 2</p>
+        <h2>Sign in to Nūs</h2>
+        <p class="lede">Pro is tied to your Nūs account, so it follows you to any PC and turns on in the desktop app by itself.</p>
+        <div class="auth">
+          <button id="google" class="btn solid big" type="button">Continue with Google</button>
+          <div class="divider">or use email</div>
+          <input id="email" type="email" placeholder="School or personal email" autocomplete="email">
+          <input id="password" type="password" placeholder="Password, 8+ characters" autocomplete="current-password">
+          <div class="row"><button id="login" class="btn ghost" type="button">Sign in</button><button id="signup" class="btn ghost" type="button">Create account</button></div>
+        </div>
+        <p id="status-signin" class="status"></p>
+      </div>
+
+      <div id="step-pay" class="hidden">
+        <p class="sec-kicker">Step 2 of 2</p>
+        <h2>Go Pro</h2>
+        <div class="who"><div><b id="who-email"></b><span>Nūs account</span></div><button id="signout" type="button">Not you? Sign out</button></div>
+        <button id="checkout" class="btn solid big" type="button" data-goatcounter-click="pro-checkout-started">Continue to Stripe Checkout</button>
+        <p id="status-pay" class="status"></p>
+        <div class="steps">
+          <div><i>1</i><span>Stripe handles the card. Nūs never sees it.</span></div>
+          <div><i>2</i><span>Open Nūs on your PC. Pro is on the moment Stripe confirms, no restart needed.</span></div>
+          <div><i>3</i><span>No app yet? <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe">Download for Windows</a> and sign in with the same account.</span></div>
+        </div>
+      </div>
+
+      <div id="step-already" class="hidden">
+        <p class="sec-kicker">Already Pro</p>
+        <h2>This account has Pro.</h2>
+        <p class="lede" id="already-copy">Nothing to buy. Open Nūs and it picks the plan up on its own.</p>
+        <div class="who" style="margin-top:16px"><div><b id="who-email-2"></b><span>Nūs account</span></div><button id="signout-2" type="button">Sign out</button></div>
+        <a id="open-app" class="btn solid big" href="nus-desktop://billing/success">Open Nūs</a>
+        <button id="portal" class="btn ghost big" type="button" style="margin-top:8px">Manage subscription</button>
+        <p id="status-already" class="status"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Nūs · <a href="index.html#pricing">Pricing</a> · <a href="https://github.com/potlakai/nus-desktop">Desktop app</a> · <a href="privacy.html">Privacy</a>
+</footer>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
+  // Public by design: the same project URL and publishable key ship inside
+  // the desktop app. Every table is RLS-locked and holds no coursework.
+  const SUPABASE_URL = 'https://xnpkplcjurzwanotmwwt.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_yBEA9loOsDI9E_HMFIVCRQ_PZvTD8rB';
+  const HERE = location.origin + location.pathname;
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { flowType: 'pkce', persistSession: true, detectSessionInUrl: true } });
+  const $ = (s) => document.querySelector(s);
+  const status = (id, text, kind) => { const el = $(id); el.textContent = text || ''; el.className = 'status' + (kind ? ' ' + kind : ''); };
+  const show = (id) => { for (const s of ['#step-signin', '#step-pay', '#step-already']) $(s).classList.toggle('hidden', s !== id); };
+
+  function isStripe(url) {
+    try { const u = new URL(url); return u.protocol === 'https:' && (u.hostname === 'stripe.com' || u.hostname.endsWith('.stripe.com')); } catch { return false; }
+  }
+  async function callFunction(name) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return { error: 'not_authenticated' };
+    try {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/${name}`, { method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' }, body: '{}' });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) return { error: body.error || 'unavailable', detail: body.detail };
+      if (!isStripe(body.url)) return { error: 'unavailable' };
+      return { url: body.url };
+    } catch { return { error: 'network' }; }
+  }
+  async function entitlement() {
+    const { data, error } = await supabase.rpc('entitlement');
+    if (error) return null;
+    const row = Array.isArray(data) ? data[0] : data;
+    return row && row.is_pro && row.current_period_end && Date.parse(row.current_period_end) > Date.now() ? row : null;
+  }
+  async function render() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) { show('#step-signin'); return; }
+    const email = session.user.email || '';
+    $('#who-email').textContent = email; $('#who-email-2').textContent = email;
+    const pro = await entitlement();
+    if (pro) {
+      show('#step-already');
+      $('#already-copy').textContent = pro.cancel_at_period_end
+        ? `Pro stays active through ${new Date(pro.current_period_end).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}. Open Nūs and it picks the plan up on its own.`
+        : 'Nothing to buy. Open Nūs and it picks the plan up on its own.';
+      return;
+    }
+    show('#step-pay');
+    if (new URLSearchParams(location.search).get('auto') === '1') $('#checkout').click();
+  }
+
+  const ERR = {
+    not_authenticated: 'Your session expired. Sign in again.',
+    already_subscribed: 'This account already has Pro.',
+    billing_not_configured: 'Checkout is not switched on yet. Try again soon.',
+    network: 'No connection. Try again in a moment.',
+    no_subscription: 'No Stripe subscription is attached to this account yet.',
+  };
+
+  $('#google').addEventListener('click', async () => {
+    status('#status-signin', 'Opening Google…');
+    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: HERE } });
+    if (error) status('#status-signin', error.message, 'bad');
+  });
+  $('#login').addEventListener('click', async () => {
+    const email = $('#email').value.trim(), password = $('#password').value;
+    if (!email || !password) return status('#status-signin', 'Enter email and password.', 'bad');
+    status('#status-signin', 'Signing in…');
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return status('#status-signin', error.message, 'bad');
+    status('#status-signin', ''); render();
+  });
+  $('#signup').addEventListener('click', async () => {
+    const email = $('#email').value.trim(), password = $('#password').value;
+    if (!email || !password) return status('#status-signin', 'Enter email and password.', 'bad');
+    if (password.length < 8) return status('#status-signin', 'Password must be at least 8 characters.', 'bad');
+    status('#status-signin', 'Creating your account…');
+    const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: HERE } });
+    if (error) return status('#status-signin', error.message, 'bad');
+    if (data.session) { render(); return; }
+    status('#status-signin', 'Check your email for the confirmation link. It brings you straight back here.', 'good');
+  });
+  $('#password').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('#login').click(); });
+  for (const id of ['#signout', '#signout-2']) $(id).addEventListener('click', async () => { await supabase.auth.signOut(); render(); });
+
+  $('#checkout').addEventListener('click', async () => {
+    const btn = $('#checkout'); btn.disabled = true; status('#status-pay', 'Opening Stripe Checkout…');
+    const result = await callFunction('create-checkout');
+    btn.disabled = false;
+    if (result.error === 'already_subscribed') { render(); return; }
+    if (result.error) return status('#status-pay', ERR[result.error] || `Checkout failed (${result.error}).`, 'bad');
+    status('#status-pay', 'Taking you to Stripe…', 'good');
+    location.href = result.url;
+  });
+  $('#portal').addEventListener('click', async () => {
+    const btn = $('#portal'); btn.disabled = true; status('#status-already', 'Opening the billing portal…');
+    const result = await callFunction('create-portal');
+    btn.disabled = false;
+    if (result.error) return status('#status-already', ERR[result.error] || 'The billing portal could not open. Try again in a minute.', 'bad');
+    location.href = result.url;
+  });
+
+  supabase.auth.onAuthStateChange((event) => { if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') render(); });
+  render();
+</script>
+<script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

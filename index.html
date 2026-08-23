@@ -3,238 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%230b0d16%27/%3E%3Ctext x=%2732%27 y=%2744%27 font-family=%27Georgia,serif%27 font-size=%2734%27 fill=%27%23fff%27 text-anchor=%27middle%27%3E%CE%BD%3C/text%3E%3C/svg%3E">
 <title>Nūs | Jarvis for students</title>
-<meta name="description" content="Nūs is a desktop app that reads your syllabi, maps every deadline and grading rule, and turns plain requests into real changes you approve first. Runs on your own AI, on your own machine. Free and open source.">
+<meta name="description" content="Nūs is a desktop app that reads your syllabi, maps every deadline and grading rule, and turns plain requests into real changes you approve first. Runs on your own AI, on your own machine. Free to start, $9.99 a month for the full thing.">
 <meta property="og:title" content="Nūs | Jarvis for students">
-<meta property="og:description" content="Drop in your syllabi. It maps every deadline, proposes the next move, and shows you the change before it makes it. Free, open source, and local.">
-<meta name="theme-color" content="#000000">
+<meta property="og:description" content="Drop in your syllabi. It maps every deadline, proposes the next move, and shows you the change before it makes it. Free to start, and your coursework stays on your machine.">
+<meta name="theme-color" content="#0a0c11">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
 <style>
-  :root{
-    --bg:#000;
-    --panel:#0a0a0a;
-    --panel2:#0f0f0f;
-    --border:#1d1d1d;
-    --border2:#2a2a2a;
-    --text:#f2f2f2;
-    --muted:#8f8f8f;
-    --dim:#565656;
-    --radius:16px;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  ::selection{background:#fff;color:#000}
-  body{background:var(--bg);color:var(--text);font-family:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
-  a{color:var(--text);text-decoration:none}
-  h1,h2,.display{font-family:Syne,"Space Grotesk",sans-serif}
-
-  /* ---------- scroll progress ---------- */
-  #progress{position:fixed;top:0;left:0;height:2px;width:100%;background:#fff;transform-origin:0 50%;transform:scaleX(0);z-index:99}
-
-  /* ---------- nav ---------- */
-  nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:20px clamp(20px,4vw,48px);transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
-  nav.solid{background:rgba(0,0,0,.82);backdrop-filter:blur(14px);border-bottom-color:var(--border)}
-  .logo{font-family:Syne,sans-serif;font-weight:800;font-size:22px;letter-spacing:.12em;display:inline-flex}
-  .logo .mac{position:relative}
-  .logo .mac::after{content:"";position:absolute;top:-1px;left:15%;width:70%;height:2px;background:#fff}
-  .nav-links{display:flex;gap:26px;align-items:center;font-size:14px;color:var(--muted)}
-  .nav-links a{color:var(--muted);transition:color .2s}
-  .nav-links a:hover{color:#fff}
-  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 22px;font-size:14px;font-weight:600;font-family:"Space Grotesk",sans-serif;cursor:pointer;transition:transform .15s,box-shadow .15s,background .2s;white-space:nowrap}
-  .btn.solid{background:#fff;color:#000;border:1px solid #fff}
-  .btn.solid:hover{transform:translateY(-1px);box-shadow:0 8px 30px rgba(255,255,255,.18)}
-  .btn.ghost{border:1px solid var(--border2);color:var(--text);background:transparent}
-  .btn.ghost:hover{border-color:#fff}
-  nav .btn{padding:8px 18px}
-
-  /* ---------- hero ---------- */
-  .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;overflow:hidden;padding:110px 0 9vh}
-  .statue-wrap{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;z-index:0;pointer-events:none}
-  .statue-glow{position:absolute;top:6%;left:50%;transform:translateX(-50%);width:min(80vw,760px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.09),transparent 65%)}
-  .statue{margin-top:-2vh;height:86vh;max-width:none;opacity:0;transform:scale(1.04);transition:opacity 1.4s ease .15s,transform 2.2s cubic-bezier(.16,1,.3,1) .15s;will-change:transform;filter:drop-shadow(0 0 80px rgba(255,255,255,.06))}
-  .statue.on{opacity:.45;transform:scale(1)}
-  .hero-fade{position:absolute;inset:auto 0 0 0;height:68vh;background:linear-gradient(180deg,transparent,rgba(0,0,0,.7) 40%,#000 90%);z-index:1;pointer-events:none}
-  .hero-inner{position:relative;z-index:2;padding:0 20px;max-width:900px;text-shadow:0 2px 26px rgba(0,0,0,.9),0 0 10px rgba(0,0,0,.65)}
-  .kicker{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
-  .wordmark{font-size:clamp(84px,17vw,220px);font-weight:800;line-height:.9;letter-spacing:.04em;display:inline-flex}
-  .wordmark .mac{position:relative}
-  .wordmark .mac::after{content:"";position:absolute;top:.02em;left:16%;width:68%;height:.055em;background:#fff}
-  .tagline{font-family:Syne,sans-serif;font-weight:700;font-size:clamp(19px,3vw,30px);margin-top:14px;letter-spacing:-.01em}
-  .tagline em{font-style:normal;color:var(--muted)}
-  .hero-sub{color:var(--muted);font-size:clamp(14px,1.8vw,17px);max-width:560px;margin:16px auto 0}
-  .hero-ctas{display:flex;gap:14px;justify-content:center;margin-top:32px;flex-wrap:wrap}
-  .hero-cap{display:flex;max-width:430px;margin:28px auto 0;border:1px solid var(--border2);background:rgba(10,10,10,.8);backdrop-filter:blur(8px);border-radius:999px;padding:5px}
-  .hero-cap input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:14px;padding:9px 18px;font-family:inherit;min-width:0}
-  .hero-cap input::placeholder{color:var(--dim)}
-  .hero-cap button{background:#fff;color:#000;border:none;border-radius:999px;padding:11px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:filter .15s}
-  .hero-cap button:hover{filter:brightness(.92)}
-  .wl-note{margin-top:12px;font-size:12.5px;color:var(--dim)}
-  .scroll-cue{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:2;color:var(--dim);font-size:11px;letter-spacing:.3em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px}
-  .scroll-cue i{display:block;width:1px;height:34px;background:linear-gradient(180deg,var(--dim),transparent);animation:cue 1.8s ease-in-out infinite}
-  @keyframes cue{0%,100%{transform:scaleY(.4);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
-
-  /* hero entrance */
-  .hi{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s cubic-bezier(.16,1,.3,1)}
-  .hi.on{opacity:1;transform:none}
-
-  /* ---------- marquee ---------- */
-  .marquee{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:18px 0;white-space:nowrap;position:relative}
-  .marquee .track{display:inline-block;animation:mq 30s linear infinite}
-  .marquee span{font-family:Syne,sans-serif;font-weight:700;font-size:15px;letter-spacing:.34em;text-transform:uppercase;color:var(--dim);padding:0 28px}
-  .marquee span b{color:var(--text);font-weight:700}
-  @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-  /* ---------- sections ---------- */
-  section{max-width:1080px;margin:0 auto;padding:clamp(80px,12vh,140px) 24px}
-  .sec-kicker{font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
-  h2{font-size:clamp(30px,5vw,52px);font-weight:700;letter-spacing:-.02em;line-height:1.08;margin-bottom:18px}
-  .lede{color:var(--muted);max-width:600px;font-size:clamp(15px,1.9vw,17px)}
-
-  /* reveal on scroll */
-  .rv{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1)}
-  .rv.in{opacity:1;transform:none}
-  .rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}.rv.d5{transition-delay:.4s}
-
-  /* ---------- terminal ---------- */
-  .term{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);text-align:left;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;padding:26px 28px;max-width:640px;margin:56px auto 0;box-shadow:0 40px 120px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.02) inset;min-height:262px}
-  .term .bar{display:flex;gap:7px;margin-bottom:18px}
-  .term .bar i{width:10px;height:10px;border-radius:50%;background:#1f1f1f;display:inline-block}
-  .term p{margin:3px 0;white-space:pre-wrap;color:#cfcfcf}
-  .term .dim{color:#4e4e4e}
-  .term .wt{color:#fff;font-weight:600}
-  .term .caret{display:inline-block;width:8px;height:15px;background:#fff;vertical-align:-2px;animation:blink 1s steps(1) infinite}
-  @keyframes blink{50%{opacity:0}}
-
-  /* ---------- feature grid ---------- */
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:52px}
-  .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:border-color .25s,transform .25s;position:relative;overflow:hidden}
-  .card:hover{border-color:var(--border2);transform:translateY(-3px)}
-  .card::after{content:"";position:absolute;top:0;left:-100%;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),transparent);transition:left .7s ease;pointer-events:none}
-  .card:hover::after{left:100%}
-  .card code{font-family:ui-monospace,monospace;font-size:15px;font-weight:700;color:#fff;background:#161616;border:1px solid var(--border);border-radius:8px;padding:3px 10px}
-  .card h3{font-family:Syne,sans-serif;font-size:17px;font-weight:700;margin:16px 0 8px}
-  .card p{color:var(--muted);font-size:14px}
-  .card.wide{grid-column:1/-1;display:flex;gap:32px;align-items:center;flex-wrap:wrap;background:linear-gradient(120deg,var(--panel),var(--panel2))}
-  .card.wide>div{flex:1;min-width:250px}
-  .lvl{font-family:ui-monospace,monospace;font-size:13px;color:var(--muted);background:#000;border:1px solid var(--border);border-radius:12px;padding:18px 20px;min-width:230px;flex:0 1 auto!important}
-  .lvl b{color:#fff}
-
-  /* ---------- second brain ---------- */
-  .brain-sec{max-width:none;padding:clamp(30px,5vh,56px) 0 0;position:relative}
-  .brain-copy{max-width:1080px;margin:0 auto;padding:0 24px;text-align:center}
-  .brain-copy .lede{margin:0 auto}
-  #brainviz{display:block;width:100%;height:76vh;margin-top:-4vh;cursor:crosshair}
-  @media (max-width:720px){#brainviz{height:56vh}}
-
-  /* ---------- manifesto ---------- */
-  .manifesto{text-align:center;max-width:900px}
-  .manifesto .line{font-family:Syne,sans-serif;font-weight:700;font-size:clamp(26px,4.6vw,46px);letter-spacing:-.015em;line-height:1.25;display:block}
-  .manifesto .line.ghosted{color:#2e2e2e}
-  .manifesto .foot{color:var(--muted);margin-top:28px;font-size:15px}
-
-  /* ---------- steps ---------- */
-  .setup-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
-  .nous-ghost{text-align:center;user-select:none}
-  .gl-stack{display:flex;flex-direction:column;line-height:.86;font-family:Syne,sans-serif;font-weight:800;font-size:clamp(96px,11vw,168px)}
-  .gl-stack span{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.18);transition:color .5s ease,-webkit-text-stroke-color .5s ease}
-  .gl-stack span:hover{color:#fff;-webkit-text-stroke-color:transparent}
-  .ghost-cap{margin-top:22px;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
-  @media (max-width:820px){
-    .setup-grid{grid-template-columns:1fr}
-    .nous-ghost{order:-1}
-    .gl-stack{flex-direction:row;justify-content:center;gap:10px;font-size:clamp(64px,16vw,110px)}
-    .ghost-cap{margin-top:10px}
-  }
-  ol.steps{list-style:none;max-width:600px;margin-top:44px}
-  ol.steps li{padding:22px 0 22px 64px;position:relative;border-bottom:1px solid var(--border)}
-  ol.steps li::before{content:attr(data-gl);position:absolute;left:0;top:18px;width:38px;height:38px;border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Syne,sans-serif;font-weight:700;color:var(--muted);font-size:16px}
-  ol.steps li b{display:block;font-weight:600;font-size:16px}
-  ol.steps li span{color:var(--muted);font-size:14px}
-  ol.steps code{font-family:ui-monospace,monospace;color:#fff;background:#161616;border:1px solid var(--border);border-radius:6px;padding:1px 7px;font-size:13px}
-
-  /* ---------- mini terminals in steps ---------- */
-  .term-mini{background:var(--panel);border:1px solid var(--border);border-radius:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;padding:14px 16px;margin-top:14px;box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:left}
-  .term-mini .bar{display:flex;gap:6px;margin-bottom:10px}
-  .term-mini .bar i{width:8px;height:8px;border-radius:50%;background:#1f1f1f;display:inline-block}
-  .term-mini p{margin:2px 0;white-space:pre-wrap;color:#cfcfcf;line-height:1.55}
-  .term-mini .dim{color:#4e4e4e}
-  .term-mini .wt{color:#fff;font-weight:600}
-  .term-mini .caret{display:inline-block;width:7px;height:13px;background:#fff;vertical-align:-2px;animation:blink 1s steps(1) infinite}
-  #npxterm{min-height:118px}
-  .dropzone{border:1px dashed var(--border2);border-radius:12px;padding:14px 16px;margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .dropzone .fchip{font-family:ui-monospace,monospace;font-size:12px;color:var(--text);background:#0f0f0f;border:1px solid var(--border);border-radius:8px;padding:5px 12px}
-  .dropzone .fdest{font-family:ui-monospace,monospace;font-size:12px;color:var(--dim);margin-left:auto}
-
-  /* ---------- npx copy pill ---------- */
-  .npx-row{display:flex;justify-content:center;margin-top:14px}
-  .npx-pill{display:inline-flex;align-items:center;gap:12px;border:1px solid var(--border2);background:rgba(10,10,10,.85);backdrop-filter:blur(8px);border-radius:999px;padding:8px 8px 8px 20px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;color:var(--text);cursor:pointer;transition:border-color .2s}
-  .npx-pill:hover{border-color:#fff}
-  .npx-pill .dlr{color:var(--dim)}
-  .npx-pill em{font-style:normal;background:#fff;color:#000;border-radius:999px;padding:5px 14px;font-size:12px;font-weight:600;font-family:"Space Grotesk",sans-serif;min-width:64px;text-align:center}
-
-  /* ---------- roadmap ---------- */
-  .road{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:52px}
-  .rcard{border:1px dashed var(--border2);border-radius:var(--radius);padding:26px;background:transparent}
-  .rcard .tag{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);border:1px solid var(--border);border-radius:999px;padding:4px 12px;display:inline-block;margin-bottom:16px}
-  .rcard h3{font-family:Syne,sans-serif;font-size:16px;font-weight:700;margin-bottom:6px}
-  .rcard p{color:var(--muted);font-size:13.5px}
-
-  /* ---------- faq ---------- */
-  .faq{max-width:760px}
-  .faq details{border-bottom:1px solid var(--border);padding:6px 0}
-  .faq summary{cursor:pointer;font-weight:600;font-size:16px;padding:18px 40px 18px 0;position:relative;list-style:none}
-  .faq summary::-webkit-details-marker{display:none}
-  .faq summary::after{content:"+";position:absolute;right:4px;top:50%;transform:translateY(-50%);font-family:Syne,sans-serif;font-size:22px;color:var(--dim);transition:transform .25s}
-  .faq details[open] summary::after{transform:translateY(-50%) rotate(45deg);color:#fff}
-  .faq .a{color:var(--muted);font-size:14.5px;padding:0 0 20px;max-width:640px}
-  .ideaform{display:flex;gap:10px;margin-top:14px}
-  .ideaform input{flex:1;background:#000;border:1px solid var(--border2);border-radius:999px;outline:none;color:var(--text);font-size:14px;padding:12px 20px;font-family:inherit;min-width:0}
-  .ideaform input:focus{border-color:#fff}
-  .ideaform input::placeholder{color:var(--dim)}
-  .ideaform button{background:#fff;color:#000;border:none;border-radius:999px;padding:12px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .chips span{font-size:13px;color:var(--text);background:#000;border:1px solid var(--border);border-radius:999px;padding:5px 14px}
-  .chipnote{color:var(--dim)!important;font-size:12px!important;margin-top:10px!important}
-
-  /* ---------- final cta ---------- */
-  .final{text-align:center;position:relative;overflow:hidden}
-  .final h2{font-size:clamp(38px,7vw,76px)}
-  .final .lede{margin:0 auto}
-  .capture{display:flex;max-width:480px;margin:38px auto 0;border:1px solid var(--border2);background:var(--panel);border-radius:999px;padding:6px}
-  .capture input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:15px;padding:10px 20px;font-family:inherit;min-width:0}
-  .capture input::placeholder{color:var(--dim)}
-  .capture button{background:#fff;color:#000;border:none;border-radius:999px;padding:13px 26px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
-  .final .or{margin-top:16px;font-size:13px;color:var(--dim)}
-  .final .or a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
-  .final .or a:hover{color:#fff}
-
-  footer{border-top:1px solid var(--border);padding:44px 24px;color:var(--dim);font-size:13px;text-align:center}
-  footer a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
-  footer a:hover{color:#fff}
-  footer .credit{margin-top:10px;font-size:11.5px}
-
-  @media (max-width:720px){
-    .nav-links .hidem{display:none}
-    /* The download is the only CTA that has to survive here; GitHub lives in
-       the footer, and giving up its width stops the button being clipped. */
-    .nav-links #gh{display:none}
-    nav{padding-left:16px;padding-right:16px}
-    .statue{height:52vh;margin-top:2vh}
-    .hero{padding-bottom:12vh}
-    .wordmark{font-size:clamp(64px,24vw,120px)}
-  }
-  @media (prefers-reduced-motion: reduce){
-    .rv,.hi,.statue{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
-    .marquee .track{animation:none}
-    .scroll-cue i{animation:none}
-    html{scroll-behavior:auto}
-  }
+  /* page-local: the live Knot stage in the Companion section */
+  .knot-stage{position:relative;min-height:360px;display:grid;place-items:center;overflow:hidden}
+  .knot-stage canvas{width:300px;height:300px;display:block;--knot-tint:77,94,226;--knot-accent:#506CFF}
+  .knot-stage .stage-chips{position:absolute;left:0;right:0;bottom:18px;display:flex;justify-content:center;gap:7px}
+  .stage-chip{padding:4px 11px;border-radius:999px;font-size:9px;letter-spacing:.13em;text-transform:uppercase;border:1px solid rgba(236,234,242,.16);color:#858ca6;transition:color .4s,border-color .4s,background .4s}
+  .stage-chip.on{color:#cdd6ff;border-color:rgba(110,130,255,.65);background:rgba(53,73,229,.22)}
+  .knot-stage .stage-line{position:absolute;left:22px;top:18px;right:22px;display:flex;justify-content:space-between;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;color:#6f7590}
+  .knot-stage .stage-line b{color:#cfd3e2;font-weight:500}
+  .companion-shot .grid{margin-top:0}
 </style>
 </head>
 <body>
-
 <div id="progress"></div>
 
 <nav id="nav">
@@ -243,8 +34,9 @@
     <a href="#product" class="hidem">Product</a>
     <a href="#companion" class="hidem">Companion</a>
     <a href="#how" class="hidem">Set-up</a>
-    <a href="#roadmap" class="hidem">Roadmap</a>
+    <a href="#pricing" class="hidem">Pricing</a>
     <a href="#faq" class="hidem">FAQ</a>
+    <a href="pro.html" class="hidem">Account</a>
     <a href="#" id="gh" class="btn ghost">GitHub</a>
     <a href="#" id="dl" class="btn solid" data-goatcounter-click="download-windows-nav">Download for Windows</a>
   </div>
@@ -257,38 +49,25 @@
     <img class="statue" id="statue" src="assets/statue.webp" alt="" aria-hidden="true">
   </div>
   <div class="hero-fade"></div>
-
   <div class="hero-inner">
     <p class="kicker hi">From the Greek <em style="font-style:italic">noûs</em>, the mind</p>
     <h1 class="wordmark hi" style="transition-delay:.1s">N<span class="mac">U</span>S</h1>
     <p class="tagline hi" style="transition-delay:.2s">Jarvis for students. <em>Your semester, run by an AI that knows you.</em></p>
-    <p class="hero-sub hi" style="transition-delay:.3s">A desktop app that reads your syllabi, maps every deadline and grading rule, and turns a sentence like "push the calc homework to Friday" into the actual change. It shows you the change before it makes it, every time.</p>
+    <p class="hero-sub hi" style="transition-delay:.3s">A desktop app that reads your syllabi, maps every deadline, and turns "push the calc homework to Friday" into the actual change. You approve it first, every time.</p>
     <div class="hero-ctas hi" style="transition-delay:.4s">
       <a href="#" id="dl2" class="btn solid" data-goatcounter-click="download-windows-hero">Download for Windows</a>
-      <a href="#" id="gh2" class="btn ghost" data-goatcounter-click="github-hero">View on GitHub</a>
+      <a href="pro.html" class="btn ghost" data-goatcounter-click="pro-click-hero">Get Pro</a>
     </div>
-    <p class="wl-note hi" style="transition-delay:.44s">Free and open source. Windows today, no account, nothing leaves your machine. You bring the AI: Claude Code if you already have it, or your own Anthropic key.</p>
+    <p class="wl-note hi" style="transition-delay:.44s">Free to start. Windows today. Your coursework stays on your machine. You bring the AI key.</p>
+    <p class="win-note hi" style="transition-delay:.5s"><b>Nus-Setup.exe</b> is not code signed yet, so Windows will ask. Choose <b>More info</b>, then <b>Run anyway</b>.</p>
   </div>
-
-  <div class="scroll-cue">scroll<i></i></div>
 </header>
 
-<!-- ============ MARQUEE ============ -->
-<div class="marquee" aria-hidden="true">
-  <div class="track" id="mq">
-    <span><b>Every deadline</b> mapped</span><span>·</span>
-    <span><b>Crunch weeks</b> flagged early</span><span>·</span>
-    <span><b>Nothing written</b> without your confirm</span><span>·</span>
-    <span><b>An overlay</b> that sees your screen</span><span>·</span>
-    <span><b>100% local</b>, your data stays yours</span><span>·</span>
-  </div>
-</div>
-
-<!-- ============ TERMINAL / PRODUCT ============ -->
+<!-- ============ PRODUCT ============ -->
 <section id="product">
   <p class="sec-kicker rv">The product</p>
   <h2 class="rv d1">It knows your whole semester<br>in 5 minutes.</h2>
-  <p class="lede rv d2">Every AI assistant needs weeks of context before it is smart about you. As a student, your life is already written down in four PDFs. You just never had anything that read them.</p>
+  <p class="lede rv d2">Your life as a student is already written down in four PDFs. Nūs is the first thing that reads them.</p>
 
   <div class="term rv d3" id="term">
     <div class="bar"><i></i><i></i><i></i></div>
@@ -299,15 +78,26 @@
     <div class="card wide rv">
       <div>
         <code>Ask</code><h3>Say it plainly. Approve the change.</h3>
-        <p>Type "push the calc homework to Friday" or "email my professor about an extension". Nūs works out exactly which item you meant, then shows you the change as a proposal. It writes nothing until you press confirm, so it can be fast without being dangerous.</p>
+        <p>Type what you mean. Nūs works out which item you meant, shows the change as a proposal, and writes nothing until you confirm.</p>
       </div>
       <div class="lvl">&gt; push the calc homework to Friday<br><br>Nūs wants to:<br><b>Move "Problem Set 4" to Fri Oct 17</b><br>matched: CALC II · Problem Set 4<br><br>[ Confirm ]  [ Cancel ]</div>
     </div>
-    <div class="card rv d1"><code>Import</code><h3>It reads the syllabus</h3><p>Drop in the PDF. Every course, grading weight, exam, and deadline comes back in a table you check line by line before a single row is saved.</p></div>
-    <div class="card rv d2"><code>Map</code><h3>Your semester as a graph</h3><p>Every course, source, and open task as a node you can drag. The shape of your workload becomes something you can actually see.</p></div>
-    <div class="card rv d3"><code>Chat</code><h3>A thread that can act</h3><p>Ask what is due, or tell it to set something up. It answers from your real semester and takes actions through the same confirm step.</p></div>
-    <div class="card rv d4"><code>Email</code><h3>Drafts to your professor</h3><p>Pick the kind of help and the course; it writes the email in your voice, learned from how you already write. Open it in Gmail, or connect Outlook. You always press send.</p></div>
-    <div class="card rv d5"><code>GPA</code><h3>Honest projections</h3><p>It separates what you have actually earned from what is still assumed, and refuses to guess a grading weight it was never given.</p></div>
+    <div class="card rv d1"><code>Import</code><h3>It reads the syllabus</h3><p>Every course, weight, exam, and deadline comes back in a table you check before anything is saved.</p></div>
+    <div class="card rv d2"><code>Map</code><h3>Your semester as a graph</h3><p>Courses, sources, and open tasks as nodes you can drag. The shape of the workload becomes something you can see.</p></div>
+    <div class="card rv d3"><code>Email</code><h3>Drafts to your professor</h3><p>Pick the kind of help and the course. It writes in your voice. You always press send.</p></div>
+  </div>
+</section>
+
+<!-- ============ SHOWCASE ============ -->
+<section id="showcase">
+  <p class="sec-kicker rv">The app</p>
+  <h2 class="rv d1">Real screens, not mockups.</h2>
+  <div class="shots">
+    <figure class="shot rv d2"><img src="assets/app-today.webp" alt="The Nūs Today dashboard: the Knot at the centre of a constellation of courses, sources, and tasks, with the Ask bar below it" width="1800" height="1125" loading="lazy"><figcaption><b>Today</b><span>Your courses, sources, and next moves orbit the Knot. One sentence becomes a proposal you approve.</span></figcaption></figure>
+    <div class="pair">
+      <figure class="shot rv d3"><img src="assets/app-review.webp" alt="The syllabus review table: course details, grade weights, and dated assignments read from a PDF, editable before saving" width="1800" height="1125" loading="lazy"><figcaption><b>Review before save</b><span>What the AI read, in a table you check first.</span></figcaption></figure>
+      <figure class="shot rv d4"><img src="assets/app-map.webp" alt="The Map view: courses, tasks, and sources as draggable nodes connected to the Nūs core" width="1800" height="1125" loading="lazy"><figcaption><b>Map</b><span>The whole semester as a graph you can drag and zoom.</span></figcaption></figure>
+    </div>
   </div>
 </section>
 
@@ -315,13 +105,20 @@
 <section id="companion">
   <p class="sec-kicker rv">The Companion</p>
   <h2 class="rv d1">A knot of light that sits<br>on top of everything.</h2>
-  <p class="lede rv d2">The app is one half. The other half floats over your screen, sees the window you point it at, and listens when you switch it on. It ships inside the app, so there is one install for both.</p>
-  <div class="grid">
-    <div class="card rv d1"><code>Sees</code><h3>The screen you choose</h3><p>Ask about whatever is in front of you: a problem set, a slide, an error. It answers from what it can see plus what it knows about your semester.</p></div>
-    <div class="card rv d2"><code>Hears</code><h3>Only when you say so</h3><p>Switch listening on for a lecture or a meeting and it keeps a transcript you can search later. Off is the default, and one key stops it dead.</p></div>
-    <div class="card rv d3"><code>Stays</code><h3>Close the app, it remains</h3><p>The Knot keeps running on your desktop with every hotkey live, and the tray brings the dashboard back. One button removes it completely.</p></div>
+  <p class="lede rv d2">The other half floats over your screen, sees the window you point it at, and listens when you switch it on. Same install.</p>
+  <div class="companion-shot">
+    <div class="shot knot-stage rv d2" aria-label="The Nūs Knot, the Companion's on-screen mark">
+      <div class="stage-line"><span>Companion</span><b id="stage-state">listening · screen + voice</b></div>
+      <canvas id="site-knot" width="600" height="600"></canvas>
+      <div class="stage-chips" id="stage-chips"><span class="stage-chip">Idle</span><span class="stage-chip on">Listening</span><span class="stage-chip">Thinking</span><span class="stage-chip">Ready</span></div>
+    </div>
+    <div class="grid">
+      <div class="card rv d1"><code>Sees</code><h3>The screen you choose</h3><p>A problem set, a slide, an error. It answers from what it sees plus what it knows about your semester.</p></div>
+      <div class="card rv d2"><code>Hears</code><h3>Only when you say so</h3><p>Switch listening on for a lecture and it keeps a transcript you can search. Off is the default. One key stops it.</p></div>
+      <div class="card rv d3"><code>Stays</code><h3>Close the app, it remains</h3><p>The Knot keeps running with every hotkey live. One button removes it completely.</p></div>
+    </div>
   </div>
-  <p class="lede rv d4" style="margin-top:38px"><b>Ctrl+Shift+Space</b> hides it. <b>Ctrl+Shift+K</b> hides just the mark and leaves everything working. <b>Ctrl+Shift+X</b> stops listening and vanishes in one stroke. Capture exclusion is presentation control, not concealment: follow the rules of every room you are in.</p>
+  <p class="lede rv d4" style="margin-top:26px;font-size:14px"><b>Ctrl+Shift+Space</b> hides it. <b>Ctrl+Shift+X</b> stops listening and vanishes. Follow the rules of every room you are in.</p>
 </section>
 
 <!-- ============ SECOND BRAIN ============ -->
@@ -329,19 +126,17 @@
   <div class="brain-copy">
     <p class="sec-kicker rv">The second brain</p>
     <h2 class="rv d1">Everything you drop in<br>becomes one mind.</h2>
-    <p class="lede rv d2">Syllabi, deadlines, tasks, and the things you tell it: Nūs wires them together into one picture, so every answer knows your whole semester instead of the last thing you typed.</p>
+    <p class="lede rv d2">Syllabi, deadlines, tasks, and what you tell it, wired into one picture, so every answer knows your whole semester.</p>
   </div>
   <canvas id="brainviz" aria-hidden="true"></canvas>
 </section>
 
 <!-- ============ MANIFESTO ============ -->
 <section class="manifesto" id="privacy">
-  <span class="line rv">No server.</span>
-  <span class="line rv d1">No database.</span>
-  <span class="line rv d2">No account.</span>
-  <span class="line ghosted rv d3">Privacy isn't a feature here.</span>
-  <span class="line rv d4">It's the architecture.</span>
-  <p class="foot rv d5">Everything lives in one database file on your machine, and the app shows you how big it is. The only calls that ever leave are to the AI provider you configured and the accounts you connected yourself. Cloud sync ships off. Delete the folder and it is gone.</p>
+  <span class="line rv">Your syllabi. Your notes. Your recordings.</span>
+  <span class="line ghosted rv d1">They never reach our server.</span>
+  <span class="line rv d2">That is the architecture.</span>
+  <p class="foot rv d3">Everything lives in a local database on your machine. Your account holds two things: who you are, and whether you subscribe. The only calls that leave your device go to the AI provider you chose, Supabase for plan status, and Stripe when you upgrade.</p>
 </section>
 
 <!-- ============ HOW ============ -->
@@ -350,28 +145,11 @@
     <div>
       <p class="sec-kicker rv">The ritual</p>
       <h2 class="rv d1">Running in 10 minutes.</h2>
-      <p class="lede rv d2">Download, open, drop in a syllabus, check what it read. No terminal and no account. The on-screen Companion comes with it, one install for both.</p>
       <ol class="steps">
-        <li class="rv" data-gl="Α"><b>Download and open it</b><span>One <a href="#" id="portable" style="color:#fff;text-decoration:underline;text-underline-offset:3px">installer or a portable build</a> if you would rather not install anything. It is unsigned for now, so Windows shows a warning: choose More info, then Run anyway.</span>
-          <div class="dropzone" aria-hidden="true"><span class="fchip">Nus-Setup.exe</span><span class="fchip">Nus-Portable.exe</span><span class="fdest">Windows 10 and 11</span></div>
-        </li>
-        <li class="rv d1" data-gl="Β"><b>Give it your AI</b><span>Claude reads your syllabi and powers Ask and chat. If you have <code>Claude Code</code>, Nūs finds it and there is nothing to paste. If not, put an Anthropic API key in Settings. It runs on Sonnet, so a semester costs cents rather than dollars.</span>
-          <div class="term-mini" id="npxterm"><div class="bar"><i></i><i></i><i></i></div><div id="npxlines"></div></div>
-        </li>
-        <li class="rv d2" data-gl="Γ"><b>Drop in a syllabus</b><span>The PDF straight from Canvas or your professor's email. Every course, weight, exam, and deadline comes back in a table you approve before anything is saved.</span>
-          <div class="dropzone" aria-hidden="true"><span class="fchip">calc-ii-syllabus.pdf</span><span class="fchip">chem-101.pdf</span><span class="fchip">econ-201.pdf</span><span class="fdest">→ review before save</span></div>
-        </li>
-        <li class="rv d3" data-gl="Δ"><b>Wake the Companion</b><span>The floating Knot needs its own key so live answers stay fast: a free <code>Gemini</code> key covers both its answers and listening. Paste it in Settings, Companion AI key. Then ask it anything on screen.</span>
-          <div class="term-mini" aria-hidden="true"><div class="bar"><i></i><i></i><i></i></div><p><span class="dim">Nūs </span><span class="wt">listening</span>  screen + voice active
-<span class="dim">&gt; </span>what did she just say the exam covers?
-<span class="wt">Chapters 4 to 7</span>, and she moved the review
-session to Thursday.</p></div>
-        </li>
+        <li class="rv" data-gl="Α"><b>Download and open it</b><span>Installer for automatic updates, or the <a href="#" id="portable">portable build</a>. Both are unsigned for now: choose More info, then Run anyway.</span></li>
+        <li class="rv d1" data-gl="Β"><b>Give it your AI</b><span>If <code>Claude Code</code> is installed, Nūs finds it. If not, paste an Anthropic API key in Settings. The Companion runs on a Gemini key with a free tier.</span></li>
+        <li class="rv d2" data-gl="Γ"><b>Drop in a syllabus</b><span>The PDF from Canvas or your professor. Check the table, confirm, and the semester is mapped.</span></li>
       </ol>
-      <p class="lede rv d4" style="margin-top:34px;font-size:14px">Prefer plain files you can read and edit? The original <a href="#" id="kit" style="color:#fff;text-decoration:underline;text-underline-offset:3px">terminal kit</a> still exists and is one command:</p>
-      <div class="npx-row rv d4" style="justify-content:flex-start">
-        <button class="npx-pill" type="button" data-npx data-goatcounter-click="npx-copy-how" aria-label="Copy the install command npx create-nus"><span class="dlr">$</span>&nbsp;npx create-nus<em>copy</em></button>
-      </div>
     </div>
     <div class="nous-ghost rv d2" aria-hidden="true">
       <div class="gl-stack"><span>Ν</span><span>Ο</span><span>Υ</span><span>Σ</span></div>
@@ -380,39 +158,66 @@ session to Thursday.</p></div>
   </div>
 </section>
 
-<!-- ============ ROADMAP ============ -->
-<section id="roadmap">
-  <p class="sec-kicker rv">The odyssey</p>
-  <h2 class="rv d1">Semester one is the wedge.<br>The vision is your whole life.</h2>
-  <p class="lede rv d2">Built in public. GPA projection, the calendar, and the email drafter all shipped in the desktop app. Here is what is on the bench now, and the loudest requests get built first.</p>
-  <div class="road">
-    <div class="rcard rv"><span class="tag">Next</span><h3>macOS build</h3><p>The app is Windows only today. The Mac build is the most asked for thing and the next one out.</p></div>
-    <div class="rcard rv d1"><span class="tag">Next</span><h3>Canvas &amp; Blackboard sync</h3><p>Assignments pulled straight from your LMS, so a syllabus PDF stops being the starting point.</p></div>
-    <div class="rcard rv d2"><span class="tag">Soon</span><h3>A signed installer</h3><p>No more SmartScreen warning on first run. Boring, and the thing that makes it feel real.</p></div>
-    <div class="rcard rv d3"><span class="tag">Later</span><h3>Hosted, no keys</h3><p>Everything above without bringing your own AI. Planned at $12/mo. It does not exist yet.</p></div>
+<!-- ============ PRICING ============ -->
+<section id="pricing">
+  <p class="sec-kicker rv">The deal</p>
+  <h2 class="rv d1">Free is not a demo.</h2>
+  <p class="lede rv d2">Run a whole semester without paying. Pro is for the student who hits the limits.</p>
+  <div class="plans">
+    <div class="plan rv">
+      <span class="tag">Free</span>
+      <div class="price">$0</div>
+      <p class="plan-sub">Forever. No trial clock.</p>
+      <ul>
+        <li>Unlimited courses, tasks, and calendar</li>
+        <li>3 AI syllabus imports</li>
+        <li>10 questions a day</li>
+        <li>Companion: 20 minutes a day</li>
+        <li>1 connected account, 1 automation rule</li>
+      </ul>
+      <a href="#" id="dl4" class="btn ghost" data-goatcounter-click="download-windows-pricing">Download free</a>
+    </div>
+    <div class="plan pro rv d1">
+      <span class="tag">Pro</span>
+      <div class="price">$9.99<span>&nbsp;/ month</span></div>
+      <p class="plan-sub">Everything in Free, with the caps off.</p>
+      <ul>
+        <li>Unlimited AI syllabus imports</li>
+        <li>Unlimited questions and chat</li>
+        <li>Companion: no daily limit</li>
+        <li>Full Companion history, searchable</li>
+        <li>Google Calendar and Outlook, together</li>
+        <li>Unlimited automation rules</li>
+        <li>2 GB of local storage</li>
+        <li>Pro follows your account to any PC</li>
+        <li>New features first</li>
+      </ul>
+      <a href="pro.html" class="btn solid" data-goatcounter-click="pro-click-pricing">Get Pro</a>
+    </div>
   </div>
+  <p class="plan-note rv d2">Buy here or inside the app; Pro turns on in the desktop app the moment Stripe confirms. Cancel any time. You bring your own AI key on both plans.</p>
+  <p class="plan-note rv d3"><b>Next up:</b> macOS build · Canvas and Blackboard sync · a signed installer. Loudest requests get built first.</p>
 </section>
 
 <!-- ============ FAQ ============ -->
 <section class="faq" id="faq">
   <p class="sec-kicker rv">The oracle</p>
   <h2 class="rv d1">FAQ</h2>
-  <details class="rv"><summary>Is this a cheating tool?</summary><p class="a">No. It plans, schedules, briefs, and quizzes you. It's built to refuse writing your assignment submissions, and it respects your school's AI policy. It even reads the policy out of your syllabus.</p></details>
-  <details class="rv"><summary>What do I need to run it?</summary><p class="a">Windows, and your own AI. Two keys, two jobs.<br><br><strong>Claude, for the desktop app.</strong> Syllabus reading, the Ask bar, and chat run on Claude, pinned to the mid-tier <strong>Sonnet</strong> model so it stays cheap. If <a href="https://claude.com/claude-code">Claude Code</a> is already installed, Nūs finds it and uses your subscription. If not, paste an Anthropic API key in Settings.<br><br><strong>Gemini, for the Companion overlay.</strong> The floating Knot runs on its own key so live answers stay fast. The free tier at <a href="https://aistudio.google.com/apikey">aistudio.google.com/apikey</a> covers both its answers and speech to text.<br><br>Both are encrypted on your device with the OS keychain and never leave it except to call the provider you chose.</p></details>
-  <details class="rv"><summary>What does it cost?</summary><p class="a">The app is free and open source. What you pay for is the AI behind it, and you pay it to Anthropic or Google, not to me.<br><br>If you already have a Claude subscription (~$20/mo), the desktop app uses it and costs you nothing extra. With an API key instead, you pay per use on Sonnet, which for reading a few syllabi and asking questions is cents, not dollars. The Companion's Gemini key has a free tier that most students never exceed.<br><br>A hosted version with no keys at all is planned at <strong>$12/mo</strong>. It does not exist yet. The price is on this page so I can find out whether anyone would actually pay it, and the waitlist charges you nothing. If you have an opinion on that number, <a href="https://github.com/potlakai/nus/discussions/1">tell me here</a>.</p></details>
-  <details class="rv"><summary>Is it really only Windows?</summary><p class="a">For now, yes. The app is built on Electron so a Mac build is not a rewrite, it is a build target and a round of testing. It is the next thing on the roadmap. If you are on a Mac and want it, say so in the box below and it moves up.</p></details>
-  <details class="rv"><summary>Why does Windows warn me about the download?</summary><p class="a">Because the installer is not code signed yet. A signing certificate costs money and I would rather ship first and sign once people are actually using it. Choose <em>More info</em> then <em>Run anyway</em>. If that is a dealbreaker, the source is on GitHub and you can build it yourself.</p></details>
-  <details class="rv"><summary>What does "Nūs" mean?</summary><p class="a">It's the Greek word <em>noûs</em>: mind, intellect, the thing that perceives what matters. The ancients argued about where it came from. We just built one for your semester.</p></details>
-  <details class="rv"><summary>Who made this?</summary><p class="a">A student at UT Dallas. I built a Jarvis-style AI system that runs my own semester. The first time it warned me about a crunch week I hadn't noticed, I decided every student should have one.</p></details>
+  <details class="rv"><summary>Is this a cheating tool?</summary><p class="a">No. It plans, schedules, briefs, and quizzes you. It refuses to write your submissions, and it reads your school's AI policy straight out of the syllabus.</p></details>
+  <details class="rv"><summary>What do I need to run it?</summary><p class="a">Windows, and your own AI. <strong>Claude</strong> runs the desktop app: if <a href="https://claude.com/claude-code">Claude Code</a> is installed, Nūs uses your subscription; otherwise paste an Anthropic API key. <strong>Gemini</strong> runs the Companion, and Google offers a free tier through <a href="https://aistudio.google.com/apikey">AI Studio</a>. Both keys are encrypted on your device and only ever sent to the provider you chose.</p></details>
+  <details class="rv"><summary>What does the $9.99 actually buy?</summary><p class="a">Not the model; you pay the provider directly on both plans. Pro buys the layer around it with the caps removed: unlimited imports and questions, the Companion all day with full history, both calendars, unlimited rules, more storage. Free is $0 forever and enough to run a real semester.</p></details>
+  <details class="rv"><summary>I bought Pro on the website. How does the app know?</summary><p class="a">Pro belongs to your Nūs account, not to a download. Sign in with the same Google account or email inside the app and the Plan card flips to Pro on its own, usually within seconds. Your coursework never leaves your machine; the account only carries who you are and whether you subscribe.</p></details>
+  <details class="rv"><summary>Why does Windows warn me about the download?</summary><p class="a">The installer is not code signed yet. A certificate costs money and I would rather ship first. Choose <em>More info</em>, then <em>Run anyway</em>. The source is on GitHub if you would rather build it yourself.</p></details>
+  <details class="rv"><summary>Is it really only Windows?</summary><p class="a">For now. It is built on Electron, so the Mac build is a build target and a round of testing, not a rewrite. It is next on the list; <a href="https://github.com/potlakai/nus/discussions/1">say so here</a> and it moves up.</p></details>
   <details class="rv" open>
     <summary>What should it do next?</summary>
-    <p class="a">Type it here and it opens our 10-second form, so your idea actually reaches us. Loudest requests get built first.</p>
+    <p class="a">Type it here. It is saved on this device and copied to your clipboard, then the feedback thread opens so you can paste it.</p>
     <form class="ideaform" id="ideaform">
       <input id="idea-input" placeholder="I wish it could...">
       <button type="submit">Add to roadmap</button>
     </form>
     <div class="chips" id="idea-chips" hidden></div>
-    <p class="chipnote" id="idea-note" hidden>Copied to your clipboard, just paste it into the form. (Also saved on this device.)</p>
+    <p class="chipnote" id="idea-note" hidden>Copied to your clipboard, just paste it into the thread. (Also saved on this device.)</p>
   </details>
 </section>
 
@@ -420,29 +225,23 @@ session to Thursday.</p></div>
 <section class="final">
   <p class="sec-kicker rv">Get Nūs</p>
   <h2 class="rv d1">Know your mind.</h2>
-  <p class="lede rv d2">Free, open source, yours. Windows, and your own AI key. If you would rather wait for a version that needs no keys at all, leave your email: it ships when it is real, and nobody gets charged before then.</p>
+  <p class="lede rv d2">Free to start, yours to keep. Windows, your own AI key, and an account only when you want Pro.</p>
   <div class="hero-ctas rv d3">
     <a href="#" id="dl3" class="btn solid" data-goatcounter-click="download-windows-final">Download for Windows</a>
-    <a href="#" id="gh3" class="btn ghost" data-goatcounter-click="github-final">View on GitHub</a>
+    <a href="pro.html" class="btn ghost" data-goatcounter-click="pro-click-final">Get Pro</a>
   </div>
-  <div class="npx-row rv d3">
-    <button class="npx-pill" type="button" data-npx data-goatcounter-click="npx-copy-final" aria-label="Copy the install command npx create-nus"><span class="dlr">$</span>&nbsp;npx create-nus<em>copy</em></button>
-  </div>
-  <form class="capture rv d4">
-    <input type="email" placeholder="you@school.edu" autocomplete="email" aria-label="Email for the hosted-app waitlist">
-    <button type="submit">Join the waitlist</button>
-  </form>
+  <p class="win-note rv d4"><b>Nus-Setup.exe</b> is not code signed yet. Windows will ask: choose <b>More info</b>, then <b>Run anyway</b>.</p>
 </section>
 
 <footer>
-  Nūs · free &amp; open source (MIT) · <a href="#" id="gh4">Desktop app</a> · <a href="#" id="kit2">Terminal kit</a> · <a href="https://github.com/potlakai/nus/discussions/1">Give feedback</a> · <a href="https://tally.so/r/44qgKO" id="wl2">Waitlist</a> · <a href="privacy.html">Privacy</a>
+  Nūs · <a href="#pricing">Pricing</a> · <a href="pro.html">Account</a> · <a href="#" id="gh4">Desktop app</a> · <a href="#" id="kit2">Open-source terminal kit</a> · <a href="https://github.com/potlakai/nus/discussions/1">Give feedback</a> · <a href="privacy.html">Privacy</a>
   <p class="credit">Statue: <em>Marble head of an athlete</em>, The Met Open Access (CC0).</p>
 </footer>
 
+<script src="assets/knot3d.js"></script>
 <script>
 (function(){
-  var TALLY_URL = "https://tally.so/r/44qgKO";
-  var TALLY_ID = "44qgKO";
+  var FEEDBACK_URL = "https://github.com/potlakai/nus/discussions/1";
   var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---- repo + release links (release asset = public download counter) ----
@@ -452,28 +251,10 @@ session to Thursday.</p></div>
   var kitRepo = "https://github.com/potlakai/nus";
   var winInstaller = appRepo + "/releases/latest/download/Nus-Setup.exe";
   var winPortable = appRepo + "/releases/latest/download/Nus-Portable.exe";
-  ["dl","dl2","dl3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winInstaller; });
+  ["dl","dl2","dl3","dl4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winInstaller; });
   ["gh","gh2","gh3","gh4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=appRepo; });
-  ["portable","portable2"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winPortable; });
+  ["portable"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winPortable; });
   ["kit","kit2"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=kitRepo; });
-
-  /* ---- Tally ---- */
-  var s = document.createElement("script");
-  s.src = "https://tally.so/widgets/embed.js";
-  document.body.appendChild(s);
-  function openTally(email){
-    var opts = {layout:"modal", width:420, autoClose:2000};
-    if (email) opts.hiddenFields = {email: email};
-    if (window.Tally && Tally.openPopup) Tally.openPopup(TALLY_ID, opts);
-    else window.open(TALLY_URL, "_blank");
-  }
-  document.querySelectorAll("form.capture").forEach(function(f){
-    f.addEventListener("submit", function(e){
-      e.preventDefault();
-      var em = f.querySelector('input[type="email"]');
-      openTally(em && em.value.trim() ? em.value.trim() : null);
-    });
-  });
 
   /* ---- idea form ---- */
   var KEY = "nus-feature-ideas";
@@ -496,7 +277,7 @@ session to Thursday.</p></div>
     input.value = "";
     render(list);
     try { navigator.clipboard.writeText(v); } catch(err){}
-    openTally();
+    window.open(FEEDBACK_URL, "_blank", "noopener");
   });
 
   /* ---- nav solid on scroll + progress bar + statue parallax & tilt ---- */
@@ -518,7 +299,7 @@ session to Thursday.</p></div>
     // eased transition restarted on every scroll tick is what made the statue
     // lag and rubber-band behind the page.
     if (!reduced && entered) {
-      statue.style.transform = "translate3d(0," + (y * 0.22) + "px,0) scale(1)";
+      statue.style.transform = "translate3d(0," + (y * 0.1) + "px,0) scale(1)";
     }
   }
   function onScroll(){
@@ -609,18 +390,25 @@ session to Thursday.</p></div>
     tio.observe(document.getElementById("term"));
   }
 
-  /* ---- npx copy pills ---- */
-  document.querySelectorAll("[data-npx]").forEach(function(btn){
-    var tag = btn.querySelector("em");
-    btn.addEventListener("click", function(){
-      function done(){
-        tag.textContent = "copied ✓";
-        setTimeout(function(){ tag.textContent = "copy"; }, 1600);
-      }
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText("npx create-nus").then(done, done);
-      else done();
-    });
-  });
+  /* ---- the live Knot in the Companion section (same renderer as the app) ---- */
+  (function(){
+    var canvas = document.getElementById("site-knot");
+    if (!canvas || !window.NusKnot3D) return;
+    var knot = NusKnot3D.mount(canvas, { ground: false, scale: 0.3 });
+    if (!knot) return;
+    var states = [["listening","listening · screen + voice"],["thinking","thinking · reading the slide"],["ready","ready · answer on screen"],["idle","idle · nothing captured"]];
+    var chips = document.querySelectorAll("#stage-chips .stage-chip");
+    var label = document.getElementById("stage-state");
+    var i = 0;
+    function step(){
+      var st = states[i % states.length]; i++;
+      knot.setState(st[0]);
+      if (label) label.textContent = st[1];
+      chips.forEach(function(c){ c.classList.toggle("on", c.textContent.toLowerCase() === st[0]); });
+    }
+    step();
+    if (!reduced) setInterval(step, 3400);
+  })();
 
   /* ---- npx terminal typing (setup steps) ---- */
   var NPX_LINES = [
@@ -630,6 +418,7 @@ session to Thursday.</p></div>
     ['dim','  → '], ['','nothing to paste. You are set.']
   ];
   var npxBox = document.getElementById("npxlines");
+  if (npxBox) {
   function renderNpxInstant(){
     npxBox.innerHTML = "";
     var p = document.createElement("p");
@@ -672,10 +461,11 @@ session to Thursday.</p></div>
       nio.observe(document.getElementById("npxterm"));
     }
   }
+  }
 
   /* ---- marquee: duplicate track for seamless loop ---- */
   var mq = document.getElementById("mq");
-  mq.innerHTML += mq.innerHTML;
+  if (mq) mq.innerHTML += mq.innerHTML;
 })();
 
 /* ============ SECOND BRAIN: rotating dot-sphere mind + orbiting life ============ */
@@ -765,8 +555,8 @@ session to Thursday.</p></div>
     ctx.clearRect(0, 0, W, H);
     /* soft core glow behind the mind */
     var g = ctx.createRadialGradient(CX, CY, R * 0.1, CX, CY, R * 1.25);
-    g.addColorStop(0, "rgba(255,255,255,0.055)");
-    g.addColorStop(1, "rgba(255,255,255,0)");
+    g.addColorStop(0, "rgba(22,25,35,0.055)");
+    g.addColorStop(1, "rgba(22,25,35,0)");
     ctx.fillStyle = g;
     ctx.fillRect(CX - R * 1.3, CY - R * 1.3, R * 2.6, R * 2.6);
     rotY += 0.0016;
@@ -784,12 +574,12 @@ session to Thursday.</p></div>
       if (q[3] > 0.35) {                       /* halo on the front dots */
         ctx.beginPath();
         ctx.arc(q[0], q[1], rad * 3, 0, 6.2832);
-        ctx.fillStyle = "rgba(255,255,255," + (a * 0.16).toFixed(3) + ")";
+        ctx.fillStyle = "rgba(22,25,35," + (a * 0.16).toFixed(3) + ")";
         ctx.fill();
       }
       ctx.beginPath();
       ctx.arc(q[0], q[1], rad, 0, 6.2832);
-      ctx.fillStyle = "rgba(255,255,255," + Math.min(1, a).toFixed(3) + ")";
+      ctx.fillStyle = "rgba(22,25,35," + Math.min(1, a).toFixed(3) + ")";
       ctx.fill();
     }
 
@@ -811,7 +601,7 @@ session to Thursday.</p></div>
         var dd = Math.sqrt(ddx*ddx + ddy*ddy);
         if (dd < 230) {
           var la = (1 - dd / 230) * 0.22;
-          ctx.strokeStyle = "rgba(255,255,255," + la.toFixed(3) + ")";
+          ctx.strokeStyle = "rgba(22,25,35," + la.toFixed(3) + ")";
           ctx.beginPath(); ctx.moveTo(A.px, A.py); ctx.lineTo(B.px, B.py); ctx.stroke();
         }
       }
@@ -822,7 +612,7 @@ session to Thursday.</p></div>
       var nd2 = nodes[n];
       var m = Math.sqrt(nd2.p3[0]*nd2.p3[0] + nd2.p3[1]*nd2.p3[1] + nd2.p3[2]*nd2.p3[2]);
       var sp = project([nd2.p3[0]/m, nd2.p3[1]/m, nd2.p3[2]/m], RY, RX);
-      ctx.strokeStyle = "rgba(255,255,255," + (0.05 + Math.max(0, nd2.z) * 0.06).toFixed(3) + ")";
+      ctx.strokeStyle = "rgba(22,25,35," + (0.05 + Math.max(0, nd2.z) * 0.06).toFixed(3) + ")";
       ctx.beginPath(); ctx.moveTo(nd2.px, nd2.py); ctx.lineTo(sp[0], sp[1]); ctx.stroke();
       nd2.spx = sp[0]; nd2.spy = sp[1];
     }
@@ -834,7 +624,7 @@ session to Thursday.</p></div>
         var d = Math.sqrt(dxp*dxp + dyp*dyp);
         nodes[n].hot = d < 170 ? 1 - d / 170 : 0;
         if (nodes[n].hot > 0.03) {
-          ctx.strokeStyle = "rgba(255,255,255," + (nodes[n].hot * 0.35).toFixed(3) + ")";
+          ctx.strokeStyle = "rgba(22,25,35," + (nodes[n].hot * 0.35).toFixed(3) + ")";
           ctx.beginPath(); ctx.moveTo(pointer.x, pointer.y); ctx.lineTo(nodes[n].px, nodes[n].py); ctx.stroke();
         }
       }
@@ -847,9 +637,9 @@ session to Thursday.</p></div>
       var na = 0.30 + Math.max(0, nd3.z + 0.4) * 0.34 + nd3.hot * 0.35;
       ctx.beginPath();
       ctx.arc(nd3.px, nd3.py, 1.8 * nd3.s + nd3.hot * 1.6, 0, 6.2832);
-      ctx.fillStyle = "rgba(255,255,255," + Math.min(1, na + 0.15).toFixed(3) + ")";
+      ctx.fillStyle = "rgba(22,25,35," + Math.min(1, na + 0.15).toFixed(3) + ")";
       ctx.fill();
-      ctx.fillStyle = "rgba(255,255,255," + Math.min(1, na).toFixed(3) + ")";
+      ctx.fillStyle = "rgba(22,25,35," + Math.min(1, na).toFixed(3) + ")";
       /* keep labels on-canvas: flip to the left near the right edge */
       var tw2 = ctx.measureText(nd3.t).width;
       if (nd3.px + 7 + tw2 > W - 8) ctx.fillText(nd3.t, nd3.px - 7 - tw2, nd3.py + 3);
@@ -865,14 +655,14 @@ session to Thursday.</p></div>
       var e = pu.t * pu.t * (3 - 2 * pu.t);
       var gx = nn.px + (nn.spx - nn.px) * e, gy = nn.py + (nn.spy - nn.py) * e;
       ctx.beginPath(); ctx.arc(gx, gy, 2.4, 0, 6.2832);
-      ctx.fillStyle = "rgba(255,255,255,0.9)"; ctx.fill();
+      ctx.fillStyle = "rgba(22,25,35,0.9)"; ctx.fill();
       ctx.beginPath(); ctx.arc(gx, gy, 6, 0, 6.2832);
-      ctx.fillStyle = "rgba(255,255,255,0.12)"; ctx.fill();
+      ctx.fillStyle = "rgba(22,25,35,0.12)"; ctx.fill();
     }
     for (var ri = ripples.length - 1; ri >= 0; ri--) {
       var rp = ripples[ri]; rp.r += 0.9; rp.a -= 0.016;
       if (rp.a <= 0) { ripples.splice(ri, 1); continue; }
-      ctx.strokeStyle = "rgba(255,255,255," + rp.a.toFixed(3) + ")";
+      ctx.strokeStyle = "rgba(22,25,35," + rp.a.toFixed(3) + ")";
       ctx.beginPath(); ctx.arc(rp.x, rp.y, rp.r, 0, 6.2832); ctx.stroke();
     }
 
