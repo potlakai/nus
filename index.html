@@ -82,6 +82,13 @@
       </div>
       <div class="lvl">&gt; push the calc homework to Friday<br><br>Nūs wants to:<br><b>Move "Problem Set 4" to Fri Oct 17</b><br>matched: CALC II · Problem Set 4<br><br>[ Confirm ]  [ Cancel ]</div>
     </div>
+    <div class="card wide rv">
+      <div>
+        <code>Voice</code><h3>Click the Knot. Just talk.</h3>
+        <p>Speech to text runs on your own machine, so it needs no key and no audio ever leaves your computer. The answer streams back as it is written, and the Knot listens, thinks, and speaks in its own colors.</p>
+      </div>
+      <div class="lvl">you · spoken<br><b>"what should I start tonight?"</b><br><br>Nūs<br>Start with Problem Set 4. It is due Friday and it is 12% of CALC II.<br><br>· reading MATH 2418 Syllabus</div>
+    </div>
     <div class="card rv d1"><code>Import</code><h3>It reads the syllabus</h3><p>Every course, weight, exam, and deadline comes back in a table you check before anything is saved.</p></div>
     <div class="card rv d2"><code>Map</code><h3>Your semester as a graph</h3><p>Courses, sources, and open tasks as nodes you can drag. The shape of the workload becomes something you can see.</p></div>
     <div class="card rv d3"><code>Email</code><h3>Drafts to your professor</h3><p>Pick the kind of help and the course. It writes in your voice. You always press send.</p></div>
@@ -110,7 +117,7 @@
     <div class="shot knot-stage rv d2" aria-label="The Nūs Knot, the Companion's on-screen mark">
       <div class="stage-line"><span>Companion</span><b id="stage-state">listening · screen + voice</b></div>
       <canvas id="site-knot" width="600" height="600"></canvas>
-      <div class="stage-chips" id="stage-chips"><span class="stage-chip">Idle</span><span class="stage-chip on">Listening</span><span class="stage-chip">Thinking</span><span class="stage-chip">Ready</span></div>
+      <div class="stage-chips" id="stage-chips"><span class="stage-chip">Idle</span><span class="stage-chip on">Listening</span><span class="stage-chip">Thinking</span><span class="stage-chip">Speaking</span><span class="stage-chip">Ready</span></div>
     </div>
     <div class="grid">
       <div class="card rv d1"><code>Sees</code><h3>The screen you choose</h3><p>A problem set, a slide, an error. It answers from what it sees plus what it knows about your semester.</p></div>
@@ -396,7 +403,7 @@
     if (!canvas || !window.NusKnot3D) return;
     var knot = NusKnot3D.mount(canvas, { ground: false, scale: 0.3 });
     if (!knot) return;
-    var states = [["listening","listening · screen + voice"],["thinking","thinking · reading the slide"],["ready","ready · answer on screen"],["idle","idle · nothing captured"]];
+    var states = [["listening","listening · you are talking"],["thinking","thinking · reading the slide"],["speaking","speaking · reading it back"],["ready","ready · answer on screen"],["idle","idle · nothing captured"]];
     var chips = document.querySelectorAll("#stage-chips .stage-chip");
     var label = document.getElementById("stage-state");
     var i = 0;

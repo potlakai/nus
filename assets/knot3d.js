@@ -40,6 +40,7 @@
     listening: { speed: 1.7, band: 1.9, tint: 0.62, glow: 0.75 },
     thinking: { speed: 2.4, band: 2.6, tint: 0.55, glow: 0.85 },
     spar: { speed: 1.7, band: 1.9, tint: 0.62, glow: 0.7 },
+    speaking: { speed: 1.5, band: 2.4, tint: 0.5, glow: 0.8 },
   };
 
   function mount(canvas, opts = {}) {
@@ -61,6 +62,10 @@
     let last = performance.now();
     // Smoothed motion params so state changes glide instead of snapping.
     let speed = STATES.idle.speed, tint = STATES.idle.tint, glow = STATES.idle.glow, band = STATES.idle.band;
+    // Live voice level (0..1): instant attack, eased release. Modulates glow
+    // and the inner light's travel speed so the mark visibly hears the user.
+    let liveLevel = 0, level = 0;
+    let bandTime = time;
 
     // Accent comes from CSS so themes and states stay in one place.
     function accent() {
@@ -111,6 +116,10 @@
       glow += (target.glow - glow) * k;
       band += (target.band - band) * k;
       time += dt * speed;
+      if (liveLevel > level) level = liveLevel;
+      else level += (liveLevel - level) * Math.min(1, dt * 5);
+      bandTime += dt * band * (1 + level * 0.5);
+      const glowE = Math.min(1.4, glow * (1 + level * 0.6));
 
       const dpr = resize();
       const W = canvas.width, H = canvas.height;
@@ -133,7 +142,7 @@
       ctx.rotate(-0.42);
       ctx.beginPath();
       ctx.ellipse(0, 0, R * 1.62, R * 0.58, 0, 0, TWO_PI);
-      ctx.strokeStyle = `rgba(240, 237, 227, ${0.05 + glow * 0.05})`;
+      ctx.strokeStyle = `rgba(240, 237, 227, ${0.05 + glowE * 0.05})`;
       ctx.lineWidth = 1 * dpr;
       ctx.stroke();
       for (let i = 0; i < 3; i++) {
@@ -190,7 +199,7 @@
         ctx.fillRect(0, 0, W, H);
       }
 
-      const bandPos = (time * 0.11 * band) % 1; // light travels the curve
+      const bandPos = (bandTime * 0.11) % 1; // light travels the curve, faster with voice
 
       const mix = (a1, b1, f) => Math.round(a1 + (b1 - a1) * f);
       const D = [13, 15, 25];          // dark tube body
@@ -255,8 +264,8 @@
         // slowest 2D op there is, so only near runs (where it reads) pay for it.
         runPath(run);
         if (midLit > 0.55) {
-          ctx.shadowBlur = (7 + glow * 16) * dpr * 0.7;
-          ctx.shadowColor = `rgba(${Math.round(ar * 0.6 + 153)}, ${Math.round(ag * 0.6 + 153)}, 255, ${0.12 + glow * 0.25})`;
+          ctx.shadowBlur = (7 + glowE * 16) * dpr * 0.7;
+          ctx.shadowColor = `rgba(${Math.round(ar * 0.6 + 153)}, ${Math.round(ag * 0.6 + 153)}, 255, ${0.12 + glowE * 0.25})`;
         }
         ctx.strokeStyle = runGrad(run, (lit) => {
           const f = Math.min(1, 0.38 + lit * 0.55);
@@ -292,8 +301,8 @@
       }
       const bp = pts[bandIdx];
       const bLit = 0.5 + bp.z * 0.5;
-      ctx.shadowBlur = (14 + glow * 26) * dpr;
-      ctx.shadowColor = `rgba(${mix(200, ar, tint)}, ${mix(210, ag, tint)}, 255, ${0.35 + glow * 0.45})`;
+      ctx.shadowBlur = (14 + glowE * 26) * dpr;
+      ctx.shadowColor = `rgba(${mix(200, ar, tint)}, ${mix(210, ag, tint)}, 255, ${0.35 + glowE * 0.45})`;
       ctx.strokeStyle = `rgba(255, 255, 255, ${0.5 + bLit * 0.5})`;
       ctx.lineWidth = tube * bp.persp * 0.4;
       ctx.stroke();
@@ -348,6 +357,10 @@
         if (!STATES[next]) next = 'idle';
         state = next;
         if (reduced) draw(performance.now()); // re-tint the static frame
+      },
+      setLevel(value) {
+        if (reduced) return; // the static frame does not react to voice
+        liveLevel = Math.max(0, Math.min(1, Number(value) || 0));
       },
       destroy() {
         stop();
