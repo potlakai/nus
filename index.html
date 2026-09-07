@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%230b0d16%27/%3E%3Ctext x=%2732%27 y=%2744%27 font-family=%27Georgia,serif%27 font-size=%2734%27 fill=%27%23fff%27 text-anchor=%27middle%27%3E%CE%BD%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2714%27%20fill%3D%27%230b0d16%27%2F%3E%3Cpath%20d%3D%27M32.0%2027.2L36.0%2027.4L39.8%2028.1L43.5%2029.3L46.9%2030.9L49.9%2032.8L52.4%2035.1L54.4%2037.5L55.9%2040.1L56.7%2042.8L57.0%2045.4L56.7%2047.8L55.7%2050.0L54.3%2051.9L52.3%2053.4L50.0%2054.5L47.3%2055.1L44.3%2055.1L41.1%2054.6L37.9%2053.5L34.7%2051.9L31.7%2049.8L28.8%2047.2L26.3%2044.2L24.1%2040.9L22.3%2037.3L21.0%2033.6L20.2%2029.8L19.9%2026.1L20.1%2022.6L20.7%2019.3L21.9%2016.3L23.4%2013.7L25.2%2011.7L27.3%2010.1L29.6%209.2L32.0%208.9L34.4%209.2L36.7%2010.1L38.8%2011.7L40.6%2013.7L42.1%2016.3L43.3%2019.3L43.9%2022.6L44.1%2026.1L43.8%2029.8L43.0%2033.6L41.7%2037.3L39.9%2040.9L37.7%2044.2L35.2%2047.2L32.3%2049.8L29.3%2051.9L26.1%2053.5L22.9%2054.6L19.7%2055.1L16.7%2055.1L14.0%2054.5L11.7%2053.4L9.7%2051.9L8.3%2050.0L7.3%2047.8L7.0%2045.4L7.3%2042.8L8.1%2040.1L9.6%2037.5L11.6%2035.1L14.1%2032.8L17.1%2030.9L20.5%2029.3L24.2%2028.1L28.0%2027.4L32.0%2027.2Z%27%20fill%3D%27none%27%20stroke%3D%27%23c9cedc%27%20stroke-width%3D%274%27%20stroke-linejoin%3D%27round%27%20transform%3D%27translate(32%2032)%20scale(.78)%20translate(-32%20-32)%27%2F%3E%3C%2Fsvg%3E">
 <title>Nūs | Jarvis for students</title>
 <meta name="description" content="Nūs is a desktop app that reads your syllabi, maps every deadline and grading rule, and turns plain requests into real changes you approve first. Runs on your own AI, on your own machine. Free to start, $9.99 a month for the full thing.">
 <meta property="og:title" content="Nūs | Jarvis for students">
@@ -11,167 +11,114 @@
 <meta name="theme-color" content="#0a0c11">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
-<style>
-  /* page-local: the live Knot stage in the Companion section */
-  .knot-stage{position:relative;min-height:360px;display:grid;place-items:center;overflow:hidden}
-  .knot-stage canvas{width:300px;height:300px;display:block;--knot-tint:77,94,226;--knot-accent:#506CFF}
-  .knot-stage .stage-chips{position:absolute;left:0;right:0;bottom:18px;display:flex;justify-content:center;gap:7px}
-  .stage-chip{padding:4px 11px;border-radius:999px;font-size:9px;letter-spacing:.13em;text-transform:uppercase;border:1px solid rgba(236,234,242,.16);color:#858ca6;transition:color .4s,border-color .4s,background .4s}
-  .stage-chip.on{color:#cdd6ff;border-color:rgba(110,130,255,.65);background:rgba(53,73,229,.22)}
-  .knot-stage .stage-line{position:absolute;left:22px;top:18px;right:22px;display:flex;justify-content:space-between;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;color:#6f7590}
-  .knot-stage .stage-line b{color:#cfd3e2;font-weight:500}
-  .companion-shot .grid{margin-top:0}
-</style>
 </head>
 <body>
-<div id="progress"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="knot-mark" viewBox="0 0 64 64"><path d="M32.0 27.2L36.0 27.4L39.8 28.1L43.5 29.3L46.9 30.9L49.9 32.8L52.4 35.1L54.4 37.5L55.9 40.1L56.7 42.8L57.0 45.4L56.7 47.8L55.7 50.0L54.3 51.9L52.3 53.4L50.0 54.5L47.3 55.1L44.3 55.1L41.1 54.6L37.9 53.5L34.7 51.9L31.7 49.8L28.8 47.2L26.3 44.2L24.1 40.9L22.3 37.3L21.0 33.6L20.2 29.8L19.9 26.1L20.1 22.6L20.7 19.3L21.9 16.3L23.4 13.7L25.2 11.7L27.3 10.1L29.6 9.2L32.0 8.9L34.4 9.2L36.7 10.1L38.8 11.7L40.6 13.7L42.1 16.3L43.3 19.3L43.9 22.6L44.1 26.1L43.8 29.8L43.0 33.6L41.7 37.3L39.9 40.9L37.7 44.2L35.2 47.2L32.3 49.8L29.3 51.9L26.1 53.5L22.9 54.6L19.7 55.1L16.7 55.1L14.0 54.5L11.7 53.4L9.7 51.9L8.3 50.0L7.3 47.8L7.0 45.4L7.3 42.8L8.1 40.1L9.6 37.5L11.6 35.1L14.1 32.8L17.1 30.9L20.5 29.3L24.2 28.1L28.0 27.4L32.0 27.2Z"/></symbol></svg>
+<canvas id="thread-back" aria-hidden="true"></canvas>
+<canvas id="thread-front" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
 
 <nav id="nav">
-  <a class="logo" href="#top">N<span class="mac">U</span>S</a>
-  <div class="nav-links">
+  <a class="logo" href="#top"><svg class="knot-mark"><use href="#knot-mark"/></svg>N<span class="mac">U</span>S</a>
+  <div class="nav-links" id="nav-links">
     <a href="#product" class="hidem">Product</a>
     <a href="#companion" class="hidem">Companion</a>
-    <a href="#how" class="hidem">Set-up</a>
     <a href="#pricing" class="hidem">Pricing</a>
     <a href="#faq" class="hidem">FAQ</a>
+    <a href="#get" class="hidem">Set-up</a>
     <a href="pro.html" class="hidem">Account</a>
     <a href="#" id="gh" class="btn ghost">GitHub</a>
-    <a href="#" id="dl" class="btn solid" data-goatcounter-click="download-windows-nav">Download for Windows</a>
+  </div>
+  <div class="nav-actions">
+    <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" id="dl" class="btn solid" data-goatcounter-click="download-windows-nav">Download for Windows</a>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
   </div>
 </nav>
 
 <!-- ============ HERO ============ -->
 <header class="hero" id="top">
-  <div class="statue-wrap">
-    <div class="statue-glow"></div>
-    <img class="statue" id="statue" src="assets/statue.webp" alt="" aria-hidden="true">
-  </div>
-  <div class="hero-fade"></div>
   <div class="hero-inner">
-    <p class="kicker hi">From the Greek <em style="font-style:italic">noûs</em>, the mind</p>
-    <h1 class="wordmark hi" style="transition-delay:.1s">N<span class="mac">U</span>S</h1>
-    <p class="tagline hi" style="transition-delay:.2s">Jarvis for students. <em>Your semester, run by an AI that knows you.</em></p>
-    <p class="hero-sub hi" style="transition-delay:.3s">A desktop app that reads your syllabi, maps every deadline, and turns "push the calc homework to Friday" into the actual change. You approve it first, every time.</p>
-    <div class="hero-ctas hi" style="transition-delay:.4s">
-      <a href="#" id="dl2" class="btn solid" data-goatcounter-click="download-windows-hero">Download for Windows</a>
+  <div class="hero-copy">
+    <h1 class="wordmark hi">N<span class="mac">U</span>S</h1>
+    <p class="tagline hi" style="transition-delay:.1s">Jarvis for students.</p>
+    <p class="hero-sub hi" style="transition-delay:.2s">A desktop app that reads your syllabi, maps every deadline, and turns what you ask into a change you approve first.</p>
+    <div class="hero-ctas hi" style="transition-delay:.3s">
+      <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" id="dl2" class="btn solid" data-goatcounter-click="download-windows-hero">Download for Windows</a>
       <a href="pro.html" class="btn ghost" data-goatcounter-click="pro-click-hero">Get Pro</a>
     </div>
-    <p class="wl-note hi" style="transition-delay:.44s">Free to start. Windows today. Your coursework stays on your machine. You bring the AI key.</p>
-    <p class="win-note hi" style="transition-delay:.5s"><b>Nus-Setup.exe</b> is not code signed yet, so Windows will ask. Choose <b>More info</b>, then <b>Run anyway</b>.</p>
+  </div>
+  <div class="mind" aria-hidden="true">
+    <img class="statue" id="statue" src="assets/statue.webp" alt="">
+    <div class="hero-knot"><canvas id="hero-knot" data-thread="knot-start"></canvas></div>
+    <svg class="mind-edges" id="mind-edges" aria-hidden="true"></svg>
+    <span class="mind-node source" style="--nx:16%;--ny:24%;--nd:-2s"><i></i>MATH 2418 Syllabus</span>
+    <span class="mind-node" style="--nx:84%;--ny:9%;--nd:-5s"><i></i>CS 2340</span>
+    <span class="mind-node attention" style="--nx:90%;--ny:50%;--nd:-1s"><i></i>ACCT 2301</span>
+    <span class="mind-node" style="--nx:22%;--ny:62%;--nd:-4s"><i></i>MATH 2418</span>
+  </div>
   </div>
 </header>
 
 <!-- ============ PRODUCT ============ -->
 <section id="product">
-  <p class="sec-kicker rv">The product</p>
-  <h2 class="rv d1">It knows your whole semester<br>in 5 minutes.</h2>
-  <p class="lede rv d2">Your life as a student is already written down in four PDFs. Nūs is the first thing that reads them.</p>
-
-  <div class="term rv d3" id="term">
-    <div class="bar"><i></i><i></i><i></i></div>
-    <div id="termlines"></div>
-  </div>
-
-  <div class="grid">
-    <div class="card wide rv">
-      <div>
-        <code>Ask</code><h3>Say it plainly. Approve the change.</h3>
-        <p>Type what you mean. Nūs works out which item you meant, shows the change as a proposal, and writes nothing until you confirm.</p>
-      </div>
-      <div class="lvl">&gt; push the calc homework to Friday<br><br>Nūs wants to:<br><b>Move "Problem Set 4" to Fri Oct 17</b><br>matched: CALC II · Problem Set 4<br><br>[ Confirm ]  [ Cancel ]</div>
-    </div>
-    <div class="card wide rv">
-      <div>
-        <code>Voice</code><h3>Click the Knot. Just talk.</h3>
-        <p>Speech to text runs on your own machine, so it needs no key and no audio ever leaves your computer. The answer streams back as it is written, and the Knot listens, thinks, and speaks in its own colors.</p>
-      </div>
-      <div class="lvl">you · spoken<br><b>"what should I start tonight?"</b><br><br>Nūs<br>Start with Problem Set 4. It is due Friday and it is 12% of CALC II.<br><br>· reading MATH 2418 Syllabus</div>
-    </div>
-    <div class="card rv d1"><code>Import</code><h3>It reads the syllabus</h3><p>Every course, weight, exam, and deadline comes back in a table you check before anything is saved.</p></div>
-    <div class="card rv d2"><code>Map</code><h3>Your semester as a graph</h3><p>Courses, sources, and open tasks as nodes you can drag. The shape of the workload becomes something you can see.</p></div>
-    <div class="card rv d3"><code>Email</code><h3>Drafts to your professor</h3><p>Pick the kind of help and the course. It writes in your voice. You always press send.</p></div>
-  </div>
-</section>
-
-<!-- ============ SHOWCASE ============ -->
-<section id="showcase">
-  <p class="sec-kicker rv">The app</p>
-  <h2 class="rv d1">Real screens, not mockups.</h2>
+  <p class="sec-kicker rv"><svg class="knot-mark"><use href="#knot-mark"/></svg>The product</p>
+  <h2 class="rv d1">It reads your <em>semester</em>.</h2>
+  <p class="lede rv d2">Your life as a student is already written down in four PDFs. Nūs reads them. Syllabi, deadlines, tasks, and what you tell it, wired into one picture, so every answer knows your whole semester.</p>
   <div class="shots">
-    <figure class="shot rv d2"><img src="assets/app-today.webp" alt="The Nūs Today dashboard: the Knot at the centre of a constellation of courses, sources, and tasks, with the Ask bar below it" width="1800" height="1125" loading="lazy"><figcaption><b>Today</b><span>Your courses, sources, and next moves orbit the Knot. One sentence becomes a proposal you approve.</span></figcaption></figure>
+    <figure class="shot rv d2" data-thread="loop" data-thread-side="right"><img src="assets/app-today.webp" alt="The Nūs Today dashboard: the Knot at the centre of a constellation of courses, sources, and tasks, with the Ask bar below it" width="1800" height="1125"><figcaption><b>Today</b><span>Your courses, sources, and next moves orbit the Knot. One sentence becomes a proposal you approve.</span></figcaption></figure>
     <div class="pair">
       <figure class="shot rv d3"><img src="assets/app-review.webp" alt="The syllabus review table: course details, grade weights, and dated assignments read from a PDF, editable before saving" width="1800" height="1125" loading="lazy"><figcaption><b>Review before save</b><span>What the AI read, in a table you check first.</span></figcaption></figure>
-      <figure class="shot rv d4"><img src="assets/app-map.webp" alt="The Map view: courses, tasks, and sources as draggable nodes connected to the Nūs core" width="1800" height="1125" loading="lazy"><figcaption><b>Map</b><span>The whole semester as a graph you can drag and zoom.</span></figcaption></figure>
+      <figure class="shot rv d4" data-thread="pass" data-thread-side="right"><img src="assets/app-map.webp" alt="The Map view: courses, tasks, and sources as draggable nodes connected to the Nūs core" width="1800" height="1125" loading="lazy"><figcaption><b>Map</b><span>The whole semester as a graph you can drag and zoom.</span></figcaption></figure>
     </div>
+  </div>
+  <div class="receipts">
+    <div class="receipt rv"><span class="chip">Import</span><h3>It reads the syllabus</h3><p>Every course, weight, exam, and deadline comes back in a table you check before anything is saved.</p></div>
+    <div class="receipt rv d1"><span class="chip">Ask</span><h3>Say it plainly</h3><p>Nūs works out which item you meant, shows the change as a proposal, and writes nothing until you confirm.</p></div>
+    <div class="receipt rv d2"><span class="chip">Voice</span><h3>Click the Knot and talk</h3><p>Speech to text runs on your own machine. The answer streams back as it is written, and the Knot listens, thinks, and speaks in its own colors.</p></div>
+    <div class="receipt rv d3"><span class="chip">Email</span><h3>Drafts to your professor</h3><p>Pick the kind of help and the course. It writes in your voice. You always press send.</p></div>
   </div>
 </section>
 
 <!-- ============ COMPANION ============ -->
 <section id="companion">
-  <p class="sec-kicker rv">The Companion</p>
-  <h2 class="rv d1">A knot of light that sits<br>on top of everything.</h2>
+  <p class="sec-kicker rv"><svg class="knot-mark"><use href="#knot-mark"/></svg>The Companion</p>
+  <h2 class="rv d1">The Knot sits on top<br>of <em>everything</em>.</h2>
   <p class="lede rv d2">The other half floats over your screen, sees the window you point it at, and listens when you switch it on. Same install.</p>
-  <div class="companion-shot">
-    <div class="shot knot-stage rv d2" aria-label="The Nūs Knot, the Companion's on-screen mark">
+  <div class="companion-grid">
+    <div class="knot-stage rv d2" data-thread="loop" data-thread-side="left" aria-label="The Nūs Knot, the Companion's on-screen mark">
       <div class="stage-line"><span>Companion</span><b id="stage-state">listening · screen + voice</b></div>
-      <canvas id="site-knot" width="600" height="600"></canvas>
+      <canvas id="site-knot"></canvas>
       <div class="stage-chips" id="stage-chips"><span class="stage-chip">Idle</span><span class="stage-chip on">Listening</span><span class="stage-chip">Thinking</span><span class="stage-chip">Speaking</span><span class="stage-chip">Ready</span></div>
     </div>
-    <div class="grid">
-      <div class="card rv d1"><code>Sees</code><h3>The screen you choose</h3><p>A problem set, a slide, an error. It answers from what it sees plus what it knows about your semester.</p></div>
-      <div class="card rv d2"><code>Hears</code><h3>Only when you say so</h3><p>Switch listening on for a lecture and it keeps a transcript you can search. Off is the default. One key stops it.</p></div>
-      <div class="card rv d3"><code>Stays</code><h3>Close the app, it remains</h3><p>The Knot keeps running with every hotkey live. One button removes it completely.</p></div>
+    <div>
+      <ul class="facts">
+        <li class="rv d1"><span class="chip">Sees</span><b>The screen you choose</b><span>A problem set, a slide, an error. It answers from what it sees plus what it knows about your semester.</span></li>
+        <li class="rv d2"><span class="chip">Hears</span><b>Only when you say so</b><span>Switch listening on for a lecture and it keeps a transcript you can search. Off is the default. One key stops it.</span></li>
+        <li class="rv d3"><span class="chip">Stays</span><b>Close the app, it remains</b><span>The Knot keeps running with every hotkey live. One button removes it completely.</span></li>
+      </ul>
+      <p class="keys rv d4"><b>Ctrl+Shift+Space</b> hides it. <b>Ctrl+Shift+X</b> stops listening and vanishes. Follow the rules of every room you are in.</p>
     </div>
   </div>
-  <p class="lede rv d4" style="margin-top:26px;font-size:14px"><b>Ctrl+Shift+Space</b> hides it. <b>Ctrl+Shift+X</b> stops listening and vanishes. Follow the rules of every room you are in.</p>
+  <p class="concept rv d4"><span class="chip">Concept</span><b>Where it is going:</b> one thread that lives across your screens, moves to where you are working, and tightens into the Knot when you need it. Not shipped yet.</p>
 </section>
 
-<!-- ============ SECOND BRAIN ============ -->
-<section class="brain-sec" id="brain">
-  <div class="brain-copy">
-    <p class="sec-kicker rv">The second brain</p>
-    <h2 class="rv d1">Everything you drop in<br>becomes one mind.</h2>
-    <p class="lede rv d2">Syllabi, deadlines, tasks, and what you tell it, wired into one picture, so every answer knows your whole semester.</p>
-  </div>
-  <canvas id="brainviz" aria-hidden="true"></canvas>
-</section>
-
-<!-- ============ MANIFESTO ============ -->
+<!-- ============ PRIVACY ============ -->
 <section class="manifesto" id="privacy">
   <span class="line rv">Your syllabi. Your notes. Your recordings.</span>
   <span class="line ghosted rv d1">They never reach our server.</span>
   <span class="line rv d2">That is the architecture.</span>
-  <p class="foot rv d3">Everything lives in a local database on your machine. Your account holds two things: who you are, and whether you subscribe. The only calls that leave your device go to the AI provider you chose, Supabase for plan status, and Stripe when you upgrade.</p>
-</section>
-
-<!-- ============ HOW ============ -->
-<section id="how">
-  <div class="setup-grid">
-    <div>
-      <p class="sec-kicker rv">The ritual</p>
-      <h2 class="rv d1">Running in 10 minutes.</h2>
-      <ol class="steps">
-        <li class="rv" data-gl="Α"><b>Download and open it</b><span>Installer for automatic updates, or the <a href="#" id="portable">portable build</a>. Both are unsigned for now: choose More info, then Run anyway.</span></li>
-        <li class="rv d1" data-gl="Β"><b>Give it your AI</b><span>If <code>Claude Code</code> is installed, Nūs finds it. If not, paste an Anthropic API key in Settings. The Companion runs on a Gemini key with a free tier.</span></li>
-        <li class="rv d2" data-gl="Γ"><b>Drop in a syllabus</b><span>The PDF from Canvas or your professor. Check the table, confirm, and the semester is mapped.</span></li>
-      </ol>
-    </div>
-    <div class="nous-ghost rv d2" aria-hidden="true">
-      <div class="gl-stack"><span>Ν</span><span>Ο</span><span>Υ</span><span>Σ</span></div>
-      <p class="ghost-cap">noûs · the mind that sees what matters</p>
-    </div>
-  </div>
+  <p class="foot rv d3" data-thread="pass" data-thread-side="right">Everything lives in a local database on your machine. Your account holds two things: who you are, and whether you subscribe. The only calls that leave your device go to the AI provider you chose, Supabase for plan status, and Stripe when you upgrade.</p>
 </section>
 
 <!-- ============ PRICING ============ -->
 <section id="pricing">
-  <p class="sec-kicker rv">The deal</p>
-  <h2 class="rv d1">Free is not a demo.</h2>
+  <p class="sec-kicker rv"><svg class="knot-mark"><use href="#knot-mark"/></svg>Pricing</p>
+  <h2 class="rv d1">Free is not a <em>demo</em>.</h2>
   <p class="lede rv d2">Run a whole semester without paying. Pro is for the student who hits the limits.</p>
-  <div class="plans">
-    <div class="plan rv">
+  <div class="plans" data-thread="pass" data-thread-side="left">
+    <div class="plan free rv">
       <span class="tag">Free</span>
       <div class="price">$0</div>
       <p class="plan-sub">Forever. No trial clock.</p>
@@ -182,7 +129,7 @@
         <li>Companion: 20 minutes a day</li>
         <li>1 connected account, 1 automation rule</li>
       </ul>
-      <a href="#" id="dl4" class="btn ghost" data-goatcounter-click="download-windows-pricing">Download free</a>
+      <a href="#get" class="plan-link">Download free, below</a>
     </div>
     <div class="plan pro rv d1">
       <span class="tag">Pro</span>
@@ -208,15 +155,15 @@
 
 <!-- ============ FAQ ============ -->
 <section class="faq" id="faq">
-  <p class="sec-kicker rv">The oracle</p>
+  <p class="sec-kicker rv"><svg class="knot-mark"><use href="#knot-mark"/></svg>Questions</p>
   <h2 class="rv d1">FAQ</h2>
-  <details class="rv"><summary>Is this a cheating tool?</summary><p class="a">No. It plans, schedules, briefs, and quizzes you. It refuses to write your submissions, and it reads your school's AI policy straight out of the syllabus.</p></details>
+  <details class="rv" data-thread="pass" data-thread-side="left"><summary>Is this a cheating tool?</summary><p class="a">No. It plans, schedules, briefs, and quizzes you. It refuses to write your submissions, and it reads your school's AI policy straight out of the syllabus.</p></details>
   <details class="rv"><summary>What do I need to run it?</summary><p class="a">Windows, and your own AI. <strong>Claude</strong> runs the desktop app: if <a href="https://claude.com/claude-code">Claude Code</a> is installed, Nūs uses your subscription; otherwise paste an Anthropic API key. <strong>Gemini</strong> runs the Companion, and Google offers a free tier through <a href="https://aistudio.google.com/apikey">AI Studio</a>. Both keys are encrypted on your device and only ever sent to the provider you chose.</p></details>
   <details class="rv"><summary>What does the $9.99 actually buy?</summary><p class="a">Not the model; you pay the provider directly on both plans. Pro buys the layer around it with the caps removed: unlimited imports and questions, the Companion all day with full history, both calendars, unlimited rules, more storage. Free is $0 forever and enough to run a real semester.</p></details>
   <details class="rv"><summary>I bought Pro on the website. How does the app know?</summary><p class="a">Pro belongs to your Nūs account, not to a download. Sign in with the same Google account or email inside the app and the Plan card flips to Pro on its own, usually within seconds. Your coursework never leaves your machine; the account only carries who you are and whether you subscribe.</p></details>
   <details class="rv"><summary>Why does Windows warn me about the download?</summary><p class="a">The installer is not code signed yet. A certificate costs money and I would rather ship first. Choose <em>More info</em>, then <em>Run anyway</em>. The source is on GitHub if you would rather build it yourself.</p></details>
   <details class="rv"><summary>Is it really only Windows?</summary><p class="a">For now. It is built on Electron, so the Mac build is a build target and a round of testing, not a rewrite. It is next on the list; <a href="https://github.com/potlakai/nus/discussions/1">say so here</a> and it moves up.</p></details>
-  <details class="rv" open>
+  <details class="rv" open data-thread="pass" data-thread-side="left">
     <summary>What should it do next?</summary>
     <p class="a">Type it here. It is saved on this device and copied to your clipboard, then the feedback thread opens so you can paste it.</p>
     <form class="ideaform" id="ideaform">
@@ -228,16 +175,29 @@
   </details>
 </section>
 
-<!-- ============ FINAL CTA ============ -->
-<section class="final">
-  <p class="sec-kicker rv">Get Nūs</p>
-  <h2 class="rv d1">Know your mind.</h2>
-  <p class="lede rv d2">Free to start, yours to keep. Windows, your own AI key, and an account only when you want Pro.</p>
-  <div class="hero-ctas rv d3">
-    <a href="#" id="dl3" class="btn solid" data-goatcounter-click="download-windows-final">Download for Windows</a>
-    <a href="pro.html" class="btn ghost" data-goatcounter-click="pro-click-final">Get Pro</a>
+<!-- ============ GET ============ -->
+<section id="get">
+  <div class="get-grid">
+    <div>
+      <p class="sec-kicker rv"><svg class="knot-mark"><use href="#knot-mark"/></svg>Get Nūs</p>
+      <h2 class="rv d1">Running in <em>10 minutes</em>.</h2>
+      <ol class="steps">
+        <li class="rv"><svg class="knot-mark"><use href="#knot-mark"/></svg><b>Download and open it</b><span>Installer for automatic updates, or the <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Portable.exe" id="portable">portable build</a>.</span></li>
+        <li class="rv d1"><svg class="knot-mark"><use href="#knot-mark"/></svg><b>Give it your AI</b><span>If <code>Claude Code</code> is installed, Nūs finds it. If not, paste an Anthropic API key in Settings. The Companion runs on a Gemini key with a free tier.</span></li>
+        <li class="rv d2"><svg class="knot-mark"><use href="#knot-mark"/></svg><b>Drop in a syllabus</b><span>The PDF from Canvas or your professor. Check the table, confirm, and the semester is mapped.</span></li>
+      </ol>
+    </div>
+    <div class="get-end rv d2">
+      <div class="end-knot"><canvas id="end-knot" data-thread="knot-end"></canvas></div>
+      <h3>Know your <em>mind</em>.</h3>
+      <div class="hero-ctas">
+        <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" id="dl3" class="btn solid" data-goatcounter-click="download-windows-final">Download for Windows</a>
+        <a href="pro.html" class="btn ghost" data-goatcounter-click="pro-click-final">Get Pro</a>
+      </div>
+      <p class="win-note"><b>Nus-Setup.exe</b> is not code signed yet, so Windows will ask. Choose <b>More info</b>, then <b>Run anyway</b>.</p>
+      <p class="wl-note">Free to start. Windows today. Your coursework stays on your machine. You bring the AI key.</p>
+    </div>
   </div>
-  <p class="win-note rv d4"><b>Nus-Setup.exe</b> is not code signed yet. Windows will ask: choose <b>More info</b>, then <b>Run anyway</b>.</p>
 </section>
 
 <footer>
@@ -246,10 +206,11 @@
 </footer>
 
 <script src="assets/knot3d.js"></script>
+<script src="assets/thread.js"></script>
 <script>
 (function(){
   var FEEDBACK_URL = "https://github.com/potlakai/nus/discussions/1";
-  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var reduced = (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) || /motion=reduce/.test(location.search);
 
   /* ---- repo + release links (release asset = public download counter) ----
      The desktop app has its own repo; the kit repo stays linked from the
@@ -258,10 +219,24 @@
   var kitRepo = "https://github.com/potlakai/nus";
   var winInstaller = appRepo + "/releases/latest/download/Nus-Setup.exe";
   var winPortable = appRepo + "/releases/latest/download/Nus-Portable.exe";
-  ["dl","dl2","dl3","dl4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winInstaller; });
-  ["gh","gh2","gh3","gh4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=appRepo; });
+  ["dl","dl2","dl3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winInstaller; });
+  ["gh","gh4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=appRepo; });
   ["portable"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winPortable; });
-  ["kit","kit2"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=kitRepo; });
+  ["kit2"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=kitRepo; });
+
+  /* ---- mobile nav ---- */
+  var toggle = document.getElementById("nav-toggle");
+  var links = document.getElementById("nav-links");
+  if (toggle && links) {
+    toggle.addEventListener("click", function(){
+      var open = links.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.textContent = open ? "Close" : "Menu";
+    });
+    links.addEventListener("click", function(e){
+      if (e.target.tagName === "A") { links.classList.remove("open"); toggle.setAttribute("aria-expanded","false"); toggle.textContent = "Menu"; }
+    });
+  }
 
   /* ---- idea form ---- */
   var KEY = "nus-feature-ideas";
@@ -287,27 +262,76 @@
     window.open(FEEDBACK_URL, "_blank", "noopener");
   });
 
-  /* ---- nav solid on scroll + progress bar + statue parallax & tilt ---- */
+  /* ---- the three Knots: hero (unravels on scroll), Companion stage, and
+     the closing mark. Offscreen instances are paused. ---- */
+  function mountKnot(id, opts){
+    var c = document.getElementById(id);
+    if (!c || !window.NusKnot3D) return null;
+    return NusKnot3D.mount(c, opts);
+  }
+  var heroKnot = mountKnot("hero-knot", { ground: false, scale: 0.34 });
+  var stageKnot = mountKnot("site-knot", { ground: false, scale: 0.3 });
+  var endKnot = mountKnot("end-knot", { ground: false, scale: 0.34 });
+  var knots = { "hero-knot": heroKnot, "site-knot": stageKnot, "end-knot": endKnot };
+  if (window.IntersectionObserver) {
+    var kio = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        var k = knots[en.target.id];
+        if (!k) return;
+        if (en.isIntersecting) k.resume(); else k.pause();
+      });
+    }, { rootMargin: "160px 0px" });
+    Object.keys(knots).forEach(function(id){ if (knots[id]) kio.observe(document.getElementById(id)); });
+  }
+  if (stageKnot) {
+    var states = [["listening","listening · you are talking"],["thinking","thinking · reading the slide"],["speaking","speaking · reading it back"],["ready","ready · answer on screen"],["idle","idle · nothing captured"]];
+    var stageChips = document.querySelectorAll("#stage-chips .stage-chip");
+    var label = document.getElementById("stage-state");
+    var si = 0;
+    function step(){
+      var st = states[si % states.length]; si++;
+      stageKnot.setState(st[0]);
+      if (label) label.textContent = st[1];
+      stageChips.forEach(function(c){ c.classList.toggle("on", c.textContent.toLowerCase() === st[0]); });
+    }
+    step();
+    if (!reduced) setInterval(step, 3400);
+  }
+
+  /* ---- scroll: nav, statue parallax, the thread, the hero unravel ----
+     One rAF per frame; every measurement is cached in measure(). */
   var nav = document.getElementById("nav");
-  var prog = document.getElementById("progress");
   var statue = document.getElementById("statue");
+  var hero = document.getElementById("top");
   var entered = false;
-  // Scroll work is coalesced into one rAF per frame and the page height is
-  // cached: reading scrollHeight on every scroll event forces a reflow, which
-  // is what made scrolling feel heavy.
-  var maxScroll = 0, ticking = false, lastY = 0;
-  function measure(){ maxScroll = document.documentElement.scrollHeight - window.innerHeight; }
+  var heroH = 1, vh = window.innerHeight, ticking = false, lastY = 0;
+  /* the hero constellation: dashed edges from each label to the Knot, drawn
+     once per layout in the .mind box's own coordinates */
+  var mindEdges = document.getElementById("mind-edges");
+  var mind = document.querySelector(".mind");
+  var knotEl = document.querySelector(".hero-knot");
+  function drawMindEdges(){
+    if (!mindEdges || !mind || !knotEl) return;
+    var mr = mind.getBoundingClientRect(), kr = knotEl.getBoundingClientRect();
+    var kx = kr.left + kr.width / 2 - mr.left, ky = kr.top + kr.height / 2 - mr.top;
+    mindEdges.setAttribute("viewBox", "0 0 " + Math.round(mr.width) + " " + Math.round(mr.height));
+    var d = "";
+    document.querySelectorAll(".mind-node").forEach(function(n){
+      var r = n.getBoundingClientRect();
+      var x = r.left + r.width / 2 - mr.left, y = r.top + r.height / 2 - mr.top;
+      var mx = (x + kx) / 2, my = (y + ky) / 2 - 22;
+      d += "M" + x.toFixed(1) + " " + y.toFixed(1) + " Q" + mx.toFixed(1) + " " + my.toFixed(1) + " " + kx.toFixed(1) + " " + ky.toFixed(1) + " ";
+    });
+    mindEdges.innerHTML = '<path d="' + d + '"/>';
+  }
+  function measure(){ heroH = hero ? hero.offsetHeight : 1; vh = window.innerHeight; drawMindEdges(); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
   function paintScroll(){
     ticking = false;
     var y = lastY;
     nav.classList.toggle("solid", y > 40);
-    prog.style.transform = "scaleX(" + (maxScroll > 0 ? Math.min(1, y / maxScroll) : 0) + ")";
-    // Parallax is written straight to transform with NO transition: a 0.9s
-    // eased transition restarted on every scroll tick is what made the statue
-    // lag and rubber-band behind the page.
-    if (!reduced && entered) {
-      statue.style.transform = "translate3d(0," + (y * 0.1) + "px,0) scale(1)";
-    }
+    if (!reduced && entered && statue) statue.style.transform = "translateX(-50%) translate3d(0," + (y * 0.12) + "px,0)";
+    if (heroKnot && !reduced) heroKnot.setUnravel(Math.max(0, Math.min(1, (y - 24) / (heroH * 0.7))));
   }
   function onScroll(){
     lastY = window.scrollY;
@@ -318,12 +342,12 @@
   measure();
   onScroll();
 
-  /* ---- hero entrance ---- */
+  /* ---- hero entrance: the statue fades in, the Knot wakes ---- */
   function enter(){
     if (statue.classList.contains("on")) return;
     statue.classList.add("on");
     document.querySelectorAll(".hi").forEach(function(el){ el.classList.add("on"); });
-    // after the entrance settles, hand transform control to parallax/tilt
+    if (heroKnot) { heroKnot.setState("ready"); setTimeout(function(){ heroKnot.setState("idle"); }, 1600); }
     setTimeout(function(){
       statue.style.transition = "opacity .6s ease";  // keep opacity eased, never transform
       entered = true;
@@ -341,344 +365,10 @@
     });
   }, {threshold: 0.18, rootMargin: "0px 0px -8% 0px"});
   document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
-
-  /* ---- terminal typing ---- */
-  var LINES = [
-    ['dim','Ask Nūs  '], ['wt','what should I start tonight?\n'],
-    ['','\n'],
-    ['','Due '], ['wt','tonight'], ['',':\n'],
-    ['','  CALC II · problem set 4\n'],
-    ['','  CHEM 101 · lab report draft\n'],
-    ['','\n'],
-    ['wt','Heads up: '], ['','your worst week of the semester\n'],
-    ['','starts Monday. Three exams and a project stacked\n'],
-    ['','in the same seven days, and tonight\'s homework is\n'],
-    ['','the study material. Do that one properly.']
-  ];
-  var termBox = document.getElementById("termlines");
-  function renderTermInstant(){
-    termBox.innerHTML = "";
-    var p = document.createElement("p");
-    LINES.forEach(function(seg){
-      var sp = document.createElement("span");
-      if (seg[0]) sp.className = seg[0];
-      sp.textContent = seg[1];
-      p.appendChild(sp);
-    });
-    termBox.appendChild(p);
-  }
-  if (reduced) { renderTermInstant(); }
-  else {
-    var typed = false;
-    var tio = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if (!en.isIntersecting || typed) return;
-        typed = true; tio.disconnect();
-        var p = document.createElement("p");
-        termBox.appendChild(p);
-        var caret = document.createElement("span");
-        caret.className = "caret";
-        p.appendChild(caret);
-        var li = 0, ci = 0, cur = null;
-        (function tick(){
-          if (li >= LINES.length) { return; }
-          if (!cur) {
-            cur = document.createElement("span");
-            if (LINES[li][0]) cur.className = LINES[li][0];
-            p.insertBefore(cur, caret);
-          }
-          var text = LINES[li][1];
-          cur.textContent = text.slice(0, ++ci);
-          if (ci >= text.length) { li++; ci = 0; cur = null; }
-          setTimeout(tick, 14);
-        })();
-      });
-    }, {threshold: 0.4});
-    tio.observe(document.getElementById("term"));
-  }
-
-  /* ---- the live Knot in the Companion section (same renderer as the app) ---- */
-  (function(){
-    var canvas = document.getElementById("site-knot");
-    if (!canvas || !window.NusKnot3D) return;
-    var knot = NusKnot3D.mount(canvas, { ground: false, scale: 0.3 });
-    if (!knot) return;
-    var states = [["listening","listening · you are talking"],["thinking","thinking · reading the slide"],["speaking","speaking · reading it back"],["ready","ready · answer on screen"],["idle","idle · nothing captured"]];
-    var chips = document.querySelectorAll("#stage-chips .stage-chip");
-    var label = document.getElementById("stage-state");
-    var i = 0;
-    function step(){
-      var st = states[i % states.length]; i++;
-      knot.setState(st[0]);
-      if (label) label.textContent = st[1];
-      chips.forEach(function(c){ c.classList.toggle("on", c.textContent.toLowerCase() === st[0]); });
-    }
-    step();
-    if (!reduced) setInterval(step, 3400);
-  })();
-
-  /* ---- npx terminal typing (setup steps) ---- */
-  var NPX_LINES = [
-    ['dim','Settings '], ['','· AI provider\n\n'],
-    ['','  Claude Code found on this machine '], ['wt','✓'], ['','\n'],
-    ['','  model: '], ['wt','claude-sonnet-5'], ['','\n'],
-    ['dim','  → '], ['','nothing to paste. You are set.']
-  ];
-  var npxBox = document.getElementById("npxlines");
-  if (npxBox) {
-  function renderNpxInstant(){
-    npxBox.innerHTML = "";
-    var p = document.createElement("p");
-    NPX_LINES.forEach(function(seg){
-      var sp = document.createElement("span");
-      if (seg[0]) sp.className = seg[0];
-      sp.textContent = seg[1];
-      p.appendChild(sp);
-    });
-    npxBox.appendChild(p);
-  }
-  if (npxBox) {
-    if (reduced) { renderNpxInstant(); }
-    else {
-      var npxTyped = false;
-      var nio = new IntersectionObserver(function(entries){
-        entries.forEach(function(en){
-          if (!en.isIntersecting || npxTyped) return;
-          npxTyped = true; nio.disconnect();
-          var p = document.createElement("p");
-          npxBox.appendChild(p);
-          var caret = document.createElement("span");
-          caret.className = "caret";
-          p.appendChild(caret);
-          var li = 0, ci = 0, cur = null;
-          (function tick(){
-            if (li >= NPX_LINES.length) { return; }
-            if (!cur) {
-              cur = document.createElement("span");
-              if (NPX_LINES[li][0]) cur.className = NPX_LINES[li][0];
-              p.insertBefore(cur, caret);
-            }
-            var text = NPX_LINES[li][1];
-            cur.textContent = text.slice(0, ++ci);
-            if (ci >= text.length) { li++; ci = 0; cur = null; }
-            setTimeout(tick, 18);
-          })();
-        });
-      }, {threshold: 0.5});
-      nio.observe(document.getElementById("npxterm"));
-    }
-  }
-  }
-
-  /* ---- marquee: duplicate track for seamless loop ---- */
-  var mq = document.getElementById("mq");
-  if (mq) mq.innerHTML += mq.innerHTML;
-})();
-
-/* ============ SECOND BRAIN: rotating dot-sphere mind + orbiting life ============ */
-(function(){
-  var canvas = document.getElementById("brainviz");
-  if (!canvas) return;
-  var ctx = canvas.getContext("2d");
-  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  var W, H, CX, CY, R, DPR;
-  function resize(){
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
-    W = canvas.offsetWidth; H = canvas.offsetHeight;
-    canvas.width = W * DPR; canvas.height = H * DPR;
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    CX = W / 2; CY = H / 2;
-    R = Math.min(W, H) * 0.27;
-  }
-  resize();
-  window.addEventListener("resize", resize);
-
-  /* the mind: fibonacci sphere of dots */
-  var N = 700, dots = [];
-  for (var i = 0; i < N; i++) {
-    var y = 1 - 2 * (i + 0.5) / N;
-    var rr = Math.sqrt(1 - y * y);
-    var th = i * 2.399963229728653;
-    dots.push([Math.cos(th) * rr, y, Math.sin(th) * rr]);
-  }
-
-  /* the life: labeled nodes on tilted orbits.
-     Labels are randomly generated per visit; any resemblance to a real
-     schedule is a coincidence. */
-  function pick(a){ return a[Math.floor(Math.random() * a.length)]; }
-  function ri(lo, hi){ return lo + Math.floor(Math.random() * (hi - lo + 1)); }
-  var DEPT = ["BIO","CHEM","PSY","ECON","PHYS","STAT","HIST","ENGL","CALC","GOV"];
-  var DAY = ["Mon","Tue","Wed","Thu","Fri"];
-  function course(){ return pick(DEPT) + " " + ri(101, 480); }
-  var LABELS = [
-    course(), course(), course(),
-    course() + " exam · " + pick(DAY),
-    "HW " + ri(2, 9) + " · §" + ri(2, 6) + "." + ri(1, 4),
-    "GPA " + (2.9 + Math.random() * 1.1).toFixed(2),
-    "lab report · draft",
-    "extension email · sent",
-    "office hours · " + pick(DAY),
-    "study group · " + ri(5, 9) + "pm",
-    pick(["notes/startup-idea.md","notes/lecture-12.md","notes/rabbit-hole.md"]),
-    "crunch week","syllabus.pdf","exam · ch 4-7","session transcript","move to Friday"
-  ];
-  var nodes = LABELS.map(function(t, i){
-    return {
-      t: t,
-      or: 1.34 + (i % 5) * 0.065,
-      inc: -0.9 + (i * 0.41) % 1.8,
-      ph: i * 2.399,
-      sp: (0.0018 + (i % 4) * 0.0009) * (i % 3 === 0 ? -1 : 1),
-      p: [0,0,0], s: 1, a: 0
-    };
-  });
-  /* node-to-node links are proximity based, computed per frame (Obsidian feel) */
-
-  var rotY = 0, tiltY = 0, tiltX = 0.32, tgtTY = 0, tgtTX = 0.32;
-  var pointer = {x: -9999, y: -9999, on: false};
-  canvas.addEventListener("pointermove", function(e){
-    var r = canvas.getBoundingClientRect();
-    pointer.x = e.clientX - r.left; pointer.y = e.clientY - r.top; pointer.on = true;
-    tgtTY = ((pointer.x / W) - 0.5) * 0.55;
-    tgtTX = 0.32 + ((pointer.y / H) - 0.5) * 0.35;
-  });
-  canvas.addEventListener("pointerleave", function(){ pointer.on = false; tgtTY = 0; tgtTX = 0.32; });
-
-  function project(p, ry, rx){
-    var x = p[0] * Math.cos(ry) + p[2] * Math.sin(ry);
-    var z = -p[0] * Math.sin(ry) + p[2] * Math.cos(ry);
-    var y = p[1] * Math.cos(rx) - z * Math.sin(rx);
-    z = p[1] * Math.sin(rx) + z * Math.cos(rx);
-    var s = 2.6 / (2.6 - z);                      /* z in [-1.8, 1.8] */
-    return [CX + x * R * s, CY + y * R * s, s, z];
-  }
-
-  /* pulses: knowledge flowing into the mind */
-  var pulses = [], ripples = [], frame = 0;
-
-  function draw(){
-    frame++;
-    ctx.clearRect(0, 0, W, H);
-    /* soft core glow behind the mind */
-    var g = ctx.createRadialGradient(CX, CY, R * 0.1, CX, CY, R * 1.25);
-    g.addColorStop(0, "rgba(22,25,35,0.055)");
-    g.addColorStop(1, "rgba(22,25,35,0)");
-    ctx.fillStyle = g;
-    ctx.fillRect(CX - R * 1.3, CY - R * 1.3, R * 2.6, R * 2.6);
-    rotY += 0.0016;
-    /* ease the cursor tilt */
-    tiltY = tiltY + (tgtTY - tiltY) * 0.04;
-    tiltX = tiltX + (tgtTX - tiltX) * 0.04;
-    var RY = rotY + tiltY, RX = tiltX;
-
-    /* sphere dots, shimmering, glowing at the front */
-    for (var i = 0; i < N; i++) {
-      var q = project(dots[i], RY, RX);
-      var tw = 0.85 + Math.sin(frame * 0.03 + i * 1.7) * 0.15;
-      var a = (0.06 + (q[3] + 1) * 0.46) * tw;
-      var rad = 0.8 + q[2] * 0.95;
-      if (q[3] > 0.35) {                       /* halo on the front dots */
-        ctx.beginPath();
-        ctx.arc(q[0], q[1], rad * 3, 0, 6.2832);
-        ctx.fillStyle = "rgba(22,25,35," + (a * 0.16).toFixed(3) + ")";
-        ctx.fill();
-      }
-      ctx.beginPath();
-      ctx.arc(q[0], q[1], rad, 0, 6.2832);
-      ctx.fillStyle = "rgba(22,25,35," + Math.min(1, a).toFixed(3) + ")";
-      ctx.fill();
-    }
-
-    /* node positions */
-    for (var n = 0; n < nodes.length; n++) {
-      var nd = nodes[n];
-      var u = nd.ph + frame * nd.sp;
-      var p3 = [Math.cos(u) * nd.or, Math.sin(u) * Math.sin(nd.inc) * nd.or, Math.sin(u) * Math.cos(nd.inc) * nd.or];
-      var q2 = project(p3, RY, RX);
-      nd.px = q2[0]; nd.py = q2[1]; nd.s = q2[2]; nd.z = q2[3]; nd.p3 = p3;
-    }
-
-    /* links between nodes that drift near each other */
-    ctx.lineWidth = 1;
-    for (var l = 0; l < nodes.length; l++) {
-      for (var l2 = l + 1; l2 < nodes.length; l2++) {
-        var A = nodes[l], B = nodes[l2];
-        var ddx = A.px - B.px, ddy = A.py - B.py;
-        var dd = Math.sqrt(ddx*ddx + ddy*ddy);
-        if (dd < 230) {
-          var la = (1 - dd / 230) * 0.22;
-          ctx.strokeStyle = "rgba(22,25,35," + la.toFixed(3) + ")";
-          ctx.beginPath(); ctx.moveTo(A.px, A.py); ctx.lineTo(B.px, B.py); ctx.stroke();
-        }
-      }
-    }
-
-    /* threads from each node into the sphere surface */
-    for (n = 0; n < nodes.length; n++) {
-      var nd2 = nodes[n];
-      var m = Math.sqrt(nd2.p3[0]*nd2.p3[0] + nd2.p3[1]*nd2.p3[1] + nd2.p3[2]*nd2.p3[2]);
-      var sp = project([nd2.p3[0]/m, nd2.p3[1]/m, nd2.p3[2]/m], RY, RX);
-      ctx.strokeStyle = "rgba(22,25,35," + (0.05 + Math.max(0, nd2.z) * 0.06).toFixed(3) + ")";
-      ctx.beginPath(); ctx.moveTo(nd2.px, nd2.py); ctx.lineTo(sp[0], sp[1]); ctx.stroke();
-      nd2.spx = sp[0]; nd2.spy = sp[1];
-    }
-
-    /* cursor: link to nearby nodes, Obsidian hover feel */
-    if (pointer.on) {
-      for (n = 0; n < nodes.length; n++) {
-        var dxp = nodes[n].px - pointer.x, dyp = nodes[n].py - pointer.y;
-        var d = Math.sqrt(dxp*dxp + dyp*dyp);
-        nodes[n].hot = d < 170 ? 1 - d / 170 : 0;
-        if (nodes[n].hot > 0.03) {
-          ctx.strokeStyle = "rgba(22,25,35," + (nodes[n].hot * 0.35).toFixed(3) + ")";
-          ctx.beginPath(); ctx.moveTo(pointer.x, pointer.y); ctx.lineTo(nodes[n].px, nodes[n].py); ctx.stroke();
-        }
-      }
-    } else { for (n = 0; n < nodes.length; n++) nodes[n].hot = 0; }
-
-    /* nodes + labels */
-    ctx.font = "11px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
-    for (n = 0; n < nodes.length; n++) {
-      var nd3 = nodes[n];
-      var na = 0.30 + Math.max(0, nd3.z + 0.4) * 0.34 + nd3.hot * 0.35;
-      ctx.beginPath();
-      ctx.arc(nd3.px, nd3.py, 1.8 * nd3.s + nd3.hot * 1.6, 0, 6.2832);
-      ctx.fillStyle = "rgba(22,25,35," + Math.min(1, na + 0.15).toFixed(3) + ")";
-      ctx.fill();
-      ctx.fillStyle = "rgba(22,25,35," + Math.min(1, na).toFixed(3) + ")";
-      /* keep labels on-canvas: flip to the left near the right edge */
-      var tw2 = ctx.measureText(nd3.t).width;
-      if (nd3.px + 7 + tw2 > W - 8) ctx.fillText(nd3.t, nd3.px - 7 - tw2, nd3.py + 3);
-      else ctx.fillText(nd3.t, Math.max(8, nd3.px + 7), nd3.py + 3);
-    }
-
-    /* pulses */
-    if (frame % 84 === 0) pulses.push({n: Math.floor(Math.random() * nodes.length), t: 0});
-    for (var pi = pulses.length - 1; pi >= 0; pi--) {
-      var pu = pulses[pi]; pu.t += 0.016;
-      var nn = nodes[pu.n];
-      if (pu.t >= 1) { ripples.push({x: nn.spx, y: nn.spy, r: 2, a: 0.5}); pulses.splice(pi, 1); continue; }
-      var e = pu.t * pu.t * (3 - 2 * pu.t);
-      var gx = nn.px + (nn.spx - nn.px) * e, gy = nn.py + (nn.spy - nn.py) * e;
-      ctx.beginPath(); ctx.arc(gx, gy, 2.4, 0, 6.2832);
-      ctx.fillStyle = "rgba(22,25,35,0.9)"; ctx.fill();
-      ctx.beginPath(); ctx.arc(gx, gy, 6, 0, 6.2832);
-      ctx.fillStyle = "rgba(22,25,35,0.12)"; ctx.fill();
-    }
-    for (var ri = ripples.length - 1; ri >= 0; ri--) {
-      var rp = ripples[ri]; rp.r += 0.9; rp.a -= 0.016;
-      if (rp.a <= 0) { ripples.splice(ri, 1); continue; }
-      ctx.strokeStyle = "rgba(22,25,35," + rp.a.toFixed(3) + ")";
-      ctx.beginPath(); ctx.arc(rp.x, rp.y, rp.r, 0, 6.2832); ctx.stroke();
-    }
-
-    if (!reduced) requestAnimationFrame(draw);
-  }
-  draw(); /* reduced motion: one static frame */
 })();
 </script>
 
+<script src="assets/attrib.js"></script>
 <script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
 </body>

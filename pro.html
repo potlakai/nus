@@ -3,22 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%230b0d16%27/%3E%3Ctext x=%2732%27 y=%2744%27 font-family=%27Georgia,serif%27 font-size=%2734%27 fill=%27%23fff%27 text-anchor=%27middle%27%3E%CE%BD%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2714%27%20fill%3D%27%230b0d16%27%2F%3E%3Cpath%20d%3D%27M32.0%2027.2L36.0%2027.4L39.8%2028.1L43.5%2029.3L46.9%2030.9L49.9%2032.8L52.4%2035.1L54.4%2037.5L55.9%2040.1L56.7%2042.8L57.0%2045.4L56.7%2047.8L55.7%2050.0L54.3%2051.9L52.3%2053.4L50.0%2054.5L47.3%2055.1L44.3%2055.1L41.1%2054.6L37.9%2053.5L34.7%2051.9L31.7%2049.8L28.8%2047.2L26.3%2044.2L24.1%2040.9L22.3%2037.3L21.0%2033.6L20.2%2029.8L19.9%2026.1L20.1%2022.6L20.7%2019.3L21.9%2016.3L23.4%2013.7L25.2%2011.7L27.3%2010.1L29.6%209.2L32.0%208.9L34.4%209.2L36.7%2010.1L38.8%2011.7L40.6%2013.7L42.1%2016.3L43.3%2019.3L43.9%2022.6L44.1%2026.1L43.8%2029.8L43.0%2033.6L41.7%2037.3L39.9%2040.9L37.7%2044.2L35.2%2047.2L32.3%2049.8L29.3%2051.9L26.1%2053.5L22.9%2054.6L19.7%2055.1L16.7%2055.1L14.0%2054.5L11.7%2053.4L9.7%2051.9L8.3%2050.0L7.3%2047.8L7.0%2045.4L7.3%2042.8L8.1%2040.1L9.6%2037.5L11.6%2035.1L14.1%2032.8L17.1%2030.9L20.5%2029.3L24.2%2028.1L28.0%2027.4L32.0%2027.2Z%27%20fill%3D%27none%27%20stroke%3D%27%23c9cedc%27%20stroke-width%3D%274%27%20stroke-linejoin%3D%27round%27%20transform%3D%27translate(32%2032)%20scale(.78)%20translate(-32%20-32)%27%2F%3E%3C%2Fsvg%3E">
 <title>Get Nūs Pro</title>
 <meta name="description" content="Sign in to your Nūs account and upgrade to Pro. $9.99 a month, cancel any time. Pro turns on in the desktop app the moment checkout completes.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0a0c11">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
-  body{min-height:100vh;display:flex;flex-direction:column}
-  .wrap{flex:1;display:grid;place-items:center;padding:110px 20px 60px}
   .pane{width:min(960px,100%);display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
   @media (max-width:820px){.pane{grid-template-columns:1fr}}
-  .box{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:18px;padding:30px 32px}
-  .box.dark{background:radial-gradient(130% 170% at 10% 0%, #1a2140 0%, #0b0d16 60%);color:#eceaf2;border-color:rgba(255,255,255,.08)}
   .box.dark h2,.box.dark .price{color:#fff}
   .box.dark .lede,.box.dark li{color:#b7bccf}
   .box h2{font-size:30px;margin-bottom:8px}
@@ -41,6 +37,8 @@
   .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
   .status{min-height:20px;margin-top:10px;font-size:13px;color:#4d5266}
   .status.bad{color:#b9473f}
+  .svc-banner{margin:0 0 16px;padding:12px 14px;border-radius:12px;background:#fff3ee;border:1px solid #f0c9bd;color:#8a3b23;font-size:13.5px;line-height:1.5}
+  .svc-banner a{color:inherit;text-decoration:underline;text-underline-offset:3px}
   .status.good{color:#1b6e57}
   .who{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:13px}
   .who b{display:block;font-size:14px}
@@ -52,7 +50,7 @@
   .steps i{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:700;background:var(--blue-soft);color:#26337e}
 </style>
 </head>
-<body>
+<body class="theme-paper">
 <nav id="nav" class="solid">
   <a class="logo" href="index.html">N<span class="mac">U</span>S</a>
   <div class="nav-links">
@@ -84,6 +82,7 @@
     </div>
 
     <div class="box">
+      <p id="svc-banner" class="svc-banner hidden" role="status"></p>
       <div id="step-signin">
         <p class="sec-kicker">Step 1 of 2</p>
         <h2>Sign in to Nūs</h2>
@@ -129,21 +128,45 @@
 </footer>
 
 <script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
   // Public by design: the same project URL and publishable key ship inside
   // the desktop app. Every table is RLS-locked and holds no coursework.
   const SUPABASE_URL = 'https://xnpkplcjurzwanotmwwt.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_yBEA9loOsDI9E_HMFIVCRQ_PZvTD8rB';
   const HERE = location.origin + location.pathname;
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { flowType: 'pkce', persistSession: true, detectSessionInUrl: true } });
   const $ = (s) => document.querySelector(s);
   const status = (id, text, kind) => { const el = $(id); el.textContent = text || ''; el.className = 'status' + (kind ? ' ' + kind : ''); };
   const show = (id) => { for (const s of ['#step-signin', '#step-pay', '#step-already']) $(s).classList.toggle('hidden', s !== id); };
 
+  // Two CDNs for the SDK, then one cheap health GET before any button works.
+  // A paused project or a blocked CDN used to leave this page silently inert;
+  // now it says what is wrong and points at the free download instead.
+  const OUTAGE = 'Checkout is temporarily unavailable. The free app still works: download it from the button above and come back for Pro later.';
+  async function loadCreateClient() {
+    for (const src of ['https://esm.sh/@supabase/supabase-js@2.49.4', 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/+esm']) {
+      try { const mod = await import(src); if (mod.createClient) return mod.createClient; } catch {}
+    }
+    return null;
+  }
+  async function reachable() {
+    const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 5000);
+    try { await fetch(`${SUPABASE_URL}/auth/v1/health`, { headers: { apikey: SUPABASE_KEY }, signal: ctl.signal }); return true; }
+    catch { return false; }
+    finally { clearTimeout(timer); }
+  }
+  const createClient = await loadCreateClient();
+  const online = createClient ? await reachable() : false;
+  if (!online) {
+    const banner = $('#svc-banner'); banner.textContent = OUTAGE; banner.classList.remove('hidden');
+    for (const id of ['#google', '#login', '#signup', '#checkout', '#portal']) { const b = $(id); if (b) b.disabled = true; }
+  }
+  const supabase = createClient ? createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { flowType: 'pkce', persistSession: true, detectSessionInUrl: true } }) : null;
+
   function isStripe(url) {
     try { const u = new URL(url); return u.protocol === 'https:' && (u.hostname === 'stripe.com' || u.hostname.endsWith('.stripe.com')); } catch { return false; }
   }
+  const FRIENDLY_AUTH = (error) => /fetch|network|load failed/i.test(error?.message || '') ? 'No connection to the sign-in service. Try again in a moment.' : error.message;
   async function callFunction(name) {
+    if (!supabase) return { error: 'network' };
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) return { error: 'not_authenticated' };
     try {
@@ -161,6 +184,7 @@
     return row && row.is_pro && row.current_period_end && Date.parse(row.current_period_end) > Date.now() ? row : null;
   }
   async function render() {
+    if (!supabase) { show('#step-signin'); return; }
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) { show('#step-signin'); return; }
     const email = session.user.email || '';
@@ -183,19 +207,23 @@
     billing_not_configured: 'Checkout is not switched on yet. Try again soon.',
     network: 'No connection. Try again in a moment.',
     no_subscription: 'No Stripe subscription is attached to this account yet.',
+    checkout_unavailable: 'Stripe could not start checkout just now. Nothing was charged. Try again in a minute.',
+    portal_unavailable: 'The billing portal could not open. Try again in a minute.',
+    subscription_lookup_failed: 'Could not look up this account\'s subscription. Try again in a minute.',
+    unavailable: 'Checkout is temporarily unavailable. Try again in a minute.',
   };
 
   $('#google').addEventListener('click', async () => {
     status('#status-signin', 'Opening Google…');
     const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: HERE } });
-    if (error) status('#status-signin', error.message, 'bad');
+    if (error) status('#status-signin', FRIENDLY_AUTH(error), 'bad');
   });
   $('#login').addEventListener('click', async () => {
     const email = $('#email').value.trim(), password = $('#password').value;
     if (!email || !password) return status('#status-signin', 'Enter email and password.', 'bad');
     status('#status-signin', 'Signing in…');
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) return status('#status-signin', error.message, 'bad');
+    if (error) return status('#status-signin', FRIENDLY_AUTH(error), 'bad');
     status('#status-signin', ''); render();
   });
   $('#signup').addEventListener('click', async () => {
@@ -204,19 +232,22 @@
     if (password.length < 8) return status('#status-signin', 'Password must be at least 8 characters.', 'bad');
     status('#status-signin', 'Creating your account…');
     const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: HERE } });
-    if (error) return status('#status-signin', error.message, 'bad');
+    if (error) return status('#status-signin', FRIENDLY_AUTH(error), 'bad');
     if (data.session) { render(); return; }
     status('#status-signin', 'Check your email for the confirmation link. It brings you straight back here.', 'good');
   });
   $('#password').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('#login').click(); });
-  for (const id of ['#signout', '#signout-2']) $(id).addEventListener('click', async () => { await supabase.auth.signOut(); render(); });
+  for (const id of ['#signout', '#signout-2']) $(id).addEventListener('click', async () => { await supabase?.auth.signOut(); render(); });
 
   $('#checkout').addEventListener('click', async () => {
     const btn = $('#checkout'); btn.disabled = true; status('#status-pay', 'Opening Stripe Checkout…');
     const result = await callFunction('create-checkout');
     btn.disabled = false;
     if (result.error === 'already_subscribed') { render(); return; }
-    if (result.error) return status('#status-pay', ERR[result.error] || `Checkout failed (${result.error}).`, 'bad');
+    if (result.error) {
+      if (result.detail) console.error('[nus] create-checkout:', result.error, result.detail);
+      return status('#status-pay', ERR[result.error] || 'Checkout failed. Try again in a minute.', 'bad');
+    }
     status('#status-pay', 'Taking you to Stripe…', 'good');
     location.href = result.url;
   });
@@ -224,13 +255,17 @@
     const btn = $('#portal'); btn.disabled = true; status('#status-already', 'Opening the billing portal…');
     const result = await callFunction('create-portal');
     btn.disabled = false;
-    if (result.error) return status('#status-already', ERR[result.error] || 'The billing portal could not open. Try again in a minute.', 'bad');
+    if (result.error) {
+      if (result.detail) console.error('[nus] create-portal:', result.error, result.detail);
+      return status('#status-already', ERR[result.error] || 'The billing portal could not open. Try again in a minute.', 'bad');
+    }
     location.href = result.url;
   });
 
-  supabase.auth.onAuthStateChange((event) => { if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') render(); });
+  supabase?.auth.onAuthStateChange((event) => { if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') render(); });
   render();
 </script>
+<script src="assets/attrib.js"></script>
 <script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
