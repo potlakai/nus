@@ -36,10 +36,13 @@
     const s = t / TWO_PI;
     const q = smooth((s - 0.68) / 0.32);
     const e = q * smooth(u);
+    // The tail pulls away on the -y side of the seam: under the S pose that
+    // projects downward and away from the camera, so the page strand can
+    // carry it on as a thin, far line (the end Knot is rotated to receive it).
     const seam = trefoilPoint(TWO_PI);
     const b = {
       x: seam.x + Math.sin(q * Math.PI) * 0.3,
-      y: seam.y + q * 6.4,
+      y: seam.y - q * 6.4,
       z: seam.z + Math.sin(q * Math.PI) * 0.18,
     };
     return { x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e, z: a.z + (b.z - a.z) * e };
@@ -163,7 +166,7 @@
       const a = alphaAt(i);
       if (a <= 0) continue;
       const sp = row[Math.round((p.s + 1) * 0.5 * topO)];
-      const dia = tube * 2 * p.persp * 0.92;
+      const dia = (p.tube || tube) * 2 * p.persp * 0.92;
       const cs = Math.cos(p.ang), sn = Math.sin(p.ang);
       ctx.globalAlpha = a;
       ctx.setTransform(cs, sn, -sn, cs, p.sx, p.sy);
@@ -202,6 +205,15 @@
     const drawGround = opts.ground !== false;
     const RATIO = opts.scale || 0.33;
     const TUBE_RATIO = Math.max(0.008, Math.min(0.06, opts.tubeScale || 0.05));
+    // rotate spins the projected mark (pi keeps the S readable but opens the
+    // seam upward); anchorY places the centre as a fraction of the canvas
+    // height so a host can give the open tail room to run off one side.
+    const ROT = Number(opts.rotate) || 0;
+    const ROT_C = Math.cos(ROT), ROT_S = Math.sin(ROT);
+    const ANCHOR_Y = opts.anchorY == null ? 0.5 : Math.max(0, Math.min(1, Number(opts.anchorY)));
+    // bandDir -1 runs the travelling light backwards, so a Knot that receives
+    // the page strand carries the light on in the direction it arrived.
+    const BAND_DIR = Number(opts.bandDir) === -1 ? -1 : 1;
     // ?motion=reduce mirrors the OS setting so the static frame can be checked without changing it.
     const reduced = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
       || /motion=reduce/.test(String(window.location && window.location.search));
@@ -217,6 +229,44 @@
     let bandTime = time;
     let unravel = 0, unravelTarget = 0, tumble = time;
     let tailPoint = null;
+    let bandPos = 0;
+    let pausePending = false;
+
+    // Projection state from the latest frame, shared with getTailAnchor().
+    let cx = 0, cy = 0, R = 1, cosX = 1, sinX = 0, cosY = 1, sinY = 0, lastTube = 1, projected = false;
+    const fov = 6.2;
+    const tmpPt = { sx: 0, sy: 0, z: 0, persp: 1, t: 0, ang: 0, s: 0, len: 2 };
+    function tubeAt(u) {
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      return Math.max(0.9 * dpr, Math.min(canvas.width, canvas.height) * TUBE_RATIO * (1 - u * 0.45));
+    }
+    // Make the projection state valid before the first frame has drawn
+    // (a paused or not-yet-visible Knot can still be asked where its tail is).
+    function syncProjection() {
+      resize();
+      cx = canvas.width / 2; cy = canvas.height * ANCHOR_Y;
+      R = Math.min(canvas.width, canvas.height) * RATIO;
+      const rx = tumble * 0.26, ry = tumble * 0.17;
+      cosX = Math.cos(rx); sinX = Math.sin(rx);
+      cosY = Math.cos(ry); sinY = Math.sin(ry);
+      lastTube = tubeAt(unravel);
+      projected = true;
+    }
+    function project(p, pt) {
+      const x = p.x / 3, y = p.y / 3, z = p.z / 1.2;
+      const x1 = x * cosY + z * sinY;
+      const z1 = -x * sinY + z * cosY;
+      const y1 = y * cosX - z1 * sinX;
+      const z2 = y * sinX + z1 * cosX;
+      const xr = x1 * ROT_C - y1 * ROT_S;
+      const yr = x1 * ROT_S + y1 * ROT_C;
+      const persp = fov / (fov - z2 * 1.6);
+      pt.sx = cx + xr * R * persp;
+      pt.sy = cy + yr * R * persp;
+      pt.z = z2;
+      pt.persp = persp;
+      return pt;
+    }
 
     function accent() {
       const raw = getComputedStyle(canvas.parentElement || canvas).getPropertyValue('--knot-accent');
@@ -263,22 +313,23 @@
       tumble = basePose + Math.sin(time * 0.18) * 0.16 * (1 - unravel * 0.85);
       if (liveLevel > level) level = liveLevel;
       else level += (liveLevel - level) * Math.min(1, dt * 5);
-      bandTime += dt * band * (1 + level * 0.5);
+      bandTime += dt * band * (1 + level * 0.5) * BAND_DIR;
       const glowE = Math.min(1.4, glow * (1 + level * 0.6));
       if (now - accAt > 500) { acc = accent(); accAt = now; }
 
       const dpr = resize();
       const W = canvas.width, H = canvas.height;
-      const cx = W / 2, cy = H / 2;
-      const R = Math.min(W, H) * RATIO;
+      cx = W / 2; cy = H * ANCHOR_Y;
+      R = Math.min(W, H) * RATIO;
       const tube = Math.max(0.9 * dpr, Math.min(W, H) * TUBE_RATIO * (1 - unravel * 0.45)); // strand radius
+      lastTube = tube;
 
       ctx.clearRect(0, 0, W, H);
 
       const rx = tumble * 0.26, ry = tumble * 0.17;
-      const cosX = Math.cos(rx), sinX = Math.sin(rx);
-      const cosY = Math.cos(ry), sinY = Math.sin(ry);
-      const fov = 6.2;
+      cosX = Math.cos(rx); sinX = Math.sin(rx);
+      cosY = Math.cos(ry); sinY = Math.sin(ry);
+      projected = true;
 
       if (drawGround) {
         const ground = ctx.createRadialGradient(cx, cy, R * 0.1, cx, cy, Math.min(W, H) * 0.5);
@@ -322,18 +373,7 @@
       list.length = 0;
       for (let i = 0; i < N; i++) {
         const t = (i / N) * TWO_PI;
-        const p = curvePoint(t, unravel);
-        const x = p.x / 3, y = p.y / 3, z = p.z / 1.2;
-        const x1 = x * cosY + z * sinY;
-        const z1 = -x * sinY + z * cosY;
-        const y1 = y * cosX - z1 * sinX;
-        const z2 = y * sinX + z1 * cosX;
-        const persp = fov / (fov - z2 * 1.6);
-        const pt = pool[i];
-        pt.sx = cx + x1 * R * persp;
-        pt.sy = cy + y1 * R * persp;
-        pt.z = z2;
-        pt.persp = persp;
+        const pt = project(curvePoint(t, unravel), pool[i]);
         pt.t = i / N;
         list.push(pt);
       }
@@ -358,7 +398,7 @@
       drawTube(ctx, list, tube, set);
 
       // The travelling light: runs the curve, faster with voice.
-      const bandPos = (bandTime * 0.11) % 1;
+      bandPos = ((bandTime * 0.11) % 1 + 1) % 1;
       const bi = Math.floor(bandPos * N) % N;
       const bp = pool[bi];
       // brighten the strand under the light
@@ -368,6 +408,13 @@
       drawBright(ctx, run, tube, set, (i) => 0.55 * (1 - Math.abs(i - half) / (half + 1)) * (0.5 + bp.z * 0.5 + 0.35));
       drawLight(ctx, bp.sx, bp.sy, tube * (2.6 + glowE * 1.6) * bp.persp, acc, 0.35 + glowE * 0.45);
 
+      // A host may ask to pause while the strand is still opening or tying;
+      // finish that motion first so the page strand never freezes mid-join.
+      if (pausePending && Math.abs(unravelTarget - unravel) < 0.005) {
+        pausePending = false;
+        stop();
+        return;
+      }
       if (running) frame = requestAnimationFrame(draw);
     }
 
@@ -424,15 +471,36 @@
         unravelTarget = Math.max(0, Math.min(1, Number(value) || 0));
       },
       getUnravel() { return unravel; },
-      getTailAnchor() {
-        if (!tailPoint) return null;
+      getBandPhase() { return bandPos; },
+      setBandPhase(p) {
+        const phase = Math.max(0, Math.min(1, Number(p) || 0));
+        bandTime = (Math.floor(bandTime * 0.11) + phase) / 0.11;
+      },
+      // Viewport position of the open end. With no argument this is the live
+      // tail from the last frame; with u it is where the tail sits at that
+      // unravel level under the current pose, so a page can lay its path
+      // against the fully open mark and only drag toward the live one.
+      // Also reports z (depth, for lighting) and r (tube radius, CSS px).
+      getTailAnchor(u) {
+        let pt;
+        if (u == null) {
+          if (!tailPoint) return null;
+          pt = tailPoint;
+        } else {
+          if (!projected) syncProjection();
+          pt = project(curvePoint(TWO_PI, Math.max(0, Math.min(1, Number(u) || 0))), tmpPt);
+        }
         const r = canvas.getBoundingClientRect();
         const sx = canvas.width && r.width ? r.width / canvas.width : 1;
         const sy = canvas.height && r.height ? r.height / canvas.height : 1;
-        return { x: r.left + tailPoint.sx * sx, y: r.top + tailPoint.sy * sy };
+        const tube = u == null ? lastTube : tubeAt(Math.max(0, Math.min(1, Number(u) || 0)));
+        return { x: r.left + pt.sx * sx, y: r.top + pt.sy * sy, z: pt.z, r: tube * pt.persp * sx };
       },
-      pause() { stop(); },
-      resume() { if (!reduced) start(); },
+      pause() {
+        if (!running || Math.abs(unravelTarget - unravel) < 0.005) { pausePending = false; stop(); }
+        else pausePending = true;
+      },
+      resume() { pausePending = false; if (!reduced) start(); },
       destroy() {
         stop();
         document.removeEventListener('visibilitychange', onVisibility);

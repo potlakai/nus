@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=9">
+<link rel="stylesheet" href="site.css?v=10">
 </head>
 <body>
 <canvas id="thread-back" aria-hidden="true"></canvas>
@@ -67,7 +67,7 @@
     <div class="mind-node course-node attention" id="node-acct" style="--nx:84%;--ny:35%;--nd:-3s"><i></i><span><small>Course</small>ACCT 2301</span></div>
     <div class="mind-node assignment-node attention" id="node-exam" style="--nx:86%;--ny:62%;--nd:-4s"><i></i><span><small>Thursday</small>Exam 2</span></div>
     <div class="mind-node course-node" id="node-cs" style="--nx:68%;--ny:13%;--nd:-6s"><i></i><span><small>Course</small>CS 2340</span></div>
-    <div class="mind-node assignment-node" id="node-project" style="--nx:92%;--ny:15%;--nd:-2s"><i></i><span><small>Next week</small>Project checkpoint</span></div>
+    <div class="mind-node assignment-node" id="node-project" style="--nx:87%;--ny:15%;--nd:-2s"><i></i><span><small>Next week</small>Project checkpoint</span></div>
     <div class="proposal mind-node" id="node-proposal" style="--nx:55%;--ny:84%;--nd:-4s">
       <span class="proposal-label"><i></i>Proposed change</span>
       <b>Move review block to Thursday</b>
@@ -279,7 +279,7 @@
   <p class="credit">Statue: <em>Marble head of an athlete</em>, The Met Open Access (CC0).</p>
 </footer>
 
-<script src="assets/knot3d.js?v=9"></script>
+<script src="assets/knot3d.js?v=10"></script>
 <script>
 (function(){
   var FEEDBACK_URL = "https://github.com/potlakai/nus/discussions/1";
@@ -343,7 +343,7 @@
   }
   var heroKnot = mountKnot("hero-knot", { ground: false, scale: 0.31, tubeScale: 0.03, startTime: 8 });
   var stageKnot = mountKnot("site-knot", { ground: false, scale: 0.3, tubeScale: 0.03, startTime: 8 });
-  var endKnot = mountKnot("end-knot", { ground: false, scale: 0.32, tubeScale: 0.03, startTime: 8 });
+  var endKnot = mountKnot("end-knot", { ground: false, scale: 0.32, tubeScale: 0.03, startTime: 8, rotate: Math.PI, bandDir: -1 });
   window.NusHeroKnot = heroKnot;
   window.NusEndKnot = endKnot;
   if (endKnot && !reduced) endKnot.setUnravel(1);
@@ -495,7 +495,7 @@
 })();
 </script>
 
-<script src="assets/thread.js?v=11"></script>
+<script src="assets/thread.js?v=12"></script>
 
 <script src="assets/attrib.js"></script>
 <script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

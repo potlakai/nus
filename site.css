@@ -110,7 +110,7 @@ nav .btn{padding:8px 18px}
 .proposal .proposal-label i{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 9px rgba(111,134,255,.7)}
 .proposal b{font-family:var(--serif);font-size:17px;line-height:1.1;font-weight:400}
 .proposal-status{color:#7a6544;font-size:9.5px}
-@keyframes nodeDrift{0%,100%{margin-top:0}50%{margin-top:-5px}}
+@keyframes nodeDrift{0%,100%{translate:0 0}50%{translate:0 -5px}}
 @keyframes starPulse{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.55)}}
 @keyframes intelligenceGlow{0%,100%{opacity:.62;transform:scale(.96)}50%{opacity:1;transform:scale(1.04)}}
 @keyframes edgePulse{to{stroke-dashoffset:-330}}
@@ -146,6 +146,8 @@ h2 em,.get-end h3 em{font-style:italic;color:#aab4e6}
 .rv{opacity:0;transform:translateY(28px) scale(.988);filter:blur(7px);transition:opacity .75s ease,transform .9s cubic-bezier(.16,1,.3,1),filter .7s ease}
 .rv.in{opacity:1;transform:none;filter:none}
 .rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}
+/* Large panels reveal with opacity and motion only: animating blur over big rasters stutters the scroll. */
+.rv:is(.intelligence-board,.product-stage,.knot-stage,.plan,.roadmap-inner){filter:none}
 
 /* ---------- product proof tabs ---------- */
 .product-tabs{display:inline-flex;gap:5px;margin:var(--s-6) 0 var(--s-4);padding:5px;border:1px solid var(--line);border-radius:var(--r-pill);background:rgba(8,13,26,.64)}
