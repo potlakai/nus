@@ -24,17 +24,24 @@
     };
   }
 
-  // The same 2π of parameter laid out as a hanging strand with two loose
-  // waves: the Knot unravelled. Mixed with the trefoil by curvePoint so the
-  // mark can loosen (site hero on scroll) and tighten back without a seam.
-  function openPoint(t) {
-    const s = t / TWO_PI;
-    return { x: 1.4 * Math.sin(2 * t), y: -3 + 6 * s, z: 0.7 * Math.cos(2 * t) };
-  }
+  const smooth = (v) => { const x = Math.max(0, Math.min(1, v)); return x * x * (3 - 2 * x); };
+
+  // Open only the final arc of the desktop trefoil. The previous site version
+  // blended the whole loop into a standing wave, producing a star halfway
+  // through the scroll. Keeping most of the curve untouched makes the mark
+  // read as the Companion Knot while one real end is pulled into the page.
   function curvePoint(t, u) {
     if (u <= 0) return trefoilPoint(t);
-    const a = trefoilPoint(t), b = openPoint(t);
-    const e = u * u * (3 - 2 * u);
+    const a = trefoilPoint(t);
+    const s = t / TWO_PI;
+    const q = smooth((s - 0.68) / 0.32);
+    const e = q * smooth(u);
+    const seam = trefoilPoint(TWO_PI);
+    const b = {
+      x: seam.x + Math.sin(q * Math.PI) * 0.3,
+      y: seam.y + q * 6.4,
+      z: seam.z + Math.sin(q * Math.PI) * 0.18,
+    };
     return { x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e, z: a.z + (b.z - a.z) * e };
   }
 
@@ -139,7 +146,7 @@
       const lit = Math.max(0, Math.min(1, 0.5 + p.z * 0.5));
       const row = set[Math.round(lit * topL)];
       const sp = row[Math.round((p.s + 1) * 0.5 * topO)];
-      const dia = tube * 2 * p.persp;
+      const dia = (p.tube || tube) * 2 * p.persp;
       const cs = Math.cos(p.ang), sn = Math.sin(p.ang);
       ctx.setTransform(cs, sn, -sn, cs, p.sx, p.sy);
       ctx.drawImage(sp, -p.len / 2, -dia / 2, p.len, dia);
@@ -194,6 +201,7 @@
     // the canvas, letting a host give the glow extra canvas margin.
     const drawGround = opts.ground !== false;
     const RATIO = opts.scale || 0.33;
+    const TUBE_RATIO = Math.max(0.008, Math.min(0.06, opts.tubeScale || 0.05));
     // ?motion=reduce mirrors the OS setting so the static frame can be checked without changing it.
     const reduced = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
       || /motion=reduce/.test(String(window.location && window.location.search));
@@ -201,12 +209,14 @@
     let state = 'idle';
     let running = false;
     let frame = null;
-    let time = Math.random() * 100;         // desync multiple instances
+    const basePose = opts.startTime == null ? 2.35 : Number(opts.startTime);
+    let time = basePose; // recognizable desktop S pose
     let last = performance.now();
     let speed = STATES.idle.speed, tint = STATES.idle.tint, glow = STATES.idle.glow, band = STATES.idle.band;
     let liveLevel = 0, level = 0;
     let bandTime = time;
     let unravel = 0, unravelTarget = 0, tumble = time;
+    let tailPoint = null;
 
     function accent() {
       const raw = getComputedStyle(canvas.parentElement || canvas).getPropertyValue('--knot-accent');
@@ -241,13 +251,16 @@
       last = now;
       const target = STATES[state] || STATES.idle;
       const k = 1 - Math.exp(-dt * 4.5);
+      const unwindK = 1 - Math.exp(-dt * 2.75);
       speed += (target.speed - speed) * k;
       tint += (target.tint - tint) * k;
       glow += (target.glow - glow) * k;
       band += (target.band - band) * k;
-      unravel += (unravelTarget - unravel) * k;
+      unravel += (unravelTarget - unravel) * unwindK;
       time += dt * speed;
-      tumble += dt * speed * (1 - unravel * 0.85);
+      // Keep the Companion's readable S silhouette. A small, breathing orbit gives
+      // it depth without rotating into the rejected three-lobed presentation.
+      tumble = basePose + Math.sin(time * 0.18) * 0.16 * (1 - unravel * 0.85);
       if (liveLevel > level) level = liveLevel;
       else level += (liveLevel - level) * Math.min(1, dt * 5);
       bandTime += dt * band * (1 + level * 0.5);
@@ -258,7 +271,7 @@
       const W = canvas.width, H = canvas.height;
       const cx = W / 2, cy = H / 2;
       const R = Math.min(W, H) * RATIO;
-      const tube = Math.max(2.2 * dpr, Math.min(W, H) * 0.05 * (1 - unravel * 0.45)); // strand radius
+      const tube = Math.max(0.9 * dpr, Math.min(W, H) * TUBE_RATIO * (1 - unravel * 0.45)); // strand radius
 
       ctx.clearRect(0, 0, W, H);
 
@@ -324,13 +337,17 @@
         pt.t = i / N;
         list.push(pt);
       }
+      tailPoint = pool[N - 1];
       // Tangents from neighbours (the curve is closed), slice length from spacing.
       let plen = 0;
       for (let i = 1; i < N; i++) plen += Math.hypot(pool[i].sx - pool[i - 1].sx, pool[i].sy - pool[i - 1].sy);
       perim = plen;
       const slen = Math.max(2 * dpr, (plen / N) * 3.2);
       for (let i = 0; i < N; i++) {
-        const a = pool[(i + N - 1) % N], b = pool[(i + 1) % N], p = pool[i];
+        const open = unravel > 0.002;
+        const a = pool[open ? Math.max(0, i - 1) : (i + N - 1) % N];
+        const b = pool[open ? Math.min(N - 1, i + 1) : (i + 1) % N];
+        const p = pool[i];
         p.ang = Math.atan2(b.sy - a.sy, b.sx - a.sx);
         p.s = lightSide(p.ang);
         p.len = slen;
@@ -368,7 +385,7 @@
 
     const onVisibility = () => { if (document.hidden) stop(); else start(); };
     if (reduced) {
-      time = 2.35; tumble = time;
+      time = basePose; tumble = basePose;
       draw(performance.now());
       canvas.classList.add('knot-static');
     } else {
@@ -405,6 +422,14 @@
       setUnravel(value) {
         if (reduced) return;
         unravelTarget = Math.max(0, Math.min(1, Number(value) || 0));
+      },
+      getUnravel() { return unravel; },
+      getTailAnchor() {
+        if (!tailPoint) return null;
+        const r = canvas.getBoundingClientRect();
+        const sx = canvas.width && r.width ? r.width / canvas.width : 1;
+        const sy = canvas.height && r.height ? r.height / canvas.height : 1;
+        return { x: r.left + tailPoint.sx * sx, y: r.top + tailPoint.sy * sy };
       },
       pause() { stop(); },
       resume() { if (!reduced) start(); },
