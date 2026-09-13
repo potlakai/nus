@@ -143,7 +143,7 @@
   <span class="story-anchor" data-story-anchor data-lane="center" aria-hidden="true"></span>
   <p class="sec-kicker rv">The Companion</p>
   <h2 class="rv d1">The Knot sits on top<br>of <em>everything</em>.</h2>
-  <p class="lede rv d2">The other half floats over your screen, sees the window you point it at, and listens when you switch it on. Same install.</p>
+  <p class="lede rv d2">The other half floats over your screen. Point at anything, type one line, and the help lands where you are working. Same install.</p>
   <div class="companion-grid">
     <div class="knot-stage rv d2" data-thread-obstacle aria-label="The Nūs Knot, the Companion's on-screen mark">
       <div class="stage-line"><span>Companion</span><b id="stage-state">listening · screen + voice</b></div>
@@ -152,14 +152,16 @@
     </div>
     <div class="companion-copy" data-thread-obstacle>
       <ul class="facts">
-        <li class="rv d1"><span class="chip">Sees</span><b>The screen you choose</b><span>A problem set, a slide, an error. It answers from what it sees plus what it knows about your semester.</span></li>
-        <li class="rv d2"><span class="chip">Hears</span><b>Only when you say so</b><span>Switch listening on for a lecture and it keeps a transcript you can search. Off is the default. One key stops it.</span></li>
-        <li class="rv d3"><span class="chip">Stays</span><b>Close the app, it remains</b><span>The Knot keeps running with every hotkey live. One button removes it completely.</span></li>
+        <li class="rv d1"><span class="chip">Points</span><b>Ctrl+Shift+T on anything</b><span>Put the cursor on a button, an error, a slide, or a blank patch of screen and press it. A strand runs from the Knot to your spot and the answer arrives right there. No chat window to switch to.</span></li>
+        <li class="rv d2"><span class="chip">Modes</span><b>Ask, Explain, Fix, Guide</b><span>Ask never touches your screen. Explain and Fix work from the small preview you just pointed at. Guide walks you through it one step at a time while you do the clicking.</span></li>
+        <li class="rv d3"><span class="chip">Sees</span><b>Only the preview, only when you send</b><span>What you pointed at becomes a small preview you see first. Nothing leaves your machine until you press Send, and the rest of the screen never goes with it.</span></li>
+        <li class="rv d4"><span class="chip">Hears</span><b>Only when you say so</b><span>Type whenever you like; spoken replies are off by default. Hold a key to talk, or press Talk for hands-free with a visible Stop. Switch listening on for a lecture and it keeps a transcript you can search.</span></li>
+        <li class="rv d4"><span class="chip">Stays</span><b>Close the app, it remains</b><span>The Knot keeps running with every hotkey live. One button removes it completely.</span></li>
       </ul>
-      <p class="keys rv d4"><b>Ctrl+Shift+Space</b> hides it. <b>Ctrl+Shift+X</b> stops listening and vanishes. Follow the rules of every room you are in.</p>
+      <p class="keys rv d4"><b>Ctrl+Shift+T</b> points at what you need help with. <b>Ctrl+Shift+Space</b> hides it. <b>Ctrl+Shift+X</b> stops listening and vanishes. Follow the rules of every room you are in.</p>
     </div>
   </div>
-  <p class="concept rv d4"><span class="chip">Concept</span><b>Where it is going:</b> one thread that lives across your screens, moves to where you are working, and tightens into the Knot when you need it. Not shipped yet.</p>
+  <p class="concept rv d4"><span class="chip">Concept</span><b>Where it is going:</b> one thread that follows you across every monitor. Today the strand reaches any spot on the display the Knot lives on. The rest is not shipped yet.</p>
 </section>
 
 <!-- ============ SETUP ============ -->
@@ -173,7 +175,7 @@
     </div>
     <ol class="steps" data-thread-obstacle>
       <li class="rv"><span class="step-no">01</span><b>Download and open it</b><span>Use the installer for automatic updates, or the <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Portable.exe" id="portable">portable build</a>.</span></li>
-      <li class="rv d1"><span class="step-no">02</span><b>Give it your AI</b><span>If <code>Claude Code</code> is installed, Nūs finds it. Otherwise paste an Anthropic API key. The Companion uses a Gemini key.</span></li>
+      <li class="rv d1"><span class="step-no">02</span><b>Give it your AI</b><span>If <code>Claude Code</code> is installed, Nūs finds it. Otherwise paste an Anthropic API key. Pointing at your screen uses that same Claude connection; everyday Companion questions use a Gemini key.</span></li>
       <li class="rv d2"><span class="step-no">03</span><b>Drop in a syllabus</b><span>Check the table, confirm what it read, and your semester is mapped.</span></li>
     </ol>
   </div>
@@ -235,7 +237,7 @@
   <p class="sec-kicker rv">Questions</p>
   <h2 class="rv d1">FAQ</h2>
   <details class="rv"><summary>Is this a cheating tool?</summary><p class="a">No. It plans, schedules, briefs, and quizzes you. It refuses to write your submissions, and it reads your school's AI policy straight out of the syllabus.</p></details>
-  <details class="rv"><summary>What do I need to run it?</summary><p class="a">Windows, and your own AI. <strong>Claude</strong> runs the desktop app: if <a href="https://claude.com/claude-code">Claude Code</a> is installed, Nūs uses your subscription; otherwise paste an Anthropic API key. <strong>Gemini</strong> runs the Companion, and Google offers a free tier through <a href="https://aistudio.google.com/apikey">AI Studio</a>. Both keys are encrypted on your device and only ever sent to the provider you chose.</p></details>
+  <details class="rv"><summary>What do I need to run it?</summary><p class="a">Windows, and your own AI. <strong>Claude</strong> runs the desktop app: if <a href="https://claude.com/claude-code">Claude Code</a> is installed, Nūs uses your subscription; otherwise paste an Anthropic API key. <strong>Gemini</strong> runs the Companion's everyday questions, and Google offers a free tier through <a href="https://aistudio.google.com/apikey">AI Studio</a>. Pointing at the screen with Ctrl+Shift+T goes to Claude through the same connection the app uses. Both keys are encrypted on your device and only ever sent to the provider you chose.</p></details>
   <details class="rv"><summary>What does the $9.99 actually buy?</summary><p class="a">Not the model; you pay the provider directly on both plans. Pro buys the layer around it with the caps removed: unlimited imports and questions, the Companion all day with full history, both calendars, unlimited rules, more storage. Free is $0 forever and enough to run a real semester.</p></details>
   <details class="rv"><summary>I bought Pro on the website. How does the app know?</summary><p class="a">Pro belongs to your Nūs account, not to a download. Sign in with the same Google account or email inside the app and the Plan card flips to Pro on its own, usually within seconds. Your coursework never leaves your machine; the account only carries who you are and whether you subscribe.</p></details>
   <details class="rv"><summary>Why does Windows warn me about the download?</summary><p class="a">The installer is not code signed yet. A certificate costs money and I would rather ship first. Choose <em>More info</em>, then <em>Run anyway</em>. The source is on GitHub if you would rather build it yourself.</p></details>
