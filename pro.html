@@ -56,7 +56,7 @@
   <div class="nav-links">
     <a href="index.html#pricing" class="hidem">Pricing</a>
     <a href="index.html#faq" class="hidem">FAQ</a>
-    <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" class="btn solid" data-goatcounter-click="download-windows-pro">Download for Windows</a>
+    <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" class="btn solid" data-dl="installer" data-goatcounter-click="download-windows-pro">Download for Windows</a>
   </div>
 </nav>
 
@@ -105,8 +105,8 @@
         <p id="status-pay" class="status"></p>
         <div class="steps">
           <div><i>1</i><span>Stripe handles the card. Nūs never sees it.</span></div>
-          <div><i>2</i><span>Open Nūs on your PC. Pro is on the moment Stripe confirms, no restart needed.</span></div>
-          <div><i>3</i><span>No app yet? <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe">Download for Windows</a> and sign in with the same account.</span></div>
+          <div><i>2</i><span>Open Nūs on your computer. Pro is on the moment Stripe confirms, no restart needed.</span></div>
+          <div><i>3</i><span>No app yet? <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" data-dl="installer">Download for Windows</a> and sign in with the same account.</span></div>
         </div>
       </div>
 
@@ -265,6 +265,7 @@
   supabase?.auth.onAuthStateChange((event) => { if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') render(); });
   render();
 </script>
+<script src="assets/download-links.js"></script>
 <script src="assets/attrib.js"></script>
 <script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>

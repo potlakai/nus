@@ -40,13 +40,14 @@
 <main>
   <p class="kicker">The fine print</p>
   <h1>Privacy Policy</h1>
-  <p class="eff">Effective August 22, 2026 · applies to the Nūs app and this website (potlakai.github.io/nus)</p>
+  <p class="eff">Effective September 7, 2026 · applies to the Nūs app and this website (potlakai.github.io/nus)</p>
 
   <p>Nūs was built around one idea: <strong>your coursework should stay on your device.</strong> The desktop app uses a local database and managed local source files. Optional Nūs accounts use Supabase for identity and subscription status, but Nūs does not upload your syllabi, tasks, Companion transcripts, or chat history to that account.</p>
 
   <h2>1. The Nūs app</h2>
   <div class="card">
     <p><b>Your semester content stays local.</b> Courses, deadlines, tasks, imports, chats, and Companion transcripts live in the Nūs data folder on your computer. Nūs accounts store an email address, user identifier, and subscription status in Supabase. Stripe processes payment details when you choose to buy Pro; Nūs does not receive or store your full card number. Local crash logs may record technical diagnostics such as the app version and error stack, but are designed not to include imported content.</p>
+    <p><b>Feedback you choose to send.</b> The app, the Companion, and this site each have a feedback form. When you press Send we receive the text you wrote, the kind you picked (bug, idea, other), and, from the app, the app version and operating system plus, if you leave the box ticked, a short technical note: which screen you were on, whether you were signed in, whether an AI path is set up (yes or no), the last error line, and the tail of the crash log. It never includes your coursework, keys, or transcripts, and the form shows the exact note before you send. If you are signed in, your account email is attached so we can reply; otherwise you may type one. A random per-install id and a salted hash of your IP address are used only to cap submissions per hour; the hash is deleted after 24 hours. Feedback is kept until it has been acted on, and you can ask for yours to be deleted at the contact address below.</p>
   </div>
   <p>Account identity and subscription records are kept while your account is active and as needed to operate or document the subscription. You can ask to have your Nūs account data deleted using the contact address below. Stripe may retain payment and transaction records under its own legal obligations and privacy terms.</p>
   <p>One thing to understand: Nūs uses the AI provider you configure. When you ask Nūs to read a syllabus or answer a question, the relevant content is processed by that provider under your account and its privacy terms. Nūs currently supports Claude for the desktop assistant and Gemini or another configured provider for the Companion. Nūs does not proxy those prompts through its own model server.</p>
@@ -63,7 +64,7 @@
 
   <h2>3. Accounts, Pro, and the idea form</h2>
   <p>Signing in on this site (on the Account page) uses the same Supabase project as the app. Supabase receives your email address and, if you use Google, the identity Google returns; it stores your email, a user identifier, and your plan. Buying Pro sends you to <strong>Stripe Checkout</strong> on Stripe's own pages (<a href="https://stripe.com/privacy" rel="noopener">Stripe's privacy policy</a>); the card never passes through this site or the app. Your browser keeps your Nūs session in local storage until you sign out.</p>
-  <p>The idea box on the home page is saved in your own browser and copied to your clipboard; nothing is sent anywhere until you paste it into the public GitHub discussion thread yourself.</p>
+  <p>The idea box on the home page sends what you typed to our Supabase project as described in section 1 (text, kind, a random id kept in your browser, and a salted IP hash held for 24 hours), and keeps a copy in your own browser. If the server cannot be reached, the text is copied to your clipboard and the public GitHub discussion thread opens instead; nothing is posted there unless you paste it yourself.</p>
 
   <h2>4. Your rights</h2>
   <p>Depending on where you live (including under the EU/UK GDPR and the California CCPA/CPRA), you may have rights to access, correct, delete, or export personal data we hold about you, to object to or restrict its processing, and to withdraw consent. This may include your Nūs account email, user identifier, subscription status, and information you submit through a form. Email us and we will respond to a verified request as required by applicable law. You may also have the right to complain to your local data protection authority.</p>

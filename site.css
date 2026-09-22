@@ -244,6 +244,11 @@ ol.steps a{color:#aab8ff;text-decoration:underline;text-underline-offset:3px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .chips span{font-size:13px;color:var(--text);background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-pill);padding:5px 14px}
 .chipnote{color:var(--muted)!important;font-size:12px!important;margin-top:10px!important}
+.idea-kinds{display:flex;gap:8px;margin-top:12px}
+.idea-kind{font:600 12px var(--sans);color:var(--text-2);background:transparent;border:1px solid var(--line-strong);border-radius:var(--r-pill);padding:6px 14px;cursor:pointer;transition:.18s var(--ease)}
+.idea-kind:hover{color:var(--text)}
+.idea-kind.active{color:#161923;background:#fff;border-color:#fff}
+.ideaform input.hp{position:absolute;left:-9999px;width:1px;height:1px;flex:none;padding:0;border:0;opacity:0;pointer-events:none}
 
 /* ---------- close: the strand ties itself together again ---------- */
 #get{max-width:980px;min-height:78vh;display:grid;place-items:center}
@@ -355,3 +360,25 @@ body.theme-paper .sec-kicker{color:#6874bd}
   .mind-node,.graph-star,.hero-knot::before,.mind-edges .edge-pulse,.board-lines path{animation:none}
   html{scroll-behavior:auto}
 }
+
+/* Two-product chooser (the assistant alone, or the student tool). 2026-09-22 */
+.wl-note a{color:var(--text-2);text-decoration:underline;text-underline-offset:3px}
+#get .get-end{max-width:900px}
+.choose{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4);margin:var(--s-5) auto 0;text-align:left}
+.choice{border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s-5);background:var(--surface-1);display:flex;flex-direction:column;gap:10px}
+.choice .tag{align-self:flex-start;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#aab0c8;background:var(--surface-2);padding:4px 9px;border-radius:var(--r-pill)}
+.choice b{font-family:var(--serif);font-size:26px;font-weight:400;letter-spacing:-.01em}
+.choice p{color:var(--text-2);font-size:14px;line-height:1.5;flex:1;margin:0}
+.choice .btn{justify-content:center;margin-top:6px}
+.companion-ctas{margin-top:var(--s-5)}
+@media (max-width:768px){.choose{grid-template-columns:1fr}}
+/* Product labels: which download a section is about. */
+.prod{display:inline-block;font-family:var(--sans);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:3px 8px;border-radius:var(--r-pill);background:var(--surface-2);color:#aab0c8;vertical-align:middle;margin-left:4px;letter-spacing:.12em}
+.prod.assistant{color:#cdd6ff;background:rgba(80,108,255,.22)}
+.prod.student{color:#e2cf9f;background:rgba(209,167,95,.16)}
+.prod.both{color:#b9c4d6;background:rgba(160,175,200,.14)}
+.choice .tag.prod{margin-bottom:0;font-size:10px}
+.which-section .choose{margin-top:var(--s-6)}
+.which-grid .btn{align-self:flex-start;margin-top:4px}
+.which-note{margin-top:var(--s-5);color:var(--muted);font-size:13.5px}
+.manifesto .sec-kicker{justify-content:center;margin-bottom:var(--s-5)}

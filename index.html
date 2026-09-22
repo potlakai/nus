@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2Fsvg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2714%27%20fill%3D%27%230b1020%27%2F%3E%3Ctext%20x%3D%2732%27%20y%3D%2745%27%20text-anchor%3D%27middle%27%20font-family%3D%27Georgia%27%20font-size%3D%2742%27%20fill%3D%27%23f1ecdf%27%3EN%3C%2Ftext%3E%3C%2Fsvg%3E">
-<title>Nūs | Jarvis for students</title>
-<meta name="description" content="Nūs is a desktop app that reads your syllabi, maps every deadline and grading rule, and turns plain requests into real changes you approve first. Runs on your own AI, on your own machine. Free to start, $9.99 a month for the full thing.">
-<meta property="og:title" content="Nūs | Jarvis for students">
-<meta property="og:description" content="Drop in your syllabi. It maps every deadline, proposes the next move, and shows you the change before it makes it. Free to start, and your coursework stays on your machine.">
+<title>Nūs | Your own Jarvis</title>
+<meta name="description" content="Nūs is a desktop assistant you talk to. It opens apps, types, searches, and answers from your screen while you speak, on your own machine with your own AI keys. Get the assistant alone, or the full student tool that maps your semester.">
+<meta property="og:title" content="Nūs | Your own Jarvis">
+<meta property="og:description" content="Talk to it and it acts. Opens apps, types, searches, remembers your folders. For your life, your work, or your semester. Free to start, and everything stays on your machine.">
 <meta name="theme-color" content="#0b1020">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,9 +22,9 @@
 <nav id="nav">
   <a class="logo" href="#top">N<span class="mac">U</span>S</a>
   <div class="nav-links" id="nav-links">
-    <a href="#how" class="hidem">How it works</a>
-    <a href="#product" class="hidem">Product</a>
+    <a href="#which" class="hidem">Which one</a>
     <a href="#companion" class="hidem">Companion</a>
+    <a href="#how" class="hidem">Student tool</a>
     <a href="#setup" class="hidem">Set-up</a>
     <a href="#pricing" class="hidem">Pricing</a>
     <a href="#faq" class="hidem">FAQ</a>
@@ -32,7 +32,7 @@
     <a href="#" id="gh" class="btn ghost">GitHub</a>
   </div>
   <div class="nav-actions">
-    <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" id="dl" class="btn solid" data-goatcounter-click="download-windows-nav">Download for Windows</a>
+    <a href="#get" id="dl" class="btn solid" data-goatcounter-click="nav-download">Download</a>
     <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
   </div>
 </nav>
@@ -41,14 +41,14 @@
 <header class="hero" id="top">
   <div class="hero-inner">
   <div class="hero-copy" data-thread-obstacle>
-    <p class="hero-kicker hi">Jarvis for students.</p>
-    <h1 class="hero-title hi" style="transition-delay:.08s">Your semester,<br><em>finally understood.</em></h1>
-    <p class="hero-sub hi" style="transition-delay:.16s">Drop in your syllabi. Nūs maps every deadline and grading rule, then turns what you ask into a change you approve.</p>
+    <p class="hero-kicker hi">Your own Jarvis.</p>
+    <h1 class="hero-title hi" style="transition-delay:.08s">Talk to it.<br><em>It gets it done.</em></h1>
+    <p class="hero-sub hi" style="transition-delay:.16s">Say what you need and the Knot opens apps, types, searches, and answers from whatever is on your screen, while you are still speaking. For your life, your work, or your semester: add your syllabi and the same Nūs runs school too.</p>
     <div class="hero-ctas hi" style="transition-delay:.3s">
-      <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" id="dl2" class="btn solid" data-goatcounter-click="download-windows-hero">Download for Windows</a>
-      <a href="#how" class="btn ghost">See how it thinks</a>
+      <a href="https://github.com/potlakai/nus-desktop/releases/download/companion-v0.1.0/Nus-Companion-Setup.exe" id="dlc" class="btn solid" data-dl="companion" data-goatcounter-click="download-windows-companion-hero">Just the AI assistant</a>
+      <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" id="dl2" class="btn ghost" data-dl="installer" data-goatcounter-click="download-windows-hero">The full student tool</a>
     </div>
-    <p class="hero-note hi" style="transition-delay:.36s">Free to start. Runs on your AI. Your coursework stays on your machine.</p>
+    <p class="hero-note hi" style="transition-delay:.36s">Free. Runs on your own AI keys. Windows now, Mac for the student tool. Nothing you say or see leaves your machine except the calls you set up.</p>
   </div>
   <div class="mind" id="semester-mind" aria-label="A living map of courses, sources, assignments, and a proposed schedule change">
     <img class="statue" id="statue" src="assets/statue.webp" alt="" aria-hidden="true">
@@ -77,12 +77,38 @@
   </div>
 </header>
 
+<!-- ============ WHICH ONE ============ -->
+<section id="which" class="which-section">
+  <span class="story-anchor" data-story-anchor data-lane="left" aria-hidden="true"></span>
+  <div data-thread-obstacle>
+  <p class="sec-kicker rv">Two downloads, one Knot</p>
+  <h2 class="rv d1">The assistant alone,<br>or the <em>student tool</em>.</h2>
+  <p class="lede rv d2">Nūs is two things. Both are free to start, both run on your own AI keys, and the same Knot lives in both.</p>
+  </div>
+  <div class="choose which-grid rv d2" data-thread-obstacle>
+    <div class="choice">
+      <span class="tag prod assistant">The assistant</span>
+      <b>Nūs Companion</b>
+      <p>The Knot on your screen and a small window for what it saves. Talk to it and it opens apps, types, and searches while you speak. Point at anything and ask. Give it your folders. No courses, no sign-in. Windows.</p>
+      <a href="#companion" class="btn ghost">What it does</a>
+    </div>
+    <div class="choice">
+      <span class="tag prod student">The student tool</span>
+      <b>Nūs Desktop</b>
+      <p>Everything in the Companion, plus your semester: drop in syllabi, see every deadline and grading rule as one map, and approve changes before they happen. Windows and Mac.</p>
+      <a href="#how" class="btn ghost">How it thinks</a>
+    </div>
+  </div>
+  <p class="which-note rv d3" data-thread-obstacle>Every section below says which one it is about. Sections marked <span class="prod both">Both</span> apply to either download.</p>
+</section>
+
+<!-- ============ HOW (student tool) ============ -->
 <section class="how-preview" id="how">
   <span class="story-anchor" data-story-anchor data-lane="center" aria-hidden="true"></span>
   <div class="section-intro" data-thread-obstacle>
-    <p class="sec-kicker rv">How Nūs thinks</p>
+    <p class="sec-kicker rv">How the student tool thinks <span class="prod student">Student tool</span></p>
     <h2 class="rv d1">One semester.<br><em>One living system.</em></h2>
-    <p class="lede rv d2">Files, deadlines, questions, and changes stop living in separate boxes. Nūs turns them into one connected workspace.</p>
+    <p class="lede rv d2">In Nūs Desktop, files, deadlines, questions, and changes stop living in separate boxes. They become one connected workspace.</p>
   </div>
   <div class="intelligence-board rv d2" aria-label="How a syllabus becomes an approved semester change">
     <div class="board-topline"><span>Semester intelligence</span><b>Local workspace / ready</b></div>
@@ -124,9 +150,9 @@
 <!-- ============ PRODUCT ============ -->
 <section id="product">
   <span class="story-anchor" data-story-anchor data-lane="right" aria-hidden="true"></span>
-  <p class="sec-kicker rv">The product</p>
+  <p class="sec-kicker rv">The student tool <span class="prod student">Student tool</span></p>
   <h2 class="rv d1" data-thread-obstacle>It reads your <em>semester</em>.</h2>
-  <p class="lede rv d2" data-thread-obstacle>Your courses, sources, and next moves become one picture. Switch between the real views that turn the semester into something you can act on.</p>
+  <p class="lede rv d2" data-thread-obstacle>Nūs Desktop turns your courses, sources, and next moves into one picture. Switch between the real views that make the semester something you can act on. The Companion is inside it too.</p>
   <div class="product-tabs rv d2" role="tablist" aria-label="Product views">
     <button id="tab-today" type="button" role="tab" aria-selected="true" aria-controls="product-stage" tabindex="0" data-view="today">Today</button>
     <button id="tab-review" type="button" role="tab" aria-selected="false" aria-controls="product-stage" tabindex="-1" data-view="review">Review</button>
@@ -141,9 +167,9 @@
 <!-- ============ COMPANION ============ -->
 <section id="companion">
   <span class="story-anchor" data-story-anchor data-lane="center" aria-hidden="true"></span>
-  <p class="sec-kicker rv">The Companion</p>
+  <p class="sec-kicker rv">The Companion <span class="prod both">Both</span></p>
   <h2 class="rv d1">The Knot sits on top<br>of <em>everything</em>.</h2>
-  <p class="lede rv d2">The other half floats over your screen. Point at anything, type one line, and the help lands where you are working. Same install.</p>
+  <p class="lede rv d2">Talk to it and it acts. Point at anything and the help lands where you are working. The same Knot ships alone as <b>Nūs Companion</b>, or inside the student tool.</p>
   <div class="companion-grid">
     <div class="knot-stage rv d2" data-thread-obstacle aria-label="The Nūs Knot, the Companion's on-screen mark">
       <div class="stage-line"><span>Companion</span><b id="stage-state">listening · screen + voice</b></div>
@@ -152,31 +178,38 @@
     </div>
     <div class="companion-copy" data-thread-obstacle>
       <ul class="facts">
+        <li class="rv d1"><span class="chip">Hears you act</span><b>Say it, and it happens while you speak</b><span>"Open Notepad, new note, type hello, search Norbert Wiener." Jev, a small decision model, picks each action in about 200 to 350 milliseconds: 285 ms for Notepad and 258 ms for the search in the demo take. Notepad was on screen about 2.3 seconds after the word.</span></li>
         <li class="rv d1"><span class="chip">Points</span><b>Ctrl+Shift+T on anything</b><span>Put the cursor on a button, an error, a slide, or a blank patch of screen and press it. A strand runs from the Knot to your spot and the answer arrives right there. No chat window to switch to.</span></li>
         <li class="rv d2"><span class="chip">Modes</span><b>Ask, Explain, Fix, Guide</b><span>Ask never touches your screen. Explain and Fix work from the small preview you just pointed at. Guide walks you through it one step at a time while you do the clicking.</span></li>
         <li class="rv d3"><span class="chip">Sees</span><b>Only the preview, only when you send</b><span>What you pointed at becomes a small preview you see first. Nothing leaves your machine until you press Send, and the rest of the screen never goes with it.</span></li>
         <li class="rv d4"><span class="chip">Hears</span><b>Only when you say so</b><span>Type whenever you like; spoken replies are off by default. Hold a key to talk, or press Talk for hands-free with a visible Stop. Switch listening on for a lecture and it keeps a transcript you can search.</span></li>
         <li class="rv d4"><span class="chip">Stays</span><b>Close the app, it remains</b><span>The Knot keeps running with every hotkey live. One button removes it completely.</span></li>
+        <li class="rv d4"><span class="chip">Remembers</span><b>Your folders, your routines</b><span>Point it at folders of your own notes and it reads them when you ask. Say three or more actions in a row and it offers to save a routine; nothing is saved without your yes. Steps it walked you through replay later with no model at all.</span></li>
+        <li class="rv d4"><span class="chip">Honest</span><b>What it cannot do yet</b><span>No undo. If it mishears "close tab" or a typing command, you fix that by hand. When the app it launched did not come to the front, the keystrokes are dropped rather than typed somewhere else. Jev decides; Claude or Gemini does the answering.</span></li>
       </ul>
-      <p class="keys rv d4"><b>Ctrl+Shift+T</b> points at what you need help with. <b>Ctrl+Shift+Space</b> hides it. <b>Ctrl+Shift+X</b> stops listening and vanishes. Screen shares and recordings never see it. Follow the rules of every room you are in.</p>
+      <p class="keys rv d4"><b>Ctrl+Alt+Space</b> holds the mic (or <b>Ctrl+Shift+M</b> where that chord is taken). <b>Ctrl+Shift+T</b> points at what you need help with. <b>Ctrl+Shift+Space</b> hides it. <b>Ctrl+Shift+X</b> stops listening and vanishes. Screen shares and recordings never see it. Follow the rules of every room you are in.</p>
     </div>
   </div>
-  <p class="concept rv d4"><span class="chip">Concept</span><b>Where it is going:</b> one thread that follows you across every monitor. Today the strand reaches any spot on the display the Knot lives on. The rest is not shipped yet.</p>
+  <p class="concept rv d4"><span class="chip">On its own</span><b>Nūs Companion</b> is the Knot without the semester app: the assistant, a small window for what it saves and what it knows, and nothing else. You bring the keys: TypeSafe for Jev, a free Gemini key for answers, Claude Code or an Anthropic key for pointing at your screen. Windows for now.</p>
+  <div class="hero-ctas companion-ctas rv d4" data-thread-obstacle>
+    <a href="https://github.com/potlakai/nus-desktop/releases/download/companion-v0.1.0/Nus-Companion-Setup.exe" id="dlc2" class="btn solid" data-dl="companion" data-goatcounter-click="download-windows-companion">Download Nūs Companion for Windows</a>
+    <a href="#which" class="btn ghost">Or the student tool</a>
+  </div>
 </section>
 
 <!-- ============ SETUP ============ -->
 <section id="setup" class="setup-section">
   <span class="story-anchor" data-story-anchor data-lane="left" aria-hidden="true"></span>
-  <p class="sec-kicker rv">Set-up</p>
+  <p class="sec-kicker rv">Set-up <span class="prod both">Both</span></p>
   <div class="setup-grid">
     <div data-thread-obstacle>
       <h2 class="rv d1">Running in <em>10 minutes</em>.</h2>
-      <p class="lede rv d2">Three steps from download to a semester Nūs understands.</p>
+      <p class="lede rv d2">Two steps for the Companion, three for the student tool.</p>
     </div>
     <ol class="steps" data-thread-obstacle>
-      <li class="rv"><span class="step-no">01</span><b>Download and open it</b><span>Use the installer for automatic updates, or the <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Portable.exe" id="portable">portable build</a>.</span></li>
-      <li class="rv d1"><span class="step-no">02</span><b>Give it your AI</b><span>If <code>Claude Code</code> is installed, Nūs finds it. Otherwise paste an Anthropic API key. Pointing at your screen uses that same Claude connection; everyday Companion questions use a Gemini key.</span></li>
-      <li class="rv d2"><span class="step-no">03</span><b>Drop in a syllabus</b><span>Check the table, confirm what it read, and your semester is mapped.</span></li>
+      <li class="rv"><span class="step-no">01</span><b>Pick your download</b><span>The assistant alone as Nūs Companion, or the full student tool with the assistant inside. <span data-dl-step>Use the installer for automatic updates, or the <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Portable.exe" id="portable">portable build</a>.</span></span></li>
+      <li class="rv d1"><span class="step-no">02</span><b>Give it your AI</b><span>Voice commands run on a TypeSafe key for Jev. Everyday answers use a free Gemini key. Pointing at your screen uses Claude: if <code>Claude Code</code> is installed, Nūs finds it, otherwise paste an Anthropic API key. Every key is encrypted on your device.</span></li>
+      <li class="rv d2"><span class="step-no">03</span><b>Drop in a syllabus</b><span>Student tool only. Check the table, confirm what it read, and your semester is mapped.</span></li>
     </ol>
   </div>
 </section>
@@ -185,10 +218,11 @@
 <section class="manifesto" id="privacy">
   <span class="story-anchor" data-story-anchor data-lane="outer-right" aria-hidden="true"></span>
   <div data-thread-obstacle>
-  <span class="line rv">Your syllabi. Your notes. Your recordings.</span>
+  <p class="sec-kicker rv" style="justify-content:center">Privacy <span class="prod both">Both</span></p>
+  <span class="line rv">Your words. Your screen. Your syllabi.</span>
   <span class="line ghosted rv d1">They never reach our server.</span>
   <span class="line rv d2">That is the architecture.</span>
-  <p class="foot rv d3">Everything lives in a local database on your machine. Your account holds two things: who you are, and whether you subscribe. The only calls that leave your device go to the AI provider you chose, Supabase for plan status, and Stripe when you upgrade.</p>
+  <p class="foot rv d3">Everything lives in a local database on your machine. Nūs Companion has no account at all. In the student tool, your account holds two things: who you are, and whether you subscribe. The only calls that leave your device go to the AI provider you chose, Supabase for plan status and Stripe (student tool only) when you upgrade.</p>
   </div>
 </section>
 
@@ -196,9 +230,9 @@
 <section id="pricing">
   <span class="story-anchor" data-story-anchor data-lane="center" aria-hidden="true"></span>
   <div data-thread-obstacle>
-  <p class="sec-kicker rv">Pricing</p>
+  <p class="sec-kicker rv">Pricing <span class="prod student">Student tool</span></p>
   <h2 class="rv d1">Free is not a <em>demo</em>.</h2>
-  <p class="lede rv d2">Run a whole semester without paying. Pro is for the student who hits the limits.</p>
+  <p class="lede rv d2">Nūs Companion on its own is free, with no plan and no account. In Nūs Desktop you can run a whole semester without paying; Pro is for the student who hits the caps.</p>
   </div>
   <div class="plans">
     <div class="plan free rv" data-thread-obstacle>
@@ -234,14 +268,16 @@
 <section class="faq" id="faq">
   <span class="story-anchor" data-story-anchor data-lane="outer-left" aria-hidden="true"></span>
   <div data-thread-obstacle>
-  <p class="sec-kicker rv">Questions</p>
+  <p class="sec-kicker rv">Questions <span class="prod both">Both</span></p>
   <h2 class="rv d1">FAQ</h2>
   <details class="rv"><summary>Is this a cheating tool?</summary><p class="a">No. It plans, schedules, briefs, and quizzes you. It refuses to write your submissions, and it reads your school's AI policy straight out of the syllabus.</p></details>
-  <details class="rv"><summary>What do I need to run it?</summary><p class="a">Windows, and your own AI. <strong>Claude</strong> runs the desktop app: if <a href="https://claude.com/claude-code">Claude Code</a> is installed, Nūs uses your subscription; otherwise paste an Anthropic API key. <strong>Gemini</strong> runs the Companion's everyday questions, and Google offers a free tier through <a href="https://aistudio.google.com/apikey">AI Studio</a>. Pointing at the screen with Ctrl+Shift+T goes to Claude through the same connection the app uses. Both keys are encrypted on your device and only ever sent to the provider you chose.</p></details>
+  <details class="rv"><summary>Which download do I want?</summary><p class="a"><strong>Nūs Companion</strong> if you want the assistant: talk to it, point at your screen, save routines, give it your folders. <strong>Nūs Desktop</strong> if you are a student: the same Companion plus your syllabi, deadlines, grading rules, and the semester map. Both are free to start. The Companion is Windows only for now; the student tool runs on Windows and Mac.</p></details>
+  <details class="rv"><summary>What is Jev?</summary><p class="a">Jev is a small, fast decision model from TypeSafe. It does not write text and it does not see your screen. It hears a sentence and picks from a fixed list of about 25 actions and the apps on your machine, in about 200 milliseconds. That is why the Companion can act while you are still talking. Anything that needs real thinking goes to Claude or Gemini with your own key.</p></details>
+  <details class="rv"><summary>What do I need to run it?</summary><p class="a">Windows or macOS, and your own AI. Voice commands in the Companion use a <strong>TypeSafe</strong> key for Jev. <strong>Claude</strong> runs the desktop app: if <a href="https://claude.com/claude-code">Claude Code</a> is installed, Nūs uses your subscription; otherwise paste an Anthropic API key. <strong>Gemini</strong> runs the Companion's everyday questions, and Google offers a free tier through <a href="https://aistudio.google.com/apikey">AI Studio</a>. Pointing at the screen with Ctrl+Shift+T goes to Claude through the same connection the app uses. Both keys are encrypted on your device and only ever sent to the provider you chose.</p></details>
   <details class="rv"><summary>What does the $9.99 actually buy?</summary><p class="a">Not the model; you pay the provider directly on both plans. Pro buys the layer around it with the caps removed: unlimited imports and questions, the Companion all day with full history, both calendars, unlimited rules, more storage. Free is $0 forever and enough to run a real semester.</p></details>
   <details class="rv"><summary>I bought Pro on the website. How does the app know?</summary><p class="a">Pro belongs to your Nūs account, not to a download. Sign in with the same Google account or email inside the app and the Plan card flips to Pro on its own, usually within seconds. Your coursework never leaves your machine; the account only carries who you are and whether you subscribe.</p></details>
-  <details class="rv"><summary>Why does Windows warn me about the download?</summary><p class="a">The installer is not code signed yet. A certificate costs money and I would rather ship first. Choose <em>More info</em>, then <em>Run anyway</em>. The source is on GitHub if you would rather build it yourself.</p></details>
-  <details class="rv"><summary>Is it really only Windows?</summary><p class="a">For now. It is built on Electron, so the Mac build is a build target and a round of testing, not a rewrite. It is next on the list; <a href="https://github.com/potlakai/nus/discussions/1">say so here</a> and it moves up.</p></details>
+  <details class="rv"><summary>Why does Windows warn me about the download?</summary><p class="a">The installer is not code signed yet. A certificate costs money and I would rather ship first. Choose <em>More info</em>, then <em>Run anyway</em>. The student tool's source is on GitHub if you would rather build that one yourself; the Companion is a download only for now.</p></details>
+  <details class="rv"><summary>Why does my Mac say it could not verify the app?</summary><p class="a">Same reason as Windows: the Mac build is not notarized yet. Click <em>Done</em>, open <em>System Settings › Privacy &amp; Security</em>, and press <em>Open Anyway</em> next to Nus. It asks once. Apple Silicon and Intel each have their own download; the Mac build cannot update itself yet and local voice is Windows-only for now.</p></details>
   </div>
 </section>
 
@@ -250,13 +286,15 @@
   <div class="roadmap-inner rv" data-thread-obstacle>
     <p class="sec-kicker">Built with students</p>
     <h2>What should it do <em>next?</em></h2>
-    <p class="lede">Leave the friction you want Nūs to remove. Your idea stays on this device until you choose to open the feedback thread.</p>
-    <form class="ideaform" id="ideaform">
-      <input id="idea-input" placeholder="I wish it could...">
-      <button type="submit">Add to roadmap</button>
+    <p class="lede">Leave the friction you want Nūs to remove. It goes straight to Pranav, and a copy stays on this device.</p>
+    <form class="ideaform" id="ideaform" autocomplete="off">
+      <input id="idea-input" placeholder="I wish it could..." maxlength="3000">
+      <button type="submit" data-goatcounter-click="idea-send">Send to Pranav</button>
+      <input id="idea-website" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
     </form>
+    <div class="idea-kinds" id="idea-kinds" role="group" aria-label="What kind of note"><button type="button" class="idea-kind active" data-kind="idea">An idea</button><button type="button" class="idea-kind" data-kind="bug">Something broke</button></div>
     <div class="chips" id="idea-chips" hidden></div>
-    <p class="chipnote" id="idea-note" hidden>Copied to your clipboard, just paste it into the thread. (Also saved on this device.)</p>
+    <p class="chipnote" id="idea-note" hidden>Earlier notes stay on this device.</p>
   </div>
 </section>
 
@@ -266,18 +304,28 @@
   <div class="get-end rv">
       <div class="end-knot"><canvas id="end-knot" aria-label="The Nūs Knot tied together again"></canvas></div>
       <p class="sec-kicker">Get Nūs</p>
-      <h3>Your semester is where it <em>starts</em>.</h3>
-      <div class="hero-ctas">
-        <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" id="dl3" class="btn solid" data-goatcounter-click="download-windows-final">Download for Windows</a>
-        <a href="pro.html" class="btn ghost" data-goatcounter-click="pro-click-final">Get Pro</a>
+      <h3>Pick the one <em>you need</em>.</h3>
+      <div class="choose" data-thread-obstacle>
+        <div class="choice">
+          <span class="tag prod assistant">The assistant</span>
+          <b>Nūs Companion</b>
+          <p>Talk to it, point at your screen, save routines, give it your folders. The Knot and a small window, nothing else. Windows.</p>
+          <a href="https://github.com/potlakai/nus-desktop/releases/download/companion-v0.1.0/Nus-Companion-Setup.exe" id="dlc3" class="btn solid" data-dl="companion" data-goatcounter-click="download-windows-companion-final">Just the AI assistant</a>
+        </div>
+        <div class="choice">
+          <span class="tag prod student">The student tool</span>
+          <b>Nūs Desktop</b>
+          <p>The same Companion plus your syllabi, deadlines, grading rules, and the semester map. Windows and Mac.</p>
+          <a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe" id="dl3" class="btn solid" data-dl="installer" data-goatcounter-click="download-windows-final">The full student tool</a>
+        </div>
       </div>
-      <p class="win-note"><b>Nus-Setup.exe</b> is not code signed yet, so Windows will ask. Choose <b>More info</b>, then <b>Run anyway</b>.</p>
-      <p class="wl-note">Free to start. Windows today. Your coursework stays on your machine. You bring the AI key.</p>
+      <p class="win-note" data-dl-note><b>Nus-Companion-Setup.exe</b> and <b>Nus-Setup.exe</b> are not code signed yet, so Windows will ask. Choose <b>More info</b>, then <b>Run anyway</b>.</p>
+      <p class="wl-note">Free to start. Your words and your screen stay on your machine. You bring the AI keys. <a href="pro.html" data-goatcounter-click="pro-click-final">Pro</a> is for students who hit the caps.</p>
   </div>
 </section>
 
 <footer>
-  Nūs · <a href="#pricing">Pricing</a> · <a href="pro.html">Account</a> · <a href="#" id="gh4">Desktop app</a> · <a href="#" id="kit2">Open-source terminal kit</a> · <a href="https://github.com/potlakai/nus/discussions/1">Give feedback</a> · <a href="privacy.html">Privacy</a>
+  Nūs · <a href="#companion">Assistant</a> · <a href="#pricing">Pricing</a> · <a href="pro.html">Account</a> · <a href="#" id="gh4">Desktop app</a> · <a href="#" id="kit2">Open-source terminal kit</a> · <a href="https://github.com/potlakai/nus/discussions/1">Give feedback</a> · <a href="privacy.html">Privacy</a>
   <p class="credit">Statue: <em>Marble head of an athlete</em>, The Met Open Access (CC0).</p>
 </footer>
 
@@ -292,9 +340,15 @@
      footer. Stable asset names, so a version bump never 404s these buttons. */
   var appRepo = "https://github.com/potlakai/nus-desktop";
   var kitRepo = "https://github.com/potlakai/nus";
+  /* The Companion is a download only (no repo of its own yet). It is attached as a
+     pre-release on the desktop repo under a fixed tag, so it never moves releases/latest
+     and the student tool links keep working. Bump the tag here per Companion release. */
+  var companionTag = "companion-v0.1.0";
   var winInstaller = appRepo + "/releases/latest/download/Nus-Setup.exe";
   var winPortable = appRepo + "/releases/latest/download/Nus-Portable.exe";
-  ["dl","dl2","dl3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winInstaller; });
+  var companionInstaller = appRepo + "/releases/download/" + companionTag + "/Nus-Companion-Setup.exe";
+  ["dl2","dl3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winInstaller; });
+  ["dlc","dlc2","dlc3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=companionInstaller; });
   ["gh","gh4"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=appRepo; });
   ["portable"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=winPortable; });
   ["kit2"].forEach(function(id){ var el=document.getElementById(id); if(el) el.href=kitRepo; });
@@ -325,16 +379,54 @@
     chips.hidden = note.hidden = list.length === 0;
   }
   render(load());
+  /* The note goes to the same intake the app uses (submit-feedback edge
+     function, publishable key, anonymous). If the server cannot be reached the
+     old path still works: clipboard + the public discussion thread. */
+  var FEEDBACK_API = "https://xnpkplcjurzwanotmwwt.supabase.co/functions/v1/submit-feedback";
+  var FEEDBACK_KEY = "sb_publishable_yBEA9loOsDI9E_HMFIVCRQ_PZvTD8rB";
+  var ideaKind = "idea";
+  var kinds = document.getElementById("idea-kinds");
+  if (kinds) kinds.addEventListener("click", function(e){
+    var b = e.target.closest("[data-kind]"); if (!b) return;
+    ideaKind = b.getAttribute("data-kind");
+    kinds.querySelectorAll(".idea-kind").forEach(function(x){ x.classList.toggle("active", x === b); });
+  });
+  function siteId(){
+    try {
+      var id = localStorage.getItem("nus-site-id");
+      if (!id) { id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()) + "-" + Math.random().toString(16).slice(2); localStorage.setItem("nus-site-id", id); }
+      return id;
+    } catch(e){ return null; }
+  }
+  function fallbackToThread(v){
+    try { navigator.clipboard.writeText(v); } catch(err){}
+    window.open(FEEDBACK_URL, "_blank", "noopener");
+  }
   document.getElementById("ideaform").addEventListener("submit", function(e){
     e.preventDefault();
     var v = input.value.trim();
     if (!v) return;
+    var hp = document.getElementById("idea-website");
     var list = load(); list.push(v);
     try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(err){}
     input.value = "";
     render(list);
-    try { navigator.clipboard.writeText(v); } catch(err){}
-    window.open(FEEDBACK_URL, "_blank", "noopener");
+    note.textContent = "Sending to Pranav...";
+    note.hidden = false;
+    var body = { source: "site", kind: ideaKind, message: v, install_id: siteId(), website: hp ? hp.value : "" };
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, 8000) : null;
+    fetch(FEEDBACK_API, { method: "POST", headers: { apikey: FEEDBACK_KEY, "content-type": "application/json" }, body: JSON.stringify(body), signal: ctrl ? ctrl.signal : undefined })
+      .then(function(r){
+        if (r.status === 429) { note.textContent = "That is a lot of notes in one hour. Try again a little later."; return; }
+        if (!r.ok) throw new Error("http " + r.status);
+        note.textContent = "Sent to Pranav. A copy stays on this device. Want a reply? Put your email in the next one.";
+      })
+      .catch(function(){
+        note.textContent = "Could not reach the server, so it is on your clipboard: paste it into the public thread that just opened.";
+        fallbackToThread(v);
+      })
+      .then(function(){ if (timer) clearTimeout(timer); });
   });
 
   /* ---- the three Knots. Offscreen instances are paused. ---- */
@@ -499,6 +591,7 @@
 
 <script src="assets/thread.js?v=12"></script>
 
+<script src="assets/download-links.js"></script>
 <script src="assets/attrib.js"></script>
 <script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 

@@ -126,7 +126,7 @@
   }
 
   function wire() {
-    var selector = '[data-goatcounter-click^="download-"], a[href$="Nus-Setup.exe"], a[href$="Nus-Portable.exe"]';
+    var selector = '[data-goatcounter-click^="download-"], a[href$="Nus-Setup.exe"], a[href$="Nus-Portable.exe"], a[href$="Nus-Companion-Setup.exe"], a[href$="Nus-Companion-Portable.exe"], a[href$=".dmg"]';
     document.querySelectorAll(selector).forEach(function (el) {
       el.addEventListener("click", onDownloadClick);
     });
