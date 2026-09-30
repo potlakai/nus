@@ -1,0 +1,27 @@
+/* Now vs Where it's heading, option A "The orb ledger" (picked 2026-09-30). Scoped under .nowsec. */
+.nowsec { --line:rgba(206,216,246,.14); --line2:rgba(206,216,246,.26); --muted:#8b96ae; position:relative }
+.nowsec em { color:var(--brass); font-style:italic } .nowsec .serif { font-family:"Instrument Serif",serif; font-weight:400 }
+.nowsec .sec { position:relative; max-width:1200px; margin:0 auto; padding:14vh 40px 16vh }
+.nowsec .head { text-align:center } .nowsec .head .mono { color:var(--cobalt); margin-bottom:16px }
+.nowsec .head h2 { font-size:clamp(46px,5.6vw,76px); line-height:1 } .nowsec .head p { margin:16px auto 0; max-width:560px; color:var(--mist); font-size:16px; line-height:1.6 }
+.nowsec .reveal { opacity:0; transform:translateY(26px); transition:opacity 1s cubic-bezier(.2,.8,.2,1), transform 1s cubic-bezier(.2,.8,.2,1) } .nowsec .reveal.in { opacity:1; transform:none }
+.nowsec .tag { display:inline-block; margin:0 10px 0 0; vertical-align:1px; font:500 10px "JetBrains Mono",monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--muted) }
+.nowsec .tag.companion { color:#9fb0ff } .nowsec .tag.students { color:#e2c48d } .nowsec .tag.both { color:#b9c1d3 }
+.nowsec .colhead { display:flex; align-items:center; gap:10px; color:var(--mist); margin-bottom:8px } .nowsec .colhead .dot { width:9px; height:9px; border-radius:50% }
+.nowsec .colhead.ch-now .dot { background:#eef0fa; box-shadow:0 0 10px rgba(238,240,250,.8) } .nowsec .colhead.ch-next .dot { border:1.5px dashed var(--brass) }
+.nowsec .colhead b { font:400 30px "Instrument Serif",serif; color:var(--cream) } .nowsec .colhead.ch-next b { color:var(--cream) }
+.nowsec .ledger { position:relative; display:grid; grid-template-columns:1fr 300px 1fr; margin-top:10vh; align-items:center }
+.nowsec .ledger canvas.lines { position:absolute; inset:0; width:100%; height:100%; pointer-events:none }
+.nowsec .col { position:relative; display:grid; gap:4px }
+.nowsec .col.l { text-align:right } .nowsec .col.l .colhead { justify-content:flex-end }
+.nowsec .item { position:relative; padding:9px 16px; border-radius:14px; border:1px solid transparent; cursor:default; transition:background .3s, border-color .3s, opacity .3s }
+.nowsec .item b { display:block; font-size:15.5px; font-weight:600 } .nowsec .item span.d { display:block; margin-top:3px; color:var(--mist); font-size:13.5px; line-height:1.5 }
+.nowsec .item:hover, .nowsec .item:focus-visible { background:rgba(241,236,223,.05); border-color:var(--line); outline:none }
+.nowsec .item i.pin { position:absolute; top:16px; width:8px; height:8px; border-radius:50% }
+.nowsec .col.l .item i.pin { right:-4px; background:#eef0fa; box-shadow:0 0 10px rgba(238,240,250,.8) }
+.nowsec .col.r .item i.pin { left:-4px; border:1.5px dashed var(--brass) }
+.nowsec .col.r .item { opacity:.72 } .nowsec .col.r .item:hover, .nowsec .col.r .item:focus-visible { opacity:1 }
+.nowsec .mid { position:relative; height:480px; display:grid; place-items:center }
+.nowsec .todaylbl { position:absolute; bottom:40px; left:50%; transform:translateX(-50%); white-space:nowrap; color:var(--muted) }
+@media (max-width:980px) { .nowsec .ledger { grid-template-columns:1fr } .nowsec .mid { height:260px; order:-1 } .nowsec .col.l { text-align:left } .nowsec .col.l .colhead { justify-content:flex-start } .nowsec .col.l .item i.pin { right:auto; left:-4px } }
+@media (prefers-reduced-motion: reduce) { .nowsec .reveal { opacity:1; transform:none; transition:none } }

@@ -1,0 +1,47 @@
+/* Pricing, option C "Three columns" (picked 2026-09-30, no receipt). Shared by index.html and pricing.html;
+   scoped under .plans. Facts: nus-desktop/src/limits.js. */
+.plans { --line:rgba(206,216,246,.14); --line2:rgba(206,216,246,.26); --muted:#8b96ae; --accent:#90A5FF; position:relative }
+.plans em { color:var(--brass); font-style:italic }
+.plans .serif { font-family:"Instrument Serif",serif; font-weight:400 }
+.plans .sec { position:relative; max-width:1160px; margin:0 auto; padding:14vh 40px 16vh }
+.plans canvas.threads { position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none }
+.plans .head { position:relative; text-align:center }
+.plans .head .mono { color:var(--cobalt); margin-bottom:16px }
+.plans .head h2 { font-size:clamp(46px,5.6vw,76px); line-height:1 }
+.plans .head p { margin:16px auto 0; max-width:560px; color:var(--mist); font-size:16px; line-height:1.6 }
+.plans .reveal { opacity:0; transform:translateY(26px); transition:opacity 1s cubic-bezier(.2,.8,.2,1), transform 1s cubic-bezier(.2,.8,.2,1) }
+.plans .reveal.in { opacity:1; transform:none }
+.plans .cols .col:nth-child(2) { transition-delay:.08s } .plans .cols .col:nth-child(3) { transition-delay:.16s }
+.plans .cols .col.in { transition-delay:0s }
+
+/* the three columns */
+.plans .cols { position:relative; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:13vh; align-items:stretch }
+.plans .col { position:relative; display:flex; flex-direction:column; border-radius:22px; border:1px solid var(--line); padding:28px; overflow:hidden;
+  background:linear-gradient(180deg,rgba(20,25,46,.72),rgba(9,12,24,.72)); transition:opacity 1s cubic-bezier(.2,.8,.2,1), transform .5s cubic-bezier(.2,.8,.2,1), border-color .4s }
+.plans .col::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .4s; background:radial-gradient(360px circle at var(--mx,50%) var(--my,0%), rgba(144,165,255,.13), transparent 60%) }
+.plans .col.in:hover, .plans .col.in:focus-within { transform:translateY(-6px); border-color:var(--line2) } .plans .col:hover::before, .plans .col:focus-within::before { opacity:1 }
+.plans .col.pro { border-color:rgba(209,167,95,.45) } .plans .col.pro::before { background:radial-gradient(360px circle at var(--mx,50%) var(--my,0%), rgba(209,167,95,.14), transparent 60%) }
+.plans .col.pro.in:hover { border-color:rgba(209,167,95,.7) }
+.plans .col .k { color:var(--muted) } .plans .col h3 { margin-top:10px; font-size:30px; line-height:1.05 }
+.plans .col .price { margin-top:18px; font:400 58px/1 "Instrument Serif",serif } .plans .col .price small { font:500 14px Inter,sans-serif; color:var(--mist); margin-left:4px }
+.plans .col .one { margin-top:8px; color:var(--mist); font-size:14.5px; min-height:44px }
+.plans .col ul { list-style:none; margin-top:18px; padding-top:18px; border-top:1px solid var(--line); display:grid; gap:10px }
+.plans .col li { display:flex; gap:10px; font-size:14.5px; line-height:1.45 }
+.plans .col li svg.tick { flex:0 0 16px; width:16px; height:16px; margin-top:2px; stroke:var(--accent); fill:none; stroke-width:2 } .plans .col.pro li svg.tick { stroke:var(--brass) }
+.plans .foot { margin-top:auto; padding-top:26px }
+.plans .btns { display:flex; flex-wrap:wrap; gap:8px }
+.plans .small { margin-top:10px; color:var(--muted); font-size:12.5px }
+.plans .btn { display:inline-flex; align-items:center; gap:8px; white-space:nowrap; border-radius:999px; padding:12px 17px; font:600 14.5px Inter,sans-serif; text-decoration:none; border:1px solid transparent; cursor:pointer; transition:transform .25s cubic-bezier(.2,.8,.2,1), background .3s }
+.plans .btn:hover { transform:scale(1.04) }
+.plans .btn:focus-visible { outline:2px solid var(--brass); outline-offset:3px }
+.plans .btn.solid { background:var(--cream); color:#0b1020 } .plans .btn.solid:hover { background:#fff }
+.plans .btn.ghost { border-color:var(--line2); color:var(--cream); background:rgba(241,236,223,.05) } .plans .btn.ghost:hover { background:rgba(241,236,223,.1) }
+.plans .btn.brass { background:var(--brass); color:#1a1206 } .plans .btn.brass:hover { background:#e0b872 }
+.plans svg.os { width:15px; height:15px; fill:currentColor; flex:0 0 auto; transform:translateY(-1px) }
+.plans .keys { margin-top:30px; text-align:center; color:var(--mist); font-size:14.5px; line-height:1.6 } .plans .keys b { color:var(--cream); font-weight:600 }
+
+@media (max-width:980px) { .plans .cols { grid-template-columns:1fr } }
+@media (prefers-reduced-motion: reduce) {
+  .plans .reveal { opacity:1; transform:none; transition:none } .plans .col, .plans .btn { transition:none }
+  .plans .btn:hover, .plans .col.in:hover { transform:none }
+}

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback | NŪS</title>
+<meta name="description" content="Tell Pranav what NŪS should do next, or what broke. It goes straight to him.">
+<meta name="theme-color" content="#060810">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2714%27%20fill%3D%27%23060810%27%2F%3E%3Ctext%20x%3D%2732%27%20y%3D%2745%27%20text-anchor%3D%27middle%27%20font-family%3D%27Georgia%27%20font-size%3D%2742%27%20fill%3D%27%23f1ecdf%27%3EN%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#060810; --cream:#f1ecdf; --mist:#b9c1d3; --muted:#8b96ae; --cobalt:#7890ff; --brass:#d1a75f; --line:rgba(206,216,246,.14); --line2:rgba(206,216,246,.26) }
+  * { box-sizing:border-box; margin:0; padding:0 }
+  html, body { background:var(--ink); color:var(--cream); font-family:Inter,system-ui,sans-serif; -webkit-font-smoothing:antialiased }
+  body { min-height:100vh; background:radial-gradient(90% 60% at 50% 0%, #141b38 0%, #0a0e1e 45%, #060810 100%) no-repeat }
+  .mono { font-family:"JetBrains Mono",ui-monospace,monospace; text-transform:uppercase; letter-spacing:.16em; font-size:11px }
+  nav { display:flex; align-items:center; justify-content:space-between; height:84px; padding:0 40px }
+  nav a { color:var(--mist); text-decoration:none; font-size:15px } nav a:hover { color:var(--cream) }
+  nav .logo { font:400 28px "Instrument Serif",serif; color:var(--cream); letter-spacing:.02em }
+  main { max-width:680px; margin:0 auto; padding:10vh 24px 16vh }
+  .kicker { color:var(--cobalt); margin-bottom:16px }
+  h1 { font:400 clamp(44px,7vw,68px)/1 "Instrument Serif",serif; letter-spacing:-.01em } h1 em { color:var(--brass) }
+  .lede { margin-top:18px; color:var(--mist); font-size:16px; line-height:1.6 }
+  .card { margin-top:36px; padding:28px; border-radius:22px; border:1px solid var(--line); background:linear-gradient(180deg,rgba(20,25,46,.72),rgba(9,12,24,.72)) }
+  .kinds { display:flex; gap:8px; margin-bottom:14px }
+  .kind { font:600 13px Inter,sans-serif; color:var(--mist); background:transparent; border:1px solid var(--line2); border-radius:999px; padding:8px 16px; cursor:pointer; transition:color .2s, background .2s, border-color .2s }
+  .kind:hover { color:var(--cream) } .kind.active { color:#0b1020; background:var(--cream); border-color:var(--cream) }
+  form { display:flex; gap:10px }
+  textarea { flex:1; min-width:0; min-height:52px; resize:vertical; background:rgba(241,236,223,.04); border:1px solid var(--line2); border-radius:16px; outline:none; color:var(--cream); font:15px/1.5 Inter,sans-serif; padding:14px 18px }
+  textarea:focus { border-color:var(--cobalt); box-shadow:0 0 0 3px rgba(120,144,255,.2) } textarea::placeholder { color:var(--muted) }
+  button.send { align-self:flex-start; border:0; border-radius:999px; padding:15px 24px; font:600 15px Inter,sans-serif; background:var(--cream); color:#0b1020; cursor:pointer; white-space:nowrap; transition:transform .25s cubic-bezier(.2,.8,.2,1), background .25s }
+  button.send:hover { background:#fff; transform:scale(1.04) }
+  :focus-visible { outline:2px solid var(--brass); outline-offset:3px }
+  .hp { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; pointer-events:none }
+  .note { margin-top:14px; color:var(--mist); font-size:14px; line-height:1.55 }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px } .chips span { font-size:13px; color:var(--cream); background:rgba(241,236,223,.05); border:1px solid var(--line); border-radius:999px; padding:5px 14px }
+  .small { margin-top:10px; color:var(--muted); font-size:12.5px }
+  .back { display:inline-block; margin-top:34px; color:var(--mist); font-size:14.5px; text-decoration:none; border-bottom:1px solid var(--line2) } .back:hover { color:var(--cream) }
+  @media (max-width:640px) { nav { padding:0 20px } form { flex-direction:column } button.send { width:100% } .card { padding:20px } }
+</style>
+</head>
+<body>
+<nav><a class="logo" href="index.html">NŪS</a><a href="index.html">Back to NŪS</a></nav>
+<main>
+  <div class="kicker mono">Built with you</div>
+  <h1>What should it do <em>next?</em></h1>
+  <p class="lede">Leave the friction you want NŪS to remove, or say what broke. It goes straight to Pranav, and a copy stays on this device.</p>
+  <div class="card">
+    <div class="kinds" id="idea-kinds" role="group" aria-label="What kind of note"><button type="button" class="kind active" data-kind="idea">An idea</button><button type="button" class="kind" data-kind="bug">Something broke</button></div>
+    <form id="ideaform" autocomplete="off">
+      <label for="idea-input" class="hp">Your note</label>
+      <textarea id="idea-input" placeholder="I wish it could..." maxlength="3000" rows="2"></textarea>
+      <button type="submit" class="send" data-goatcounter-click="idea-send">Send to Pranav</button>
+      <input id="idea-website" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    </form>
+    <p class="note" id="idea-note" aria-live="polite" hidden></p>
+    <div class="chips" id="idea-chips" hidden></div>
+    <p class="small" id="idea-kept" hidden>Earlier notes stay on this device.</p>
+  </div>
+  <a class="back" href="index.html#faq">Back to the questions</a>
+</main>
+<script>
+  /* The note goes to the same intake the app uses (submit-feedback edge function, publishable key, anonymous).
+     If the server cannot be reached, the old path still works: clipboard + the public discussion thread. */
+  (function () {
+    var FEEDBACK_URL = "https://github.com/potlakai/nus/discussions/1";
+    var FEEDBACK_API = "https://xnpkplcjurzwanotmwwt.supabase.co/functions/v1/submit-feedback";
+    var FEEDBACK_KEY = "sb_publishable_yBEA9loOsDI9E_HMFIVCRQ_PZvTD8rB";
+    var KEY = "nus-feature-ideas";
+    var chips = document.getElementById("idea-chips"), kept = document.getElementById("idea-kept");
+    var note = document.getElementById("idea-note"), input = document.getElementById("idea-input");
+    function load() { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; } }
+    function render(list) {
+      chips.innerHTML = "";
+      list.forEach(function (t) { var sp = document.createElement("span"); sp.textContent = t; chips.appendChild(sp); });
+      chips.hidden = kept.hidden = list.length === 0;
+    }
+    render(load());
+    var ideaKind = "idea", kinds = document.getElementById("idea-kinds");
+    kinds.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-kind]"); if (!b) return;
+      ideaKind = b.getAttribute("data-kind");
+      kinds.querySelectorAll(".kind").forEach(function (x) { x.classList.toggle("active", x === b); });
+      input.placeholder = ideaKind === "bug" ? "What happened, and what did you expect?" : "I wish it could...";
+    });
+    function siteId() {
+      try {
+        var id = localStorage.getItem("nus-site-id");
+        if (!id) { id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()) + "-" + Math.random().toString(16).slice(2); localStorage.setItem("nus-site-id", id); }
+        return id;
+      } catch (e) { return null; }
+    }
+    function fallbackToThread(v) {
+      try { navigator.clipboard.writeText(v); } catch (err) {}
+      window.open(FEEDBACK_URL, "_blank", "noopener");
+    }
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); document.getElementById("ideaform").requestSubmit(); } });
+    document.getElementById("ideaform").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var v = input.value.trim();
+      if (!v) return;
+      var hp = document.getElementById("idea-website");
+      var list = load(); list.push(v);
+      try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (err) {}
+      input.value = "";
+      render(list);
+      note.textContent = "Sending to Pranav...";
+      note.hidden = false;
+      var body = { source: "site", kind: ideaKind, message: v, install_id: siteId(), website: hp ? hp.value : "" };
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 8000) : null;
+      fetch(FEEDBACK_API, { method: "POST", headers: { apikey: FEEDBACK_KEY, "content-type": "application/json" }, body: JSON.stringify(body), signal: ctrl ? ctrl.signal : undefined })
+        .then(function (r) {
+          if (r.status === 429) { note.textContent = "That is a lot of notes in one hour. Try again a little later."; return; }
+          if (!r.ok) throw new Error("http " + r.status);
+          note.textContent = "Sent to Pranav. A copy stays on this device. Want a reply? Put your email in the next one.";
+        })
+        .catch(function () {
+          note.textContent = "Could not reach the server, so it is on your clipboard: paste it into the public thread that just opened.";
+          fallbackToThread(v);
+        })
+        .then(function () { if (timer) clearTimeout(timer); });
+    });
+  })();
+</script>
+<script src="assets/attrib.js"></script>
+<script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+/* Two ways in, option A "The fork" (picked 2026-09-30). Shared by index.html and twoways.html; everything is
+   scoped under .ways so it can't touch the hero or the lesson. */
+.ways { --line:rgba(206,216,246,.14); --line2:rgba(206,216,246,.26); --muted:#8b96ae; --accent:#90A5FF; --cobaltk:#506CFF;
+  --sys:-apple-system,"SF Pro Text",Inter,system-ui,"Segoe UI",sans-serif }
+.ways em { color:var(--brass); font-style:italic }
+.ways .serif { font-family:"Instrument Serif",serif; font-weight:400 }
+.ways .head { text-align:center; padding:0 40px }
+.ways .head .mono { color:var(--cobalt); margin-bottom:16px }
+.ways .head h2 { font-size:clamp(46px,5.6vw,76px); line-height:1 }
+.ways .head p { margin:16px auto 0; max-width:540px; color:var(--mist); font-size:16px; line-height:1.6 }
+.ways .reveal { opacity:0; transform:translateY(28px); transition:opacity 1s cubic-bezier(.2,.8,.2,1), transform 1s cubic-bezier(.2,.8,.2,1) }
+.ways .reveal.in { opacity:1; transform:none }
+
+/* the fork: orb above, strands into two equal cards */
+.ways .fork { position:relative; max-width:1180px; margin:0 auto; padding:0 40px 14vh }
+.ways .fork canvas.strands { position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none }
+.ways .fork .gap { height:310px }
+.ways .pair { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:36px; align-items:stretch }
+.ways .or { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:44px; height:44px; border-radius:50%; display:grid; place-items:center; background:var(--ink); border:1px solid var(--line2); color:var(--muted); font:italic 18px "Instrument Serif",serif; z-index:2 }
+.ways .foot { margin-top:34px; text-align:center; color:var(--mist); font-size:15px }
+.ways .foot b { color:var(--cream); font-weight:600 }
+
+/* product card: media on top, copy below, the buttons pinned to the bottom so both cards line up */
+.ways .card { position:relative; display:flex; flex-direction:column; border-radius:22px; padding:22px 22px 26px; border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(20,25,46,.72),rgba(9,12,24,.72)); backdrop-filter:blur(6px);
+  transition:transform .5s cubic-bezier(.2,.8,.2,1), border-color .4s, box-shadow .5s }
+.ways .card:hover, .ways .card:focus-within { transform:translateY(-6px); border-color:var(--line2); box-shadow:0 40px 90px rgba(0,0,0,.45), 0 0 0 1px rgba(144,165,255,.08) }
+.ways .media { container-type:inline-size }
+.ways .copy { flex:1; display:flex; flex-direction:column }
+.ways .who { color:var(--muted); margin:22px 0 8px }
+.ways .card h3 { font-size:44px; line-height:1 }
+.ways .one { margin-top:10px; color:var(--mist); font-size:16px; line-height:1.5; max-width:440px; min-height:3em }
+.ways .card ul { list-style:none; margin-top:18px; display:grid; gap:10px }
+.ways .card li { display:flex; gap:12px; align-items:baseline; font-size:15px; color:var(--cream); line-height:1.45 }
+.ways .card li b { font-weight:600 }
+.ways .card li .d { color:var(--mist) }
+.ways .card li::before { content:""; flex:0 0 6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px rgba(144,165,255,.7); transform:translateY(-2px) }
+.ways .card.stu li::before { background:var(--brass); box-shadow:0 0 8px rgba(209,167,95,.7) }
+.ways .bottom { margin-top:auto; padding-top:22px }
+.ways .chips { display:flex; flex-wrap:wrap; gap:8px }
+.ways .chip { font:500 12px Inter,sans-serif; padding:6px 11px; border-radius:999px; border:1px solid var(--line); color:var(--mist); background:rgba(241,236,223,.03) }
+.ways .chip.hi { color:var(--cream); border-color:var(--line2) }
+.ways .acts { display:flex; flex-wrap:wrap; align-items:center; gap:10px 12px; margin-top:20px } .ways .acts .link { margin-left:6px }
+.ways .btn { display:inline-flex; align-items:center; white-space:nowrap; border-radius:999px; padding:13px 22px; font:600 15px Inter,sans-serif; text-decoration:none; border:0; cursor:pointer; transition:transform .25s cubic-bezier(.2,.8,.2,1), background .25s }
+.ways .btn:hover { transform:scale(1.04) }
+.ways .btn.solid { background:var(--cream); color:#0b1020 } .ways .btn.solid:hover { background:#fff }
+.ways .btn.ghost { border:1px solid var(--line2); color:var(--cream); background:rgba(241,236,223,.05) } .ways .btn.ghost:hover { background:rgba(241,236,223,.1) }
+.ways .btn { gap:8px } .ways svg.os { width:16px; height:16px; fill:currentColor; flex:0 0 auto; transform:translateY(-1px) }
+.ways .chip { display:inline-flex; align-items:center; gap:6px } .ways .chip svg.os { width:12px; height:12px }
+.ways .btn:focus-visible, .ways .tabs button:focus-visible, .ways .link:focus-visible { outline:2px solid var(--brass); outline-offset:3px }
+.ways .link { color:var(--mist); font-size:14px; text-decoration:none; border-bottom:1px solid var(--line2); padding-bottom:1px } .ways .link:hover { color:var(--cream) }
+.ways .small { margin-top:10px; color:var(--muted); font-size:12.5px }
+
+/* Students app window: Mac-style (the student app has a Mac beta) */
+.ways .appwin { position:relative; border-radius:12px; overflow:hidden; background:#101322; border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 0 0 .5px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.07), 0 30px 70px rgba(0,0,0,.5) }
+.ways .appwin .tb { height:30px; display:flex; align-items:center; padding:0 12px; background:linear-gradient(180deg,#23252d,#1e2027); position:relative }
+.ways .appwin .tb .l { display:flex; gap:7px } .ways .appwin .tb .l i { width:11px; height:11px; border-radius:50% }
+.ways .l .r { background:#ff5f57 } .ways .l .y { background:#febc2e } .ways .l .g { background:#28c840 }
+.ways .appwin .tb span { position:absolute; left:50%; transform:translateX(-50%); font:600 12px var(--sys); color:#cfd2da }
+.ways .shots { position:relative; aspect-ratio:1800/1125; background:#0c0f1c }
+.ways .shots img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transform:scale(1.025); transition:opacity .7s ease, transform 1.4s cubic-bezier(.2,.8,.2,1) }
+.ways .shots img.on { opacity:1; transform:none }
+
+/* tab rows under both media (Today / Review / Map, and Say it / Point / Assignment mode) */
+.ways .tabs { display:flex; gap:6px; margin-top:12px }
+.ways .tabs button { position:relative; flex:1; overflow:hidden; font:500 13px Inter,sans-serif; color:var(--mist); background:rgba(241,236,223,.03); border:1px solid var(--line); border-radius:10px; padding:9px 10px; cursor:pointer; text-align:left; transition:color .2s, border-color .2s, background .2s }
+.ways .tabs button small { display:block; margin-top:2px; font-size:11.5px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.ways .tabs button:hover { color:var(--cream) }
+.ways .tabs button.on { color:var(--cream); border-color:var(--line2); background:rgba(241,236,223,.06) }
+.ways .tabs button i { position:absolute; left:0; bottom:0; height:2px; width:0; background:var(--brass) }
+.ways .tabs.cool button i { background:var(--accent) }
+.ways .tabs button.on i { animation:waysfill var(--dur,4.5s) linear forwards } .ways .tabs.paused button.on i { animation-play-state:paused }
+@keyframes waysfill { to { width:100% } }
+
+/* Companion desk: a quiet screen with the real Knot overlay. Same height as the Students window (title bar + 16:10). */
+.ways .desk { position:relative; height:calc(100cqw * 1125 / 1800 + 30.75px); border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.1);
+  background:radial-gradient(120% 90% at 20% 0%, #1c2447 0%, #0e1226 55%, #0a0d1b 100%); box-shadow:0 30px 70px rgba(0,0,0,.5); font-family:var(--sys) }
+.ways .desk .appish { position:absolute; left:6%; top:9%; width:62%; height:68%; border-radius:9px; background:#15182a; border:1px solid rgba(255,255,255,.07); box-shadow:0 18px 40px rgba(0,0,0,.4); overflow:hidden }
+.ways .desk .appish .bar { height:24px; background:#1c1f33; display:flex; align-items:center; padding:0 10px; gap:10px; font-size:11px; color:#9aa0b4 }
+.ways .desk .appish .bar b { width:40px; height:6px; border-radius:3px; background:#2b3050 }
+.ways .desk .appish .body { padding:14px 16px; display:grid; gap:9px }
+.ways .desk .appish .ln { height:7px; border-radius:4px; background:#262b45 } .ways .desk .appish .ln.s { width:55% } .ways .desk .appish .ln.m { width:78% }
+.ways .desk .appish .err { margin-top:6px; padding:8px 10px; border-radius:6px; background:rgba(217,75,67,.12); border:1px solid rgba(217,75,67,.35); color:#f0b3ae; font-size:11.5px; width:70% }
+.ways .desk .note { position:absolute; left:40%; top:30%; width:42%; height:44%; border-radius:8px; background:#f3f1ea; color:#1d1f27; box-shadow:0 20px 40px rgba(0,0,0,.5); opacity:0; transform:scale(.94) translateY(8px); transition:opacity .35s, transform .45s cubic-bezier(.2,1.2,.3,1) }
+.ways .desk .note .bar { height:20px; background:#e3e0d6; border-radius:8px 8px 0 0; font-size:10px; display:flex; align-items:center; padding-left:8px; color:#555 }
+.ways .desk .note .txt { padding:10px; font:13px Consolas,ui-monospace,monospace }
+.ways .desk .note .txt::after { content:"|"; animation:waysblink 1s steps(1) infinite } @keyframes waysblink { 50% { opacity:0 } }
+.ways .desk .note.on { opacity:1; transform:none }
+.ways .desk .dknot { position:absolute; right:1%; bottom:1%; width:22%; aspect-ratio:1 }
+.ways .desk .dknot canvas { width:100%; height:100% }
+.ways .gl { position:absolute; background:linear-gradient(150deg, rgba(18,20,31,.95), rgba(8,10,18,.92)); border:1px solid rgba(242,239,230,.13); box-shadow:0 18px 42px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.07); color:rgba(255,255,255,.95);
+  opacity:0; transform:translateY(6px); transition:opacity .25s, transform .25s }
+.ways .gl.on { opacity:1; transform:none }
+.ways .desk .pill { right:21%; bottom:8%; border-radius:999px; padding:7px 14px; font-size:12px; white-space:nowrap; display:flex; align-items:center; gap:8px }
+.ways .desk .pill .dot { width:7px; height:7px; border-radius:50%; background:#D94B43; box-shadow:0 0 8px #D94B43; animation:waysblink 1s steps(1) infinite }
+.ways .desk .pill .ph { color:rgba(243,240,232,.42) }
+.ways .desk .keys { right:21%; bottom:8%; border-radius:999px; padding:6px 10px; display:flex; gap:5px; font-size:11px }
+.ways .desk kbd { font:600 10.5px var(--sys); padding:3px 7px; border-radius:6px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.06); color:#fff }
+.ways .desk .bub { max-width:44%; padding:9px 12px 8px; border-radius:12px; font-size:12px; line-height:1.4 }
+.ways .desk .bub .k { margin-bottom:4px; color:var(--accent); font:700 8px/1 var(--sys); letter-spacing:.16em; text-transform:uppercase }
+.ways .desk .bub.b1 { left:30%; top:56% } .ways .desk .bub.b2 { left:8%; top:22% }
+.ways .desk .mapmini { left:9%; top:12%; width:60%; padding:10px 12px 6px; border-radius:14px }
+.ways .mapmini .mh { font:600 12px var(--sys) } .ways .mapmini svg { display:block; width:100%; overflow:visible }
+.ways .mapmini .ed { stroke:rgba(206,216,246,.35); stroke-width:1; stroke-dasharray:160; stroke-dashoffset:160 }
+.ways .mapmini .hub { fill:rgba(144,165,255,.2); stroke:#dfe3f2; stroke-width:1.2; filter:drop-shadow(0 0 8px rgba(144,165,255,.6)) }
+.ways .mapmini .nd { opacity:0 } .ways .mapmini .nd circle { stroke:#0a0d1b; stroke-width:1.5 } .ways .mapmini .nd text { font:500 9.5px var(--sys); fill:#e8eaf2 }
+.ways .mapmini .folder circle { fill:#7e93ff } .ways .mapmini .routine circle { fill:#d1a75f } .ways .mapmini .conversation circle { fill:#4cc88c }
+.ways .mapmini.on .ed { transition:stroke-dashoffset .9s cubic-bezier(.3,.7,.2,1) calc(var(--i) * .15s); stroke-dashoffset:0 }
+.ways .mapmini.on .nd { opacity:1; transition:opacity .5s calc(.25s + var(--i) * .15s) }
+.ways .desk .ring { position:absolute; border:1.5px solid rgba(144,165,255,.8); border-radius:7px; box-shadow:0 0 14px rgba(144,165,255,.3); opacity:0; transition:opacity .3s }
+.ways .desk .ring.on { opacity:1 }
+.ways .desk .cursor { position:absolute; width:14px; height:19px; transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1), opacity .3s; filter:drop-shadow(0 2px 3px rgba(0,0,0,.6)) }
+
+@media (max-width:980px) {
+  .ways .pair { grid-template-columns:1fr } .ways .or { display:none }
+}
+@media (max-width:640px) {
+  .ways .fork { padding:0 18px 12vh } .ways .card { padding:14px 14px 20px }
+  .ways .desk .pill, .ways .desk .keys { right:23%; max-width:74%; font-size:10.5px; padding:6px 10px; overflow:hidden; text-overflow:ellipsis }
+  .ways .desk .bub { font-size:10.5px; max-width:58% } .ways .desk .bub.b1 { left:22% }
+  .ways .mapmini .nd text { font-size:11px } .ways .tabs button { padding:8px; font-size:12px } .ways .tabs button small { font-size:10.5px }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ways .reveal { opacity:1; transform:none; transition:none }
+  .ways .card, .ways .btn, .ways .shots img, .ways .gl, .ways .desk .note { transition:none } .ways .card:hover, .ways .btn:hover { transform:none }
+  .ways .tabs button.on i { animation:none; width:100% }
+}

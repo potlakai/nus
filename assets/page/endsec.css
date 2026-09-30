@@ -1,0 +1,56 @@
+/* Final CTA options + the footer. Scoped under .endsec (CTA) and .foot (footer) so both can drop into index.html.
+   A Full circle (the hero orb comes back and re-combs into "you"), B Word reveal (the template's TextReveal),
+   C The card (the template's CTA card with the real Knot). Footer: link columns + the giant NUS wordmark bookend. */
+.endsec, .sitefoot { --line:rgba(206,216,246,.14); --line2:rgba(206,216,246,.26); --muted:#8b96ae; position:relative }
+.endsec em, .sitefoot em { color:var(--brass); font-style:italic } .endsec .serif, .sitefoot .serif { font-family:"Instrument Serif",serif; font-weight:400 }
+.endsec .mono, .sitefoot .mono { font-family:"JetBrains Mono",ui-monospace,monospace; text-transform:uppercase; letter-spacing:.16em; font-size:11px }
+.endsec svg.os, .sitefoot svg.os { width:15px; height:15px; fill:currentColor; flex:0 0 auto; transform:translateY(-1px) }
+.endsec .cbtn { display:inline-flex; align-items:center; gap:8px; white-space:nowrap; border-radius:999px; padding:14px 24px; font:600 15px Inter,sans-serif; text-decoration:none; border:1px solid transparent; transition:transform .25s cubic-bezier(.2,.8,.2,1), background .3s }
+.endsec .cbtn:hover { transform:scale(1.04) } .endsec .cbtn:focus-visible { outline:2px solid var(--brass); outline-offset:3px }
+.endsec .cbtn.solid { background:var(--cream); color:#0b1020 } .endsec .cbtn.solid:hover { background:#fff }
+.endsec .cbtn.ghost { border-color:var(--line2); color:var(--cream); background:rgba(6,8,16,.4); backdrop-filter:blur(8px) } .endsec .cbtn.ghost:hover { background:rgba(241,236,223,.1) }
+.endsec .btns { display:flex; flex-wrap:wrap; gap:12px; justify-content:center }
+.endsec .fine { margin-top:16px; color:var(--muted); font-size:13.5px; text-align:center }
+.endsec .kick { color:var(--cobalt); text-align:center; margin-bottom:16px }
+.endsec h2 { font-size:clamp(52px,6.6vw,96px); line-height:1; text-align:center }
+
+/* A: full circle */
+.endsec.full .track { position:relative; height:220vh }
+.endsec.full .stage, .endsec.words .stage { margin:0; font-family:inherit }   /* the lesson owns a global .stage */
+.endsec.full .stage { position:sticky; top:0; height:100vh; overflow:hidden }
+.endsec.full .orbbox { position:absolute; inset:0 }
+.endsec.full .copy { position:absolute; left:0; right:0; bottom:9vh; z-index:4; opacity:0; transform:translateY(24px); transition:opacity .15s linear, transform .15s linear }
+.endsec.full .copy h2 { font-size:clamp(46px,5.4vw,80px) }
+.endsec.full .copy .btns { margin-top:26px }
+
+/* B: word reveal */
+.endsec.words .track { position:relative; height:200vh }
+.endsec.words .stage { position:sticky; top:0; height:100vh; display:grid; place-items:center; align-content:center; gap:34px; padding:0 40px }
+.endsec.words h2 { font-size:clamp(64px,10vw,150px); line-height:.95 }
+.endsec.words h2 span { display:inline-block; margin:0 .12em; opacity:.08; filter:blur(8px); transform:translateY(18px); transition:opacity .5s, filter .5s, transform .6s cubic-bezier(.2,.8,.2,1) }
+.endsec.words h2 span.on { opacity:1; filter:none; transform:none }
+.endsec.words .after { opacity:0; transform:translateY(20px); transition:opacity .6s, transform .6s cubic-bezier(.2,.8,.2,1) } .endsec.words .after.on { opacity:1; transform:none }
+
+/* C: the card */
+.endsec.card .wrap { max-width:1160px; margin:0 auto; padding:16vh 40px }
+.endsec.card .box { position:relative; border-radius:30px; padding:2px; background:conic-gradient(from var(--a,0deg), rgba(209,167,95,.7), rgba(120,144,255,.35), rgba(209,167,95,.05), rgba(120,144,255,.35), rgba(209,167,95,.7)); animation:spin 9s linear infinite }
+@property --a { syntax:"<angle>"; inherits:false; initial-value:0deg } @keyframes spin { to { --a:360deg } }
+.endsec.card .inner { border-radius:28px; background:radial-gradient(90% 120% at 80% 50%, #182149 0%, #0c1024 55%, #080a16 100%); display:grid; grid-template-columns:1.2fr 1fr; gap:30px; align-items:center; padding:64px; overflow:hidden }
+.endsec.card .inner h2, .endsec.card .inner .kick, .endsec.card .inner .fine { text-align:left } .endsec.card .inner .btns { justify-content:flex-start; margin-top:26px }
+.endsec.card .knotbig { justify-self:center; width:min(380px,100%); aspect-ratio:1 } .endsec.card .knotbig canvas { width:100%; height:100% }
+
+/* footer: link columns + the giant wordmark, the bookend to the hero */
+.sitefoot { overflow:hidden; background:linear-gradient(180deg,#060810 0%,#0a0e20 60%,#141b3a 100%); border-top:1px solid var(--line) }
+.sitefoot .top { max-width:1200px; margin:0 auto; padding:80px 40px 40px; display:grid; grid-template-columns:1.2fr repeat(4,1fr); gap:30px }
+.sitefoot .brand b { font:400 40px/1 "Instrument Serif",serif } .sitefoot .brand p { margin-top:10px; color:var(--mist); font-size:14.5px; line-height:1.6; max-width:260px }
+.sitefoot .status { margin-top:16px; display:grid; gap:6px } .sitefoot .status span { color:var(--muted) } .sitefoot .status span:first-child { color:var(--mist) }
+.sitefoot h4 { color:var(--muted); margin-bottom:14px }
+.sitefoot ul { list-style:none; display:grid; gap:10px } .sitefoot a { color:var(--mist); text-decoration:none; font-size:14.5px; display:inline-flex; align-items:center; gap:6px; transition:color .2s }
+.sitefoot a:hover { color:var(--cream) } .sitefoot a:focus-visible { outline:2px solid var(--brass); outline-offset:3px; border-radius:4px }
+.sitefoot .meta { max-width:1200px; margin:0 auto; padding:0 40px 20px; display:flex; justify-content:space-between; gap:20px; color:var(--muted); font-size:12.5px }
+.sitefoot .mark { position:relative; height:27vw; user-select:none; pointer-events:none }
+.sitefoot .mark .w { position:absolute; left:0; right:0; top:0; text-align:center; font:400 44vw/1 "Instrument Serif",serif; letter-spacing:-.01em;
+  background:linear-gradient(180deg,#c6cce0 0%,#969ec4 22%,#606a96 55%); -webkit-background-clip:text; background-clip:text; color:transparent; transform:translateY(calc(8vw - var(--rise,0) * 6vw)) }
+.sitefoot .mark .m { position:absolute; left:calc(49.7% - 2.95vw); top:0; width:5.9vw; height:.36vw; border-radius:99px; background:linear-gradient(90deg,#969ec8,#b0b8d8,#969ec8); transform:translateY(calc(8vw + 3.95vw - var(--rise,0) * 6vw)) }
+@media (max-width:980px) { .sitefoot .top { grid-template-columns:1fr 1fr } .endsec.card .inner { grid-template-columns:1fr; padding:36px } }
+@media (prefers-reduced-motion: reduce) { .endsec.words h2 span, .endsec.words .after { opacity:1; filter:none; transform:none; transition:none } .endsec.card .box { animation:none } }

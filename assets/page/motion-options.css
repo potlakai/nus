@@ -1,0 +1,13 @@
+/* Motion changes only. All resting layouts stay intact. */
+body[data-motion-option]:not([data-motion-option="original"]) #next .next-head,
+body[data-motion-option]:not([data-motion-option="original"]) #next .mac,
+body[data-motion-option]:not([data-motion-option="original"]) #next .knot {
+  transition: none;
+  will-change: transform, opacity;
+}
+.nus-motion-bridge { position:fixed; inset:0; width:100%; height:100%; z-index:29; pointer-events:none }
+@media (prefers-reduced-motion:reduce) {
+  body[data-motion-option] .fade { opacity:1; transform:none; transition:none }
+  body[data-motion-option] .tcap div { transition:none }
+  .nus-motion-bridge { display:none }
+}

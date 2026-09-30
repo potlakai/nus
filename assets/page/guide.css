@@ -1,0 +1,125 @@
+/* Setup, option A "Follow along" (picked 2026-09-30). Shared by index.html and setup.html; scoped under .guide.
+   Glass, bubble and key rows follow nus-desktop-day1/companion (renderer/styles.css, home/index.html). */
+.guide { --line:rgba(206,216,246,.14); --line2:rgba(206,216,246,.26); --muted:#8b96ae; --accent:#90A5FF; --cobaltk:#506CFF;
+  --sys:-apple-system,"SF Pro Text",Inter,system-ui,"Segoe UI",sans-serif; position:relative }
+canvas.guide-strand { position:fixed; inset:0; width:100vw; height:100vh; pointer-events:none; z-index:30; --thread-accent:#90A5FF }
+.guide em { color:var(--brass); font-style:italic } .guide .serif { font-family:"Instrument Serif",serif; font-weight:400 }
+.guide .sec { position:relative; max-width:1180px; margin:0 auto; padding:14vh 40px 16vh }
+.guide .head { text-align:center } .guide .head .mono { color:var(--cobalt); margin-bottom:16px }
+.guide .head h2 { font-size:clamp(46px,5.6vw,76px); line-height:1 } .guide .head p { margin:16px auto 0; max-width:560px; color:var(--mist); font-size:16px; line-height:1.6 }
+.guide .reveal { opacity:0; transform:translateY(26px); transition:opacity 1s cubic-bezier(.2,.8,.2,1), transform 1s cubic-bezier(.2,.8,.2,1) } .guide .reveal.in { opacity:1; transform:none }
+.guide kbd { font:600 12px var(--sys); padding:3px 8px; border-radius:6px; border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.06); color:#fff; white-space:nowrap }
+.guide a.ext { color:var(--cream); text-decoration:none; border-bottom:1px solid var(--line2) } .guide a.ext:hover { border-color:var(--cream) }
+.guide svg.os { width:14px; height:14px; fill:currentColor; vertical-align:-2px; margin-right:4px }
+
+/* app tabs */
+.guide .prod { display:flex; justify-content:center; margin-top:34px }
+.guide .prod .seg { position:relative; display:inline-flex; gap:4px; padding:5px; border-radius:999px; border:1px solid var(--line2); background:rgba(12,16,34,.8) }
+.guide .prod button { position:relative; z-index:1; font:600 15px Inter,sans-serif; color:var(--mist); background:none; border:0; border-radius:999px; padding:12px 22px; cursor:pointer; transition:color .3s }
+.guide .prod button.on { color:#0b1020 } .guide .prod .pill { position:absolute; top:5px; bottom:5px; border-radius:999px; background:var(--cream); transition:left .45s cubic-bezier(.2,.8,.2,1), width .45s cubic-bezier(.2,.8,.2,1) }
+.guide .prod button:focus-visible, .guide .gsteps button:focus-visible { outline:2px solid var(--brass); outline-offset:3px }
+
+/* steps + screen */
+.guide .fa { display:grid; grid-template-columns:400px 1fr; gap:48px; align-items:start; margin-top:48px }
+.guide .gsteps { list-style:none; display:grid; gap:10px }
+.guide .gsteps button { width:100%; text-align:left; display:grid; grid-template-columns:34px 1fr; gap:14px; padding:15px 18px; border-radius:16px; border:1px solid var(--line); background:rgba(241,236,223,.02); color:var(--cream); cursor:pointer; opacity:.55; transition:opacity .35s, border-color .35s, background .35s; font:inherit; position:relative; overflow:hidden }
+.guide .gsteps button:hover { opacity:.85 } .guide .gsteps button.on { opacity:1; border-color:var(--line2); background:rgba(241,236,223,.05) }
+.guide .gsteps .n { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; border:1px solid var(--line2); font:500 12px "JetBrains Mono",monospace; color:var(--mist) }
+.guide .gsteps button.on .n { background:var(--cream); color:#0b1020; border-color:var(--cream) }
+.guide .gsteps .ttl { display:block; font-size:16px; font-weight:600 } .guide .gsteps .d { display:block; margin-top:5px; color:var(--mist); font-size:14px; line-height:1.55 } .guide .gsteps .d b { color:var(--cream); font-weight:600 }
+.guide .gsteps button:not(.on) .d { display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden }
+.guide .gsteps button i { position:absolute; left:0; bottom:0; height:2px; width:0; background:var(--brass) } .guide .gsteps button.on i { animation:guidefill var(--dur,6s) linear forwards } .guide .gsteps.paused button.on i { animation-play-state:paused }
+@keyframes guidefill { to { width:100% } }
+.guide .screen { position:sticky; top:12vh; aspect-ratio:16/10.5; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.12); font-family:var(--sys);
+  background:radial-gradient(120% 90% at 20% 0%, #1c2447 0%, #0e1226 55%, #0a0d1b 100%); box-shadow:0 40px 100px rgba(0,0,0,.55) }
+.guide .scene { position:absolute; left:0; top:0; width:calc(100% / var(--k,1)); height:calc(100% / var(--k,1)); transform-origin:0 0; display:grid; place-items:center; opacity:0; transform:scale(calc(var(--k,1) * .985)); transition:opacity .5s, transform .6s cubic-bezier(.2,.8,.2,1); pointer-events:none }
+.guide .scene.on { opacity:1; transform:scale(var(--k,1)); pointer-events:auto }
+.guide .scene .cap { position:absolute; left:16px; top:14px; z-index:3; font:500 10px "JetBrains Mono",monospace; letter-spacing:.14em; text-transform:uppercase; color:rgba(185,193,211,.85); padding:5px 9px; border-radius:999px; background:rgba(6,8,16,.55); border:1px solid rgba(255,255,255,.08) }
+.guide .gl { background:linear-gradient(150deg, rgba(18,20,31,.96), rgba(8,10,18,.94)); border:1px solid rgba(242,239,230,.13); border-radius:18px; box-shadow:0 18px 42px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.07); color:rgba(255,255,255,.95) }
+.guide .m { margin-top:4px; font-size:12px; color:rgba(243,240,232,.5) }
+
+/* Windows warning, simplified */
+.guide .smart { position:relative; width:62%; background:#0f5fb4; color:#fff; padding:26px 28px 22px; box-shadow:0 30px 70px rgba(0,0,0,.5); font-family:"Segoe UI",var(--sys) }
+.guide .smart h4 { font:300 26px/1.15 "Segoe UI",var(--sys) } .guide .smart p { margin-top:14px; font-size:13px; line-height:1.5; opacity:.92 }
+.guide .smart .more { display:inline-block; margin-top:10px; font-size:13px; text-decoration:underline }
+.guide .smart .row { margin-top:22px; display:flex; justify-content:flex-end; gap:10px } .guide .smart .row span { padding:7px 22px; font-size:13px; border:2px solid rgba(255,255,255,.6) }
+.guide .smart .run { opacity:0; transition:opacity .4s } .guide .smart.more-on .run { opacity:1 } .guide .smart .run.hi { background:#fff; color:#0f5fb4; border-color:#fff }
+.guide .smart .ring { position:absolute; border:1.6px solid rgba(144,165,255,.95); border-radius:8px; box-shadow:0 0 16px rgba(144,165,255,.4); pointer-events:none; opacity:0; transition:all .45s cubic-bezier(.2,.8,.2,1) }
+
+/* Your keys (Companion window) */
+.guide .keys-card { position:relative; width:86%; padding:16px 18px }
+.guide .keys-card .ey { font:700 9px/1 var(--sys); letter-spacing:.16em; color:var(--accent) } .guide .keys-card h5, .guide .fold h5 { margin-top:6px; font:600 18px var(--sys) }
+.guide .krow { margin-top:8px; display:grid; grid-template-columns:1fr auto auto 1.1fr; gap:10px; align-items:center; padding:8px 10px; border-radius:12px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.025); transition:border-color .3s, background .3s }
+.guide .krow.hi { border-color:rgba(144,165,255,.55); background:rgba(144,165,255,.07) }
+.guide .krow label { font:600 13px var(--sys) } .guide .krow label small { display:block; font-weight:400; font-size:11px; color:rgba(243,240,232,.5) }
+.guide .krow .badge { justify-self:start; font:600 10px var(--sys); padding:3px 8px; border-radius:999px; background:rgba(255,255,255,.07); color:rgba(243,240,232,.6) } .guide .krow .badge.ok { background:rgba(76,200,140,.16); color:#8fe0b8 }
+.guide .krow .get { font:500 11.5px var(--sys); color:var(--accent) }
+.guide .krow .field { height:26px; overflow:hidden; border-radius:8px; background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.08); font:13px monospace; color:#dfe3f2; display:flex; align-items:center; padding:0 10px; letter-spacing:2px }
+.guide .keys-card .save { margin-top:10px; display:inline-block; padding:7px 14px; border-radius:999px; background:var(--cobaltk); font:600 12px var(--sys) }
+
+/* Folders (Companion window) */
+.guide .fold { width:80%; padding:18px 20px }
+.guide .fold .add { display:inline-block; margin-top:12px; padding:7px 14px; border-radius:999px; background:var(--cobaltk); font:600 12px var(--sys); transition:transform .15s } .guide .fold .add.press { transform:scale(.94) }
+.guide .frows { margin-top:12px; display:grid; gap:8px }
+.guide .frow { display:grid; grid-template-columns:28px 1fr auto; gap:12px; align-items:center; padding:9px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.025); opacity:0; transform:translateY(8px); transition:opacity .4s, transform .5s cubic-bezier(.2,.8,.2,1) }
+.guide .frow.in { opacity:1; transform:none }
+.guide .frow .ic { width:28px; height:22px; border-radius:4px; background:linear-gradient(180deg,#7e93ff,#5a70e8); position:relative } .guide .frow .ic::before { content:""; position:absolute; left:0; top:-4px; width:12px; height:6px; border-radius:3px 3px 0 0; background:#7e93ff }
+.guide .frow b { display:block; font:600 13px var(--sys) } .guide .frow small { font-size:11px; color:rgba(243,240,232,.5) }
+.guide .frow .tg { width:34px; height:20px; border-radius:999px; background:rgba(255,255,255,.12); position:relative; transition:background .3s } .guide .frow .tg::after { content:""; position:absolute; left:3px; top:3px; width:14px; height:14px; border-radius:50%; background:#cfd3e2; transition:transform .3s cubic-bezier(.2,1.3,.3,1) }
+.guide .frow.on .tg { background:#4cc88c } .guide .frow.on .tg::after { transform:translateX(14px); background:#fff }
+.guide .fold .foot { margin-top:10px }
+
+/* Say it, it acts */
+.guide .voice { display:grid; place-items:center; gap:18px; transform:translateX(-18%) }
+.guide .knotbox { width:130px; height:130px } .guide .knotbox canvas, .guide .pknot canvas { width:100%; height:100% }
+.guide .caps { display:flex; gap:8px } .guide .caps kbd { font-size:15px; padding:9px 15px; border-radius:10px; transition:transform .15s, background .15s } .guide .caps kbd.down { transform:translateY(3px); background:rgba(144,165,255,.25) }
+.guide .say { padding:8px 16px; border-radius:999px; font-size:13px; min-height:34px; display:flex; align-items:center; gap:8px; white-space:nowrap } .guide .say .dot { width:7px; height:7px; border-radius:50%; background:#D94B43; box-shadow:0 0 8px #D94B43 }
+.guide .notepad { position:absolute; right:5%; top:22%; width:29%; height:42%; border-radius:8px; background:#f3f1ea; color:#1d1f27; box-shadow:0 20px 40px rgba(0,0,0,.5); opacity:0; transform:scale(.92) translateY(10px); transition:opacity .35s, transform .5s cubic-bezier(.2,1.2,.3,1) }
+.guide .notepad.on { opacity:1; transform:none }
+.guide .notepad .bar { height:20px; background:#e3e0d6; border-radius:8px 8px 0 0; font-size:10px; display:flex; align-items:center; padding-left:8px; color:#555 }
+.guide .notepad .txt { padding:10px; font:14px Consolas,ui-monospace,monospace } .guide .notepad .txt::after { content:"|"; animation:guideblink 1s steps(1) infinite } @keyframes guideblink { 50% { opacity:0 } }
+.guide .offer { position:absolute; right:7%; bottom:12%; padding:9px 14px; border-radius:999px; font-size:12.5px; opacity:0; transform:translateY(6px); transition:opacity .3s, transform .3s } .guide .offer.on { opacity:1; transform:none }
+
+/* Point at anything */
+.guide .doc { position:absolute; left:7%; top:15%; width:60%; height:64%; border-radius:9px; background:#15182a; border:1px solid rgba(255,255,255,.07); box-shadow:0 18px 40px rgba(0,0,0,.4); overflow:hidden }
+.guide .doc .bar { height:24px; background:#1c1f33; display:flex; align-items:center; padding:0 10px; gap:10px; font-size:11px; color:#9aa0b4 } .guide .doc .bar b { width:40px; height:6px; border-radius:3px; background:#2b3050 }
+.guide .doc .body { padding:16px 18px; display:grid; gap:10px } .guide .doc .ln { height:7px; border-radius:4px; background:#262b45 } .guide .doc .ln.s { width:55% } .guide .doc .ln.m { width:78% }
+.guide .doc .err { margin-top:6px; padding:8px 10px; border-radius:6px; background:rgba(217,75,67,.12); border:1px solid rgba(217,75,67,.35); color:#f0b3ae; font-size:12px; width:74%; transition:box-shadow .3s } .guide .doc .err.hot { box-shadow:0 0 0 3px rgba(144,165,255,.25) }
+.guide .pknot { position:absolute; right:3%; bottom:3%; width:21%; aspect-ratio:1 }
+.guide .point-bub, .guide .scene[data-s=point] .bub { position:absolute; left:34%; top:62%; max-width:40%; padding:11px 13px 10px; border-radius:12px; font-size:13px; line-height:1.45; opacity:0; transform:translateY(6px); transition:opacity .3s, transform .3s }
+.guide .scene[data-s=point] .bub.on { opacity:1; transform:none }
+.guide .bub .k { margin-bottom:5px; color:var(--accent); font:700 8.5px/1 var(--sys); letter-spacing:.16em; text-transform:uppercase }
+
+/* Map (Companion window) */
+.guide .mapcard { width:90%; padding:16px 18px 12px }
+.guide .mapcard .mh b { display:block; font:600 16px var(--sys) } .guide .mapcard .mh span { font-size:12px; color:rgba(243,240,232,.5) }
+.guide .graph { display:block; width:100%; margin-top:6px; overflow:visible }
+.guide .graph .ed { stroke:rgba(206,216,246,.35); stroke-width:1.2; stroke-dasharray:260; stroke-dashoffset:260 }
+.guide .graph .hub { fill:rgba(144,165,255,.18); stroke:#dfe3f2; stroke-width:1.5; filter:drop-shadow(0 0 10px rgba(144,165,255,.6)) }
+.guide .graph .hl { font:600 9px "JetBrains Mono",monospace; letter-spacing:.14em; fill:rgba(185,193,211,.85) }
+.guide .graph .nd { opacity:0; transform:scale(.6); transform-box:fill-box; transform-origin:center }
+.guide .graph .nd circle { stroke:#0a0d1b; stroke-width:2 } .guide .graph .nd text { font:500 12px var(--sys); fill:#e8eaf2 }
+.guide .graph .folder circle, .guide .legend .folder::before { fill:#7e93ff; background:#7e93ff } .guide .graph .routine circle, .guide .legend .routine::before { fill:#d1a75f; background:#d1a75f } .guide .graph .conversation circle, .guide .legend .conversation::before { fill:#4cc88c; background:#4cc88c }
+.guide .mapcard.grown .ed { transition:stroke-dashoffset 1s cubic-bezier(.3,.7,.2,1) calc(var(--i) * .18s); stroke-dashoffset:0 }
+.guide .mapcard.grown .nd { opacity:1; transform:none; transition:opacity .5s calc(.3s + var(--i) * .18s), transform .6s cubic-bezier(.2,1.3,.3,1) calc(.3s + var(--i) * .18s) }
+.guide .legend { display:flex; gap:16px; margin-top:4px; font-size:11px; color:rgba(243,240,232,.6) } .guide .legend span::before { content:""; display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px }
+
+/* Students scenes */
+.guide .win { width:84%; border-radius:12px; overflow:hidden; background:#101322; border:1px solid rgba(255,255,255,.12); box-shadow:0 30px 70px rgba(0,0,0,.5) }
+.guide .win .tb { height:28px; display:flex; align-items:center; gap:7px; padding:0 12px; background:linear-gradient(180deg,#23252d,#1e2027); position:relative } .guide .win .tb i { width:11px; height:11px; border-radius:50% }
+.guide .win .tb span { position:absolute; left:50%; transform:translateX(-50%); font:600 11.5px var(--sys); color:#cfd2da }
+.guide .win img { display:block; width:100%; aspect-ratio:1800/1125; object-fit:cover }
+.guide .dl { display:grid; gap:10px; width:64% } .guide .dl .b { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-radius:12px; border:1px solid var(--line2); background:rgba(241,236,223,.04); font:600 14px var(--sys) } .guide .dl .b small { font-weight:400; color:var(--mist); font-size:12px }
+.guide .dl .note { margin-top:6px; font-size:12.5px; color:var(--mist); line-height:1.5 }
+.guide .profile { display:flex; align-items:center; gap:12px; padding:14px 18px; border-radius:14px } .guide .profile .av { width:38px; height:38px; border-radius:50%; background:#f3f1ea; color:#1d1f27; display:grid; place-items:center; font:600 14px var(--sys) } .guide .profile b { display:block; font:600 14px var(--sys) } .guide .profile span span { font-size:12px; color:rgba(243,240,232,.55) }
+.guide .cards { display:grid; gap:12px; width:80% }
+.guide .setcard { background:#f3efe6; color:#1d1f27; border-radius:14px; padding:16px 18px; border:2px solid transparent; box-shadow:0 20px 50px rgba(0,0,0,.45) } .guide .setcard.hi { border-color:rgba(80,108,255,.6) }
+.guide .setcard .kick { font:700 9.5px/1 var(--sys); letter-spacing:.16em; text-transform:uppercase; color:#5b6fd6 } .guide .setcard h6 { margin-top:6px; font:600 16px var(--sys) } .guide .setcard p { margin-top:5px; font-size:12px; line-height:1.45; color:#5a5c66 }
+.guide .setcard .inp { margin-top:8px; height:30px; border-radius:8px; border:1px solid #d8d3c6; background:#fbf9f4; font:12px monospace; color:#9a978e; display:flex; align-items:center; padding:0 10px } .guide .setcard .sv { display:inline-block; margin-top:8px; padding:6px 12px; border-radius:999px; background:#1d1f27; color:#f3efe6; font:600 11.5px var(--sys) }
+
+@media (max-width:980px) { .guide .fa { grid-template-columns:1fr } .guide .screen { position:relative; top:0 } }
+@media (max-width:640px) { .guide .sec { padding:12vh 18px 14vh } .guide .prod button { padding:10px 14px; font-size:14px } }
+@media (prefers-reduced-motion: reduce) {
+  .guide .reveal { opacity:1; transform:none; transition:none } .guide .scene, .guide .smart .run, .guide .frow, .guide .notepad, .guide .offer { transition:none }
+  .guide .gsteps button.on i { animation:none; width:100% } .guide .graph .ed { stroke-dashoffset:0 } .guide .graph .nd { opacity:1; transform:none }
+}

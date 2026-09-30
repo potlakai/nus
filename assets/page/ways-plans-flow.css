@@ -1,0 +1,2 @@
+/* Two ways in > Pricing bridge (review round 2). Sits over the page, never takes the pointer. */
+.nus-flow-bridge { position:fixed; inset:0; width:100%; height:100%; z-index:27; pointer-events:none }

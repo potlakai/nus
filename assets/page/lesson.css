@@ -1,0 +1,141 @@
+/* First time / Next time / Later, option A v2: Mac-style window + the real Companion overlay look.
+   Glass, bubble, chip and accent values are taken from nus-desktop-day1/companion/renderer/styles.css. */
+.next { --muted:#8b96ae; --line:rgba(206,216,246,.14); --line2:rgba(206,216,246,.24);
+  --sys:-apple-system,"SF Pro Text","SF Pro Display",Inter,system-ui,"Segoe UI",sans-serif;
+  --app:#1c1d22; --app2:#232429; --app3:#2b2c32; --gl:rgba(255,255,255,.065); --tx:#e8e9ec; --tx2:#a9adb8; --tx3:#7c808c;
+  --pick:#2f9e6a; --accent:#90A5FF; --cobaltk:#506CFF }
+.serif { font-family:"Instrument Serif",serif; font-weight:400 }
+.next em { color:var(--brass); font-style:italic }
+.sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap }
+.next-head { text-align:center }
+.next-head .mono { color:var(--cobalt); margin-bottom:18px }
+.next-head h2 { font-size:clamp(44px,5.4vw,72px); line-height:1 }
+.next-head p { margin:18px auto 0; max-width:560px; color:var(--mist); font-size:16px; line-height:1.6 }
+
+.lesson { max-width:1040px; margin:10vh auto 0 }
+
+/* the three rounds, as a rail above the window */
+.steps { list-style:none; display:grid; grid-template-columns:repeat(3,1fr); gap:14px }
+.step { position:relative; padding:18px 18px 16px; border-radius:14px; border:1px solid var(--line); opacity:.42; transition:opacity .4s, border-color .4s, background .4s }
+.step::before { content:""; position:absolute; left:18px; right:18px; top:-1px; height:2px; border-radius:2px; background:var(--brass); transform:scaleX(0); transform-origin:left; transition:transform .6s cubic-bezier(.2,.8,.2,1) }
+.step.on { opacity:1; border-color:var(--line2); background:rgba(241,236,223,.03) }
+.step.on::before { transform:scaleX(.18) } .step.done::before { transform:scaleX(1) }
+.step.done { opacity:.82 }
+.step .st-top { display:flex; justify-content:space-between; align-items:baseline }
+.step .n { color:var(--muted) } .step .t { color:var(--brass); font-variant-numeric:tabular-nums }
+.step h3 { margin-top:8px; font-size:26px; line-height:1.05 }
+.step p { margin-top:6px; color:var(--mist); font-size:14px; line-height:1.5 }
+.step .tag { color:var(--cobalt); margin-left:4px; font-size:10px }
+
+/* stage: the window, with the Companion floating over it like on a real desktop */
+.stage { position:relative; margin:30px 0 0; font-family:var(--sys) }
+.mac { position:relative; border-radius:12px; overflow:hidden; background:var(--app); color:var(--tx);
+  border:1px solid rgba(255,255,255,.13); box-shadow:0 0 0 .5px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.08), 0 50px 120px rgba(0,0,0,.6), 0 20px 40px rgba(0,0,0,.35);
+  opacity:0; transform:translateY(46px) scale(.965); transition:opacity 1.1s cubic-bezier(.2,.8,.2,1), transform 1.1s cubic-bezier(.2,.8,.2,1) }
+.stage.in .mac { opacity:1; transform:none }
+.mac svg { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round }
+
+.mac-title { height:38px; display:flex; align-items:center; padding:0 14px; background:linear-gradient(180deg,#2a2b31,#25262c); position:relative }
+.lights { display:flex; gap:8px } .lights i { width:12px; height:12px; border-radius:50%; box-shadow:inset 0 0 0 .5px rgba(0,0,0,.35) }
+.lights .r { background:#ff5f57 } .lights .y { background:#febc2e } .lights .g { background:#28c840 }
+.mac-name { position:absolute; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:7px; font-size:13px; font-weight:600; color:#d9dbe0 }
+.mac-name .doc svg { width:15px; height:15px; stroke:none } .mac-name .edited { font-weight:400; color:var(--tx3) }
+.mac-name .edited::before { content:"·"; margin-right:6px }
+.mac-right { margin-left:auto; color:var(--tx3) } .mac-right svg { width:17px; height:17px }
+
+.ribbon-tabs { display:flex; gap:22px; padding:0 18px; height:30px; align-items:center; background:#25262c; font-size:12.5px; color:var(--tx2); border-bottom:1px solid rgba(0,0,0,.35) }
+.ribbon-tabs .on { color:var(--tx); position:relative } .ribbon-tabs .on::after { content:""; position:absolute; left:0; right:0; bottom:-8px; height:2px; border-radius:2px; background:var(--pick) }
+.ribbon:focus { outline:none }
+.ribbon { display:flex; align-items:stretch; gap:4px; padding:8px 12px; background:var(--app2); border-bottom:1px solid rgba(0,0,0,.4) }
+.ribbon .sep { width:1px; margin:4px 8px; background:var(--gl) }
+.rb { font-family:var(--sys); color:#cdd0d8; background:none; border:0; border-radius:7px; cursor:pointer; transition:background .15s, color .15s }
+.rb:hover:not(:disabled) { background:rgba(255,255,255,.075); color:#fff }
+.rb:active:not(:disabled) { background:rgba(255,255,255,.12) }
+.rb:disabled { cursor:default }
+.rb:focus-visible { outline:2px solid var(--accent); outline-offset:1px }
+.rb.big { width:62px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; padding:6px 0 5px; font-size:11.5px }
+.rb.sm { width:26px; height:24px; font-size:13px; display:inline-flex; align-items:center; justify-content:center }
+.rb.shake { animation:shake .35s } @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+.grp { display:flex; flex-direction:column; justify-content:center; gap:6px; padding:0 2px }
+.grp .row { display:flex; align-items:center; gap:4px }
+.sel { height:24px; display:inline-flex; align-items:center; padding:0 22px 0 8px; border-radius:5px; background:var(--app3); border:1px solid rgba(255,255,255,.07); font-size:12px; color:var(--tx); position:relative }
+.sel::after { content:""; position:absolute; right:8px; top:9px; width:5px; height:5px; border-right:1.3px solid var(--tx3); border-bottom:1.3px solid var(--tx3); transform:rotate(45deg) }
+.sel.w1 { width:112px } .sel.w2 { width:52px } .sel.w3 { width:96px }
+.swatch { width:22px; height:24px; margin-left:3px; display:inline-flex; align-items:center; justify-content:center; position:relative }
+.swatch::before { content:"A"; font-size:13px; color:var(--tx2) } .swatch::after { content:""; position:absolute; left:5px; right:5px; bottom:3px; height:3px; border-radius:1px; background:#e8b33f }
+.grp .ico { width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; color:var(--tx3); font-size:12.5px }
+.grp .ico svg { width:17px; height:17px }
+
+.fbar { height:32px; display:flex; align-items:center; gap:10px; padding:0 10px; background:var(--app); border-bottom:1px solid rgba(0,0,0,.4); font-size:12.5px }
+.namebox { width:64px; height:22px; display:inline-flex; align-items:center; padding-left:8px; border-radius:4px; background:var(--app3); color:var(--tx) }
+.fx { color:var(--tx3); font-style:italic; font-family:Georgia,serif; padding:0 6px; border-left:1px solid var(--gl); border-right:1px solid var(--gl) }
+.formula { color:var(--tx); font-variant-numeric:tabular-nums; min-width:1px }
+
+.gridwrap { position:relative; background:#17181c }
+.grid { width:100%; border-collapse:collapse; table-layout:fixed; font-size:13px }
+.grid th, .grid td { height:27px; border-right:1px solid var(--gl); border-bottom:1px solid var(--gl); padding:0 10px; white-space:nowrap; overflow:hidden }
+.grid thead th { height:24px; background:#1f2025; color:var(--tx3); font-weight:500; font-size:11.5px; text-align:center }
+.grid th.corner { width:38px }
+.grid thead th:nth-child(2) { width:30% } .grid thead th:nth-child(3) { width:18% }
+.grid th.rh { background:#1f2025; color:var(--tx3); font-weight:500; font-size:11.5px; text-align:center; padding:0 }
+.grid th.hot { background:rgba(47,158,106,.16); color:#8fdcb6; box-shadow:inset 0 -2px 0 var(--pick) }
+.grid th.rh.hot { box-shadow:inset -2px 0 0 var(--pick) }
+.grid td { color:var(--tx) } .grid td.num { text-align:right; font-variant-numeric:tabular-nums }
+.grid td.hd { font-weight:600 } .grid td.tot { font-weight:700 }
+.mac.summing td.tot { text-align:left; color:#9fe0bf; font-weight:500 }
+.grid tr.hit td { animation:hit 1.3s ease-out } @keyframes hit { 0% { background:rgba(47,158,106,.26) } 100% { background:rgba(47,158,106,0) } }
+.selbox { position:absolute; border:2px solid var(--pick); pointer-events:none }
+.selbox i { position:absolute; right:-4px; bottom:-4px; width:6px; height:6px; background:var(--pick); border:1px solid #17181c }
+.ants { position:absolute; overflow:visible; pointer-events:none; opacity:0; transition:opacity .2s }
+.ants rect { fill:rgba(47,158,106,.08); stroke:var(--pick); stroke-width:1.6; stroke-dasharray:5 4; animation:ants .6s linear infinite }
+@keyframes ants { to { stroke-dashoffset:-9 } }
+.mac.summing .ants { opacity:1 }
+.sheetbar { height:28px; display:flex; align-items:center; gap:10px; padding:0 10px; background:var(--app2); border-top:1px solid rgba(0,0,0,.4); font-size:12px; color:var(--tx2) }
+.sheetbar .tab { padding:3px 12px; border-radius:5px } .sheetbar .tab.on { background:var(--app3); color:var(--tx); box-shadow:inset 0 -2px 0 var(--pick) }
+.sheetbar .plus { color:var(--tx3); font-size:15px } .sheetbar .grow { flex:1 } .sheetbar .status { color:var(--tx); font-variant-numeric:tabular-nums } .sheetbar .zoom { color:var(--tx3) }
+
+/* the Companion: Knot in the corner, glass bubble at the thread tip, chips by the Knot */
+.knot { position:absolute; right:-86px; bottom:-72px; width:124px; height:124px; opacity:0; transform:scale(.6); transition:opacity .9s .5s, transform 1s .5s cubic-bezier(.2,1.3,.3,1); pointer-events:none }
+.stage.in .knot { opacity:1; transform:none }
+.knot canvas { width:100%; height:100% }
+.glass { background:linear-gradient(150deg, rgba(18,20,31,.95), rgba(8,10,18,.92)); border:1px solid rgba(242,239,230,.13); border-radius:18px;
+  box-shadow:0 18px 42px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.07); color:rgba(255,255,255,.95); font-family:var(--sys) }
+.gb, .keep, .khint, .hring { position:absolute; opacity:0; visibility:hidden; transform:translateY(6px); transition:opacity .2s ease, transform .2s ease, visibility 0s .2s; z-index:40 }
+.gb.on, .keep.on, .khint.on, .hring.on { opacity:1; visibility:visible; transform:none; transition:opacity .2s ease, transform .2s ease }
+.gb { max-width:288px; padding:10px 13px 9px; border-radius:12px; font-size:13.5px; line-height:1.42 }
+.gb-kicker { margin-bottom:5px; color:var(--accent); font:700 8.5px/1 var(--sys); letter-spacing:.16em; text-transform:uppercase }
+.gb-hint { margin-top:5px; color:rgba(243,240,232,.45); font-size:10.5px; line-height:1.35 }
+.keep { right:48px; bottom:-54px; display:flex; align-items:center; gap:8px; padding:7px 8px 7px 13px; border-radius:999px; font-size:12.5px; white-space:nowrap }
+.keep button { border:0; border-radius:999px; padding:5px 11px; font:600 12px var(--sys); cursor:pointer }
+.keep .yes { background:var(--cobaltk); color:#fff } .keep .no { background:rgba(255,255,255,.08); color:rgba(255,255,255,.9) }
+.keep button:hover { filter:brightness(1.12) } .keep button:focus-visible { outline:2px solid var(--accent); outline-offset:2px }
+.khint { right:48px; bottom:-48px; padding:7px 13px; border-radius:999px; font-size:12.5px; white-space:nowrap }
+.khint b { color:var(--accent); font-weight:600 }
+.hring { border:1.6px solid rgba(144,165,255,.8); box-shadow:0 0 14px rgba(144,165,255,.25); border-radius:7px; transform:none; animation:hring 1.8s ease-in-out infinite; pointer-events:none }
+@keyframes hring { 50% { border-color:rgba(144,165,255,.3); box-shadow:0 0 0 rgba(144,165,255,0) } }
+.strand-layer { position:fixed; inset:0; width:100vw; height:100vh; pointer-events:none; z-index:30; --thread-accent:#90A5FF }
+
+.a-status { margin-top:78px; min-height:96px; text-align:center; color:var(--mist); font-size:15px; line-height:1.6 }
+.a-status b { color:var(--cream); font-weight:600 }
+.a-status .times { display:flex; justify-content:center; align-items:baseline; gap:12px; margin-bottom:4px; color:var(--cream); font-weight:600; font-variant-numeric:tabular-nums }
+.a-status .times em { font-family:"Instrument Serif",serif; font-weight:400; font-size:18px; margin-right:4px }
+.a-status .arr { color:var(--muted); font-weight:400 }
+.cta { display:inline-flex; margin-top:12px; font:600 14px Inter,sans-serif; border-radius:999px; padding:12px 20px; cursor:pointer; border:0; background:var(--cream); color:#0b1020; text-decoration:none; transition:transform .25s cubic-bezier(.2,.8,.2,1) }
+.cta:hover { transform:scale(1.04) }
+.cta:focus-visible, .btn:focus-visible { outline:2px solid var(--brass); outline-offset:3px }
+
+.today { max-width:1040px; margin:2vh auto 0; padding:26px 30px; border-radius:16px; border:1px solid rgba(209,167,95,.35); background:linear-gradient(90deg,rgba(209,167,95,.08),rgba(209,167,95,0)); display:flex; align-items:center; justify-content:space-between; gap:24px }
+.today .k { color:var(--brass); margin-bottom:8px } .today h4 { font-size:30px; line-height:1.1 } .today p { margin-top:6px; color:var(--mist); font-size:15px }
+.today kbd { font:500 12px "JetBrains Mono",monospace; padding:2px 7px; border-radius:6px; border:1px solid var(--line2); color:var(--cream) }
+
+@media (max-width:1000px) {
+  .steps { grid-template-columns:1fr } .step { opacity:1 } .step:not(.on) { display:none }
+  .ribbon-tabs span:nth-child(n+5), .grp.align, .ribbon .sep:nth-of-type(3) { display:none }
+  .knot { right:-10px; bottom:-70px }
+  .today { flex-direction:column; align-items:flex-start }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rb.shake, .grid tr.hit td, .ants rect, .hring { animation:none }
+  .mac, .knot { transition:none }
+  .cta:hover, .btn:hover { transform:none }
+}
