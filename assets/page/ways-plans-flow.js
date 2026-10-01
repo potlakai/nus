@@ -64,7 +64,7 @@
 
   // A · braid: two bundles swoop inward and wrap around each other on the way down
   function pathA(g, s, t) {
-    const o = source(g, s), x3 = g.cx + s.e * 70, y3 = g.pTop, dy = y3 - o.y, dir = s.side ? 1 : -1;
+    const o = s._o || source(g, s), x3 = g.cx + s.e * 70, y3 = g.pTop, dy = y3 - o.y, dir = s.side ? 1 : -1;
     let x = bez(o.x, o.x, x3, x3, t), y = bez(o.y, o.y + dy * 0.55, y3 - dy * 0.5, y3, t);
     const env = sm(t, 0.3, 0.62) * (1 - sm(t, 0.86, 1));
     x += dir * (16 + 10 * Math.abs(s.sp)) * Math.cos(Math.PI * 2.4 * t + s.ph * 0.08) * env;
@@ -73,7 +73,7 @@
   // C · pinch: into one point under the line, then out into pricing's fan
   function pinchPoint(g) { return { x: g.cx, y: g.text.b + (g.pTop - g.text.b) * 0.5 }; }
   function pathC(g, s, t) {
-    const o = source(g, s), Q = pinchPoint(g), k = 0.74;
+    const o = s._o || source(g, s), Q = g.Q || pinchPoint(g), k = 0.74;
     if (t < k) { const u = t / k; return { x: bez(o.x, o.x, Q.x + s.sp * 6, Q.x, u), y: bez(o.y, o.y + (Q.y - o.y) * 0.7, Q.y - 18, Q.y, u), depth: 0 }; }
     const u = (t - k) / (1 - k), x3 = g.cx + s.e * 70;
     return { x: bez(Q.x, Q.x, x3, x3, u), y: bez(Q.y, Q.y + 16, g.pTop - 16, g.pTop, u), depth: 0 };
@@ -88,14 +88,15 @@
   }
   const PATH = { a: pathA, b: pathB, c: pathC };
 
-  let frame = 0, last = performance.now();
+  let frame = 0, last = performance.now(), drawn = false;
   function inRange(g) { const top = mode === 'b' && !g.stacked ? g.orb.y : g.low; return top < H + 60 && g.pTop > -60; }
   function draw(now) {
     frame = 0; const dt = Math.min(0.05, (now - last) / 1000); last = now;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
-    if (mode === 'original' || !pricing.querySelector('.sec')) { layer.style.visibility = 'hidden'; return; }
-    const g = geo(); if (!inRange(g)) { layer.style.visibility = 'hidden'; return; }
-    layer.style.visibility = '';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const off = () => { if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; } layer.style.visibility = 'hidden'; };
+    if (mode === 'original' || !pricing.querySelector('.sec')) return off();
+    const g = geo(); if (!inRange(g)) return off();
+    ctx.clearRect(0, 0, W, H); drawn = true; layer.style.visibility = ''; g.Q = pinchPoint(g);
     const p = progress(g), still = reduced.matches, path = PATH[mode], steps = mode === 'b' ? 56 : 40;
     for (let k = 0; k < 2; k++) { const want = focus < 0 ? 1 : focus === k ? 1.9 : 0.4; w[k] += (want - w[k]) * Math.min(1, dt * 5); }
     const damp = Math.exp(-5 * dt), rad = 110, EXT = 0.22, dim = mode === 'b' && !g.stacked ? 0.42 : 1;
@@ -104,6 +105,7 @@
     ctx.save(); ctx.beginPath(); ctx.rect(g.cx - 170, g.pTop - 2, 340, 66); ctx.clip(); ctx.fillStyle = band; ctx.fillRect(g.cx - 170, g.pTop - 2, 340, 66); ctx.restore();
     ctx.lineWidth = 0.6;
     for (const s of S) {
+      s._o = source(g, s);   // once per strand per frame, not once per point
       // cursor parts the strands, then they spring back (same feel as the fork and pricing)
       if (!still) {
         const m = path(g, s, 0.55), dx = m.x + s.ox - ptr.x, dy = (mode === 'b' ? 0 : m.y + s.oy - ptr.y), near = mode === 'b' ? Math.abs(ptr.y - m.y) < (g.pTop - m.y) + 200 : true;
@@ -159,12 +161,12 @@
   let idle = false;
   function queue(fromDraw) {
     if (frame || document.hidden) return;
-    if (fromDraw) { const g = geo(); if (!inRange(g) || reduced.matches) { idle = true; return; } }
+    if (fromDraw && reduced.matches) { idle = true; return; }   // draw() only gets here while in range, so no second geo()
     idle = false; frame = requestAnimationFrame(draw);
   }
   addEventListener('scroll', () => queue(), { passive: true });
   addEventListener('resize', () => queue(), { passive: true });
-  addEventListener('pointermove', () => { if (idle) queue(); }, { passive: true });
+
   document.addEventListener('visibilitychange', () => { if (document.hidden) { cancelAnimationFrame(frame); frame = 0; } else queue(); });
   reduced.addEventListener('change', () => queue());
 

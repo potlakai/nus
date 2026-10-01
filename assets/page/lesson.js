@@ -142,7 +142,8 @@
         knotState("thinking");
         await wait(650);
         arriveCb = () => { knotState("ready"); place(); show(bubble, true); };
-        if (strand) strand.setTarget(rectOf(target())); else arriveCb();
+        // started after the visitor already scrolled past: hold it until the lesson is back on screen
+        if (strand) { strand.setTarget(rectOf(target())); if (away) strand.pause(); } else arriveCb();
       } else if (mode === "hint") {
         knotState("ready");
         show(khint, true); await wait(350); show(hring, true);

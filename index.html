@@ -83,14 +83,14 @@
   }
 </style>
 <link rel="stylesheet" href="assets/page/lesson.css?v=2">
-<link rel="stylesheet" href="assets/page/ways.css?v=6">
+<link rel="stylesheet" href="assets/page/ways.css?v=9">
 <link rel="stylesheet" href="assets/page/plans.css?v=3">
-<link rel="stylesheet" href="assets/page/guide.css?v=4">
+<link rel="stylesheet" href="assets/page/guide.css?v=5">
 <link rel="stylesheet" href="assets/page/nowsec.css?v=2">
 <link rel="stylesheet" href="assets/page/faqsec.css?v=1">
 <link rel="stylesheet" href="assets/page/endsec.css?v=3">
 <link rel="stylesheet" href="assets/page/motion-options.css?v=3">
-<link rel="stylesheet" href="assets/page/lesson-ways-options.css?v=3">
+<link rel="stylesheet" href="assets/page/lesson-ways-options.css?v=4">
 <link rel="stylesheet" href="assets/page/ways-plans-flow.css?v=1">
 </head>
 <body>
@@ -162,10 +162,10 @@
 <script src="assets/page/orb.js?v=6"></script>
 <canvas id="strandLayer" class="strand-layer" aria-hidden="true"></canvas>
 <script src="assets/page/companion/knot3d.js?v=1"></script>
-<script src="assets/page/perf.js?v=1"></script>
+<script src="assets/page/perf.js?v=2"></script>
 <script src="assets/page/companion/strand.js?v=3"></script>
-<script src="assets/page/lesson.js?v=9"></script>
-<script src="assets/page/ways.js?v=7"></script>
+<script src="assets/page/lesson.js?v=10"></script>
+<script src="assets/page/ways.js?v=8"></script>
 <script src="assets/page/plans.js?v=9"></script>
 <script src="assets/page/guide.js?v=3"></script>
 <script src="assets/page/nowsec.js?v=4"></script>
@@ -175,7 +175,7 @@
   // stars that twinkle
   (function () {
     const c = document.getElementById("stars"), x = c.getContext("2d"); let W, H, dpr, S = [];
-    function size() { const r = c.getBoundingClientRect(); dpr = 1;   // one-pixel stars need no more W = r.width; H = r.height; c.width = W * dpr; c.height = H * dpr;
+    function size() { const r = c.getBoundingClientRect(); dpr = 1; W = r.width;   /* one-pixel stars need no more than 1x */ H = r.height; c.width = W * dpr; c.height = H * dpr;
       S = Array.from({ length: Math.round(W * H / 2600) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.1 + 0.3, p: Math.random() * 6.28, s: 0.4 + Math.random() * 1.2 })); }
     size(); addEventListener("resize", size);
     const tr = document.getElementById("track");   // the hero is pinned inside the track: no stars to draw once it has scrolled away
@@ -233,10 +233,10 @@
 </script>
 <script src="assets/page/motion-options.js?v=7"></script>
 <script src="assets/page/lesson-ways-options.js?v=7"></script>
-<script src="assets/page/ways-plans-flow.js?v=6"></script>
-<script src="assets/page/plans-guide-flow.js?v=3"></script>
-<script src="assets/page/guide-now-flow.js?v=4"></script>
-<script src="assets/page/site.js?v=2"></script>
+<script src="assets/page/ways-plans-flow.js?v=7"></script>
+<script src="assets/page/plans-guide-flow.js?v=4"></script>
+<script src="assets/page/guide-now-flow.js?v=5"></script>
+<script src="assets/page/site.js?v=3"></script>
 <script src="assets/attrib.js"></script>
 <script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>

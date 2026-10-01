@@ -132,7 +132,7 @@
     // the canvas stops where the strands end (opts.bottom), so it never sits under the blurred cards
     function size() { const r = host.getBoundingClientRect(); W = r.width; H = opts.bottom ? Math.min(r.height, Math.max(1, opts.bottom())) : r.height; dpr = Math.min(1.5, devicePixelRatio || 1); c.width = W * dpr; c.height = H * dpr; c.style.height = H + "px"; }
     size(); new ResizeObserver(size).observe(host);
-    new IntersectionObserver((es) => (visible = es[0].isIntersecting), { threshold: 0 }).observe(host);
+    new IntersectionObserver((es) => (visible = es[0].isIntersecting), { threshold: 0 }).observe(c);   // the canvas itself, which stops where the strands end
     addEventListener("pointermove", (e) => { const r = c.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, now = performance.now(), dt = Math.max(1, now - ptr.t) / 1000;
       ptr.vx = ptr.vx * 0.5 + ((x - ptr.x) / dt) * 0.5; ptr.vy = ptr.vy * 0.5 + ((y - ptr.y) / dt) * 0.5; ptr.x = x; ptr.y = y; ptr.t = now; }, { passive: true });
     const bez = (a, b, c2, d, t) => { const u = 1 - t; return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c2 + t * t * t * d; };

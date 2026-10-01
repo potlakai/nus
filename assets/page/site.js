@@ -20,4 +20,7 @@
     return null;
   };
   document.querySelectorAll("a[href]").forEach((a) => { const n = name(a); if (n && !a.hasAttribute("data-goatcounter-click")) a.setAttribute("data-goatcounter-click", n); });
+  // decode the app screenshots while idle, so their first appearance in Two ways in never stalls a frame
+  const warm = () => document.querySelectorAll("#ways img, #setup img").forEach((img) => img.decode && img.decode().catch(() => {}));
+  addEventListener("load", () => (window.requestIdleCallback ? requestIdleCallback(warm, { timeout: 3000 }) : setTimeout(warm, 1500)));
 })();

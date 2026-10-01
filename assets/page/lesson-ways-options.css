@@ -3,6 +3,8 @@ body[data-connection]:not([data-connection="original"]) #ways .head.reveal,
 body[data-connection]:not([data-connection="original"]) #ways .card[data-connection-entering] {
   transition-property: border-color, box-shadow;
 }
+/* while the cards fade and rise with scroll they sit on their own GPU layer, so each step is a cheap composite, not a repaint */
+#ways .card[data-connection-entering] { will-change:transform, opacity }
 .nus-connection-bridge { position:fixed; inset:0; width:100%; height:100%; z-index:28; pointer-events:none }
 @media (prefers-reduced-motion:reduce) {
   .nus-connection-bridge { display:none }

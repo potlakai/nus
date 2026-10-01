@@ -57,7 +57,7 @@
   /* ---------- A · pinch again ---------- */
   const bead = (g) => ({ x: g.kicker.cx, y: g.kicker.t - 24 });
   function pathA(g, s, t) {
-    const c = g.stacked ? g.cols[2] : g.cols[s.col], Q = bead(g);
+    const c = g.stacked ? g.cols[2] : g.cols[s.col], Q = g.bead || bead(g);
     const x0 = c.cx + s.sp * c.w * 0.34, y0 = c.b, dy = Q.y - y0;
     return { x: bez(x0, x0, Q.x + s.sp * 8, Q.x, t), y: bez(y0, y0 + dy * 0.62, Q.y - Math.min(70, dy * 0.3), Q.y, t) };
   }
@@ -158,14 +158,16 @@
   // text in front: erase a soft box behind each line a thread passes
   function clear(T) { if (!T) return; for (let i = 0; i < 8; i++) { const pad = 4 + (8 - i) * 2.2; ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.roundRect(T.l - pad, T.t - pad * 0.7, T.r - T.l + pad * 2, T.b - T.t + pad * 1.4, 12); ctx.fill(); } }
 
-  let frame = 0, last = performance.now(), idle = false;
+  let frame = 0, last = performance.now(), idle = false, drawn = false;
   const inRange = (g) => g.low < H + 80 && Math.max(g.nums[g.nums.length - 1].b, g.seg.b) > -80;
   function draw(now) {
     frame = 0; const dt = Math.min(0.05, (now - last) / 1000); last = now;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
-    if (mode === 'original') { layer.style.visibility = 'hidden'; return; }
-    const g = geo(); if (!g || !inRange(g)) { idle = true; layer.style.visibility = 'hidden'; return; }
-    layer.style.visibility = '';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // clear only when something was drawn, so scrolling elsewhere never touches this full-screen canvas
+    const off = () => { if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; } layer.style.visibility = 'hidden'; };
+    if (mode === 'original') return off();
+    const g = geo(); if (!g || !inRange(g)) { idle = true; return off(); }
+    ctx.clearRect(0, 0, W, H); drawn = true; layer.style.visibility = ''; g.bead = bead(g);
     soft.x += (ptr.x - soft.x) * Math.min(1, dt * 10); soft.y += (ptr.y - soft.y) * Math.min(1, dt * 10);
     const p = progress(g), still = reduced.matches;
     if (mode === 'a') drawA(g, p, dt, now, still); else if (mode === 'b') drawB(g, p, dt, now, still); else drawC(g, p, dt, now, still);

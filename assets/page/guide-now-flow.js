@@ -58,16 +58,17 @@
   const beadA = (g) => ({ x: g.kicker.cx, y: g.kicker.t - 24 });
   function src(g, s) { const r = g.stacked ? g.screen : s.side ? g.screen : g.list; return { x: r.cx + s.sp * r.w * 0.34, y: r.b }; }
   function pathA(g, s, t) {
-    const o = src(g, s), Q = beadA(g), dy = Q.y - o.y;
+    const o = s._o || src(g, s), Q = beadA(g), dy = Q.y - o.y;
     return { x: bez(o.x, o.x, Q.x + s.sp * 8, Q.x, t), y: bez(o.y, o.y + dy * 0.62, Q.y - Math.min(70, dy * 0.3), Q.y, t) };
   }
   function pathC(g, s, t) {
-    const o = src(g, s), O = g.orb, ang = -Math.PI / 2 + s.sp * 0.9, ex = O.x + Math.cos(ang) * O.r * 0.95, ey = O.y + Math.sin(ang) * O.r * 0.95, dy = ey - o.y;
+    const o = s._o || src(g, s), O = g.orb, ang = -Math.PI / 2 + s.sp * 0.9, ex = O.x + Math.cos(ang) * O.r * 0.95, ey = O.y + Math.sin(ang) * O.r * 0.95, dy = ey - o.y;
     return { x: bez(o.x, o.x, ex + s.sp * 20, ex, t), y: bez(o.y, o.y + dy * 0.5, ey - dy * 0.35, ey, t) };
   }
   function strands(g, p, dt, now, still, path) {
     const damp = Math.exp(-5 * dt), rad = 110; ctx.lineWidth = 0.6;
     for (const s of S) {
+      s._o = src(g, s);   // once per strand per frame, not once per point
       if (!still) {
         const m = path(g, s, 0.5), dx = m.x + s.ox - ptr.x, dy = m.y + s.oy - ptr.y, d2 = dx * dx + dy * dy;
         if (d2 < rad * rad && d2 > 1) { const d = Math.sqrt(d2), f = (1 - d / rad) ** 2; s.vx += (dx / d) * f * 2200 * dt + ptr.vx * f * 2 * dt; s.vy += (dy / d) * f * 2200 * dt + ptr.vy * f * 2 * dt; }
@@ -132,14 +133,16 @@
   function tip(p, still, q) { if (still || p < 0.01 || p > 0.99) return; const gr = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, 14); gr.addColorStop(0, 'rgba(238,240,250,.7)'); gr.addColorStop(1, 'rgba(176,190,255,0)'); ctx.fillStyle = gr; ctx.fillRect(q.x - 14, q.y - 14, 28, 28); }
   function clear(T) { for (let i = 0; i < 8; i++) { const pad = 4 + (8 - i) * 2.2; ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.roundRect(T.l - pad, T.t - pad * 0.7, T.r - T.l + pad * 2, T.b - T.t + pad * 1.4, 12); ctx.fill(); } }
 
-  let frame = 0, last = performance.now();
+  let frame = 0, last = performance.now(), drawn = false;
   const inRange = (g) => Math.min(g.last.b, g.low) < H + 80 && g.orb.y + 120 > -80;
   function draw(t) {
     frame = 0; const dt = Math.min(0.05, (t - last) / 1000); last = t;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
-    if (mode === 'original') { layer.style.visibility = 'hidden'; return; }
-    const g = geo(); if (!g || !inRange(g)) { layer.style.visibility = 'hidden'; return; }
-    layer.style.visibility = '';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // clear only when something was drawn, so scrolling elsewhere never touches this full-screen canvas
+    const off = () => { if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; } layer.style.visibility = 'hidden'; };
+    if (mode === 'original') return off();
+    const g = geo(); if (!g || !inRange(g)) return off();
+    ctx.clearRect(0, 0, W, H); drawn = true; layer.style.visibility = '';
     soft.x += (ptr.x - soft.x) * Math.min(1, dt * 10); soft.y += (ptr.y - soft.y) * Math.min(1, dt * 10);
     glow += ((hot ? 1.6 : 1) - glow) * Math.min(1, dt * 5);
     const p = progress(g), still = reduced.matches;
