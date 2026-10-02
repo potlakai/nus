@@ -1,9 +1,9 @@
 /* Now vs Where it's heading, option A "The orb ledger" (picked 2026-09-30). Scoped under .nowsec. */
 .nowsec { --line:rgba(206,216,246,.14); --line2:rgba(206,216,246,.26); --muted:#8b96ae; position:relative }
 .nowsec em { color:var(--brass); font-style:italic } .nowsec .serif { font-family:"Instrument Serif",serif; font-weight:400 }
-.nowsec .sec { position:relative; max-width:1200px; margin:0 auto; padding:14vh 40px 16vh }
+.nowsec .sec { position:relative; max-width:1200px; margin:0 auto; padding:14vh 40px 7vh }
 .nowsec .head { text-align:center } .nowsec .head .mono { color:var(--cobalt); margin-bottom:16px }
-.nowsec .head h2 { font-size:clamp(46px,5.6vw,76px); line-height:1 } .nowsec .head p { margin:16px auto 0; max-width:560px; color:var(--mist); font-size:16px; line-height:1.6 }
+.nowsec .head h2 { font-size:clamp(46px,5.6vw,76px); line-height:1 } .nowsec .head p { margin:16px auto 0; max-width:560px; color:#cdd4e4; font-size:16px; line-height:1.6 }
 .nowsec .reveal { opacity:0; transform:translateY(26px); transition:opacity 1s cubic-bezier(.2,.8,.2,1), transform 1s cubic-bezier(.2,.8,.2,1) } .nowsec .reveal.in { opacity:1; transform:none }
 .nowsec .tag { display:inline-block; margin:0 10px 0 0; vertical-align:1px; font:500 10px "JetBrains Mono",monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--muted) }
 .nowsec .tag.companion { color:#9fb0ff } .nowsec .tag.students { color:#e2c48d } .nowsec .tag.both { color:#b9c1d3 }

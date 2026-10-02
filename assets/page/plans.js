@@ -28,25 +28,26 @@
   /* strands coming down from the fork above into the columns */
   function Threads(host, targetsFn) {
     const c = document.createElement("canvas"); c.className = "threads"; c.setAttribute("aria-hidden", "true"); host.prepend(c);
-    const ctx = c.getContext("2d"); let W = 1, H = 1, dpr = 1, grow = reduce ? 1 : 0, seen = false, visible = false, last = performance.now();
+    const pen = NusDraw(c); let W = 1, H = 1, dpr = 1, grow = reduce ? 1 : 0, seen = false, visible = false, last = performance.now();   // one draw call a frame (gl2d.js)
     const S = Array.from({ length: 150 }, () => ({ s: Math.random(), sp: (Math.random() - 0.5) * 2, top: (Math.random() - 0.5) * 2, ox: 0, oy: 0, vx: 0, vy: 0 }));
     const ptr = { x: -1e4, y: -1e4, vx: 0, vy: 0, t: 0 }, lit = [1, 1, 1];
     // the canvas stops just below the column tops, where the strands end
     function size() { const r = host.getBoundingClientRect(), cols = host.querySelector(".cols"); W = r.width; H = cols ? Math.min(r.height, cols.getBoundingClientRect().top - r.top + 24) : r.height; dpr = Math.min(1.5, devicePixelRatio || 1); c.width = W * dpr; c.height = H * dpr; c.style.height = H + "px"; }
     size(); new ResizeObserver(size).observe(host);
     new IntersectionObserver((es) => { visible = es[0].isIntersecting; if (visible) seen = true; }, { threshold: 0.05 }).observe(host);
-    addEventListener("pointermove", (e) => { const r = c.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, now = performance.now(), dt = Math.max(1, now - ptr.t) / 1000;
+    addEventListener("pointermove", (e) => { if (!visible || document.hidden) return; const r = c.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, now = performance.now(), dt = Math.max(1, now - ptr.t) / 1000;
       ptr.vx = ptr.vx * 0.5 + ((x - ptr.x) / dt) * 0.5; ptr.vy = ptr.vy * 0.5 + ((y - ptr.y) / dt) * 0.5; ptr.x = x; ptr.y = y; ptr.t = now; }, { passive: true });
     const bez = (a, b, c2, d, t) => { const u = 1 - t; return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c2 + t * t * t * d; };
-    (function frame(now) {
-      requestAnimationFrame(frame);
-      if (!visible || document.hidden) { last = now; return; }
-      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    // the heading stays readable: the strands are rubbed out softly behind each line of it
+    const lines = [...host.querySelectorAll(".head .mono, .head h2, .head p")]; let boxes = [], tick = 0;
+    function measure() { const h = host.getBoundingClientRect(); boxes = lines.map((el) => { const r = document.createRange(); r.selectNodeContents(el); const b = r.getBoundingClientRect(); return { l: b.left - h.left, t: b.top - h.top, w: b.width, h: b.height }; }); }
+    NusMotion.loop(c, (now, dt) => {
+      if (!visible || document.hidden) return;
+      last = now; if (tick++ % 12 === 0) measure();
       if (seen && !reduce) grow = Math.min(1, grow + dt * 0.55);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
-      const T = targetsFn(); if (!T.length) return;
+      pen.begin(W, H, dpr);
+      const T = targetsFn(); if (!T.length) { pen.end(); return; }
       T.forEach((t, i) => (lit[i] += ((t.hot ? 1.8 : 1) - lit[i]) * Math.min(1, dt * 4)));
-      ctx.lineWidth = 0.6;
       S.forEach((s, i) => {
         const ti = i % T.length, t = T[ti], x0 = W / 2 + s.top * 70, y0 = 0, x3 = t.x + s.sp * t.w * 0.38, y3 = t.y;
         let x1 = x0, y1 = y0 + (y3 - y0) * 0.5, x2 = x3 - s.sp * 20, y2 = y3 - (y3 - y0) * 0.35;
@@ -54,18 +55,20 @@
         if (d2 < 14400 && d2 > 1) { const d = Math.sqrt(d2), f = (1 - d / 120) ** 2; s.vx += (dx / d) * f * 2200 * dt + ptr.vx * f * 2 * dt; s.vy += (dy / d) * f * 2200 * dt + ptr.vy * f * 2 * dt; }
         s.vx = (s.vx - 14 * s.ox * dt) * Math.exp(-5 * dt); s.vy = (s.vy - 14 * s.oy * dt) * Math.exp(-5 * dt); s.ox += s.vx * dt; s.oy += s.vy * dt;
         x1 += s.ox; y1 += s.oy; x2 += s.ox; y2 += s.oy;
-        const col = t.warm ? "232,204,150" : "176,190,255", a = (0.05 + 0.14 * (1 - Math.abs(s.sp) * 0.6)) * lit[ti];
-        ctx.strokeStyle = `rgba(${col},${Math.min(0.6, a)})`; ctx.beginPath(); ctx.moveTo(x0, y0);
+        const a = (0.05 + 0.14 * (1 - Math.abs(s.sp) * 0.6)) * lit[ti];
+        if (t.warm) pen.rgb(232, 204, 150); else pen.rgb(176, 190, 255);
+        pen.start(x0, y0, Math.min(0.6, a), 0.6);
         const end = clamp(grow * 1.2 - s.s * 0.2);
-        for (let k = 1; k <= 30 * end; k++) { const u = k / 30; ctx.lineTo(bez(x0, x1, x2, x3, u), bez(y0, y1, y2, y3, u)); }
-        ctx.stroke();
+        for (let k = 1; k <= 30 * end; k++) { const u = k / 30; pen.to(bez(x0, x1, x2, x3, u), bez(y0, y1, y2, y3, u)); }
+        pen.stroke();
         if (grow >= 1 && s.s < (t.hot ? 0.12 : 0.05)) {
           const u = ((now / 1000) * 0.25 + s.s * 9) % 1, bx = bez(x0, x1, x2, x3, u), by = bez(y0, y1, y2, y3, u), gl = Math.sin(Math.PI * u);
-          const g = ctx.createRadialGradient(bx, by, 0, bx, by, 6); g.addColorStop(0, `rgba(255,248,235,${0.85 * gl})`); g.addColorStop(1, "rgba(255,248,235,0)");
-          ctx.fillStyle = g; ctx.fillRect(bx - 6, by - 6, 12, 12);
+          pen.rgb(255, 248, 235); pen.glow(bx, by, 0, 6, 0.85 * gl);
         }
       });
-    })(last);
+      for (const T of boxes) for (let i = 0; i < 8; i++) { const pad = 4 + (8 - i) * 3.4; pen.erase(T.l - pad, T.t - pad * 0.8, T.w + pad * 2, T.h + pad * 1.6, 14, 0.3); }
+      pen.end();
+    });
   }
 
   function mount(root) {

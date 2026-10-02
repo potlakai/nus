@@ -31,7 +31,7 @@
   const crop = document.createElement('canvas');
   const cropCtx = crop.getContext('2d');
   let W, H, dpr, end, from, to, headDoc, stageDoc, targetDoc, cropSide, pending = 0;
-  let interacting = false;
+  let interacting = false, drawn = false;
 
   // Shadow DOM keeps the review controls out of the approved page's styles.
   let select, detail, ui;
@@ -58,10 +58,13 @@
   document.body.append(controls);
   select = ui.querySelector('select'); detail = ui.querySelector('p');
   }
+  // the hero orb stops drawing while it is faded out; it sits behind the lesson in its most expensive pose
+  const orbActive = on => { if (typeof heroOrb !== 'undefined' && heroOrb.setActive) heroOrb.setActive(on); };
   function reset() {
+    orbActive(true);
     [orb,caps,head,sheet,knot].forEach(el => { el.style.opacity=''; el.style.transform=''; });
     hero.style.filter = '';
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0,0,canvas.width,canvas.height); drawn = false;
   }
   function choose() {
     reset();
@@ -107,18 +110,20 @@
     const glow=cropCtx.createRadialGradient(cx,cy,0,cx,cy,cropSide);
     glow.addColorStop(0,'rgba(209,167,95,.65)');glow.addColorStop(1,'rgba(209,167,95,0)');
     cropCtx.fillStyle=glow;cropCtx.fillRect(0,0,cropSide*2,cropSide*2);
+    cropCtx.fillStyle='rgb(214,172,102)';
     for(let j=0;j<320;j++) {
       const y=1-j/319*2, rad=Math.sqrt(1-y*y), angle=j*Math.PI*(3-Math.sqrt(5))-1.2-t*.6;
       const x=Math.cos(angle)*rad, z=Math.sin(angle)*rad, depth=(z+1)/2;
-      cropCtx.fillStyle=`rgba(214,172,102,${.18+.82*depth*depth})`;
+      cropCtx.globalAlpha=.18+.82*depth*depth;
       cropCtx.fillRect(cx+x*r-.7,cy+y*r-.7,1.4,1.4);
     }
+    cropCtx.globalAlpha=1;
     cropCtx.setTransform(1,0,0,1,0,0);
   }
   function cubic(a,b,c,d,t) { const u=1-t;return {x:u*u*u*a.x+3*u*u*t*b.x+3*u*t*t*c.x+t*t*t*d.x,y:u*u*u*a.y+3*u*u*t*b.y+3*u*t*t*c.y+t*t*t*d.y}; }
   function paint() {
     pending=0;
-    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    ctx.setTransform(dpr,0,0,dpr,0,0); if(drawn){ctx.clearRect(0,0,W,H);drawn=false;}   // a blank canvas is left alone
     if(mode==='original'||reduced.matches) { reset(); canvas.style.visibility='hidden'; return; }
     const y=scrollY, p=clamp((y-from)/(to-from));
     const enter=1-smooth((headDoc-y)/H,.5,.96);
@@ -129,14 +134,15 @@
     sheet.style.opacity=String(visibleSheet);
     sheet.style.transform=`translate3d(0,${(1-visibleSheet)*(mode==='c'?80:38)}px,0) scale(${1-(1-visibleSheet)*(mode==='c'?.035:.018)})`;
     const fade=smooth(p,0,.24);
-    orb.style.opacity=String(mode==='a'?1-fade:1-smooth(p,.06,.34));
+    const orbOpacity=mode==='a'?1-fade:1-smooth(p,.06,.34);
+    orb.style.opacity=String(orbOpacity); orbActive(orbOpacity>.004);
     caps.style.opacity=String(1-smooth(p,.04,.3));
     hero.style.filter=mode==='c'?`blur(${smooth(p,0,.38)*3}px)`:'';
     const kr=1-smooth(p,.76,.98);
     knot.style.opacity=interacting?'':String(mode==='a'?1-kr:sheetIn);
     // an idle full-screen overlay still costs compositing on 2x screens, so it is hidden when blank
     if(y<from||y>to+H*.25) { canvas.style.visibility='hidden'; return; }
-    canvas.style.visibility='';
+    canvas.style.visibility=''; drawn=true;
     const t=smooth(p,0,1), start={x:W*.19,y:H*.6+(mode==='b'?Math.min(0,end-y):0)};
     const dest={x:targetDoc.x,y:targetDoc.y-y};
     // The route stays at the right margin of the lesson copy.
@@ -174,12 +180,17 @@
       ctx.fillStyle=glow;ctx.fillRect(tip.x-14,tip.y-14,28,28);
     }
   }
-  function queue() { if(!pending) pending=requestAnimationFrame(paint); }
+  const gate = NusMotion.observe([track, document.querySelector('#next')], () => {
+    // Paint terminal values once on exit, including after a fast anchor jump.
+    if (!pending && !document.hidden) pending = requestAnimationFrame(paint);
+  });
+  function queue() { if(!pending && gate.active && !document.hidden) pending=requestAnimationFrame(paint); }
   addEventListener('scroll',queue,{passive:true});
   addEventListener('resize',()=>{measure();queue();},{passive:true});
   reduced.addEventListener('change',choose);
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(pending);pending=0;}else queue();});
   choose();
+  NusMotion.onLayout(() => { measure(); queue(); });
   new ResizeObserver(()=>{measure();queue();}).observe(head);
   if(document.fonts)document.fonts.ready.then(()=>{measure();queue();});
 })();

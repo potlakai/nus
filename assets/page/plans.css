@@ -8,7 +8,7 @@
 .plans .head { position:relative; text-align:center }
 .plans .head .mono { color:var(--cobalt); margin-bottom:16px }
 .plans .head h2 { font-size:clamp(46px,5.6vw,76px); line-height:1 }
-.plans .head p { margin:16px auto 0; max-width:560px; color:var(--mist); font-size:16px; line-height:1.6 }
+.plans .head p { margin:16px auto 0; max-width:560px; color:#cdd4e4; font-size:16px; line-height:1.6 }
 .plans .reveal { opacity:0; transform:translateY(26px); transition:opacity 1s cubic-bezier(.2,.8,.2,1), transform 1s cubic-bezier(.2,.8,.2,1) }
 .plans .reveal.in { opacity:1; transform:none }
 .plans .cols .col:nth-child(2) { transition-delay:.08s } .plans .cols .col:nth-child(3) { transition-delay:.16s }
@@ -22,7 +22,7 @@
 .plans .col.in:hover, .plans .col.in:focus-within { transform:translateY(-6px); border-color:var(--line2) } .plans .col:hover::before, .plans .col:focus-within::before { opacity:1 }
 .plans .col.pro { border-color:rgba(209,167,95,.45) } .plans .col.pro::before { background:radial-gradient(360px circle at var(--mx,50%) var(--my,0%), rgba(209,167,95,.14), transparent 60%) }
 .plans .col.pro.in:hover { border-color:rgba(209,167,95,.7) }
-.plans .col .k { color:var(--muted) } .plans .col h3 { margin-top:10px; font-size:30px; line-height:1.05 }
+.plans .col .k { color:#a6b0c6; font-size:11.5px } .plans .col h3 { margin-top:10px; font-size:30px; line-height:1.05 }
 .plans .col .price { margin-top:18px; font:400 58px/1 "Instrument Serif",serif } .plans .col .price small { font:500 14px Inter,sans-serif; color:var(--mist); margin-left:4px }
 .plans .col .one { margin-top:8px; color:var(--mist); font-size:14.5px; min-height:44px }
 .plans .col ul { list-style:none; margin-top:18px; padding-top:18px; border-top:1px solid var(--line); display:grid; gap:10px }
@@ -30,7 +30,7 @@
 .plans .col li svg.tick { flex:0 0 16px; width:16px; height:16px; margin-top:2px; stroke:var(--accent); fill:none; stroke-width:2 } .plans .col.pro li svg.tick { stroke:var(--brass) }
 .plans .foot { margin-top:auto; padding-top:26px }
 .plans .btns { display:flex; flex-wrap:wrap; gap:8px }
-.plans .small { margin-top:10px; color:var(--muted); font-size:12.5px }
+.plans .small { margin-top:10px; color:#a6b0c6; font-size:13px }
 .plans .btn { display:inline-flex; align-items:center; gap:8px; white-space:nowrap; border-radius:999px; padding:12px 17px; font:600 14.5px Inter,sans-serif; text-decoration:none; border:1px solid transparent; cursor:pointer; transition:transform .25s cubic-bezier(.2,.8,.2,1), background .3s }
 .plans .btn:hover { transform:scale(1.04) }
 .plans .btn:focus-visible { outline:2px solid var(--brass); outline-offset:3px }

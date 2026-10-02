@@ -38,7 +38,14 @@
     canvas.setAttribute("aria-hidden", "true");
     canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none";
     el.appendChild(canvas);
-    const ctx = canvas.getContext("2d");
+    const draw = NusDraw(canvas);   // strands, dots and glows: one draw call a frame (gl2d.js)
+    // the few words on the orb ("YOU", the task labels) are canvas text on their own layer above the shapes
+    const words = document.createElement("canvas");
+    words.setAttribute("aria-hidden", "true");
+    words.style.cssText = canvas.style.cssText;
+    el.appendChild(words);
+    const wctx = words.getContext("2d");
+    let wordsShown = false;
     const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
     const rand = rng(7);
 
@@ -80,12 +87,14 @@
       return d;
     });
 
-    let W = 1, H = 1, dpr = 1;
+    let W = 1, H = 1, dpr = 1, geometryDirty = true;
     function resize() {
       const r = el.getBoundingClientRect();
       W = Math.max(1, r.width); H = Math.max(1, r.height); dpr = Math.min(1.5, window.devicePixelRatio || 1);
-      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-      labels.forEach((d, i) => { d.style.left = W * nodes[i].x + "px"; d.style.top = H * nodes[i].y + "px"; });
+      const cw = Math.round(W * dpr), ch = Math.round(H * dpr);
+      if (canvas.width !== cw || canvas.height !== ch) { canvas.width = words.width = cw; canvas.height = words.height = ch; wordsShown = false; }
+      geometryDirty = true;
+      labels.forEach((d, i) => { d.style.left = W * nodes[i].x + "px"; d.style.top = H * nodes[i].y + "px"; d.classList.toggle("flip", W > 1000 && nodes[i].x < o.centerX - 0.02); });
     }
     resize();
     new ResizeObserver(resize).observe(el);
@@ -98,12 +107,14 @@
     let dragging = false, spin = 0, lastX = 0, lastT = 0;
     const local = (e) => { const r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, in: e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom }; };
     addEventListener("pointermove", (e) => {
+      if (!visible || document.hidden) return;
       const p = local(e), now = performance.now(), dt = Math.max(1, now - ptr.t) / 1000;
       if (ptr.in && p.in) { ptr.vx = ptr.vx * 0.55 + ((p.x - ptr.x) / dt) * 0.45; ptr.vy = ptr.vy * 0.55 + ((p.y - ptr.y) / dt) * 0.45; } else { ptr.vx = ptr.vy = 0; }
       ptr.x = p.x; ptr.y = p.y; ptr.in = p.in; ptr.t = now;
       if (dragging) { const d = Math.max(1, now - lastT) / 1000; spin = spin * 0.5 + ((p.x - lastX) / d) * 0.0022; lastX = p.x; lastT = now; }
     }, { passive: true });
     addEventListener("pointerdown", (e) => {
+      if (!visible || document.hidden) return;
       const p = local(e); if (!p.in) return;
       const { R, cx, cy } = geo();
       if ((p.x - cx) ** 2 + (p.y - cy) ** 2 > (R * 1.2) ** 2) return;
@@ -114,32 +125,54 @@
     addEventListener("pointerup", () => { dragging = false; document.body.style.userSelect = ""; el.classList.remove("grabbing"); });
     document.addEventListener("pointerleave", () => { ptr.in = false; });
 
-    let visible = true;
-    new IntersectionObserver((es) => { visible = es[0].isIntersecting; }).observe(el);
+    let visible = false, enabled = true, frameId = 0;
+    function wake() { if (visible && enabled && !document.hidden && !frameId) frameId = requestAnimationFrame(frame); }
+    // the page turns the orb off while it is faded out, so it never draws where nobody can see it
+    this.setActive = (on) => { on = !!on; if (on === enabled) return; enabled = on; last = performance.now(); if (on) wake(); else stop(); };
+    function stop() { cancelAnimationFrame(frameId); frameId = 0; ptr.in = false; ptr.vx = ptr.vy = 0; }
+    new IntersectionObserver((es) => { visible = es[0].isIntersecting; last = performance.now(); if (visible) wake(); else stop(); }).observe(el);
+    document.addEventListener('visibilitychange', () => { last = performance.now(); if (document.hidden) stop(); else wake(); });
 
     // story: 0 = hero, 1 = the transition has played (driven by scroll through setStory)
     let story = 0;
-    this.setStory = (t) => { story = Math.min(1, Math.max(0, t)); };
+    this.setStory = (t) => { const next = Math.min(1, Math.max(0, t)); if (next !== story) { story = next; geometryDirty = true; } };
     const sm = (x, a, b) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    let phaseStory = -1, phaseCache;
     function phases() {
+      if (phaseStory === story) return phaseCache;
+      phaseStory = story;
       const q = story;
-      return { hide: sm(q, 0, 0.22), tasks: [0, 1, 2, 3].map((i) => sm(q, 0.14 + i * 0.07, 0.28 + i * 0.07)), power: sm(q, 0.16, 0.5),
+      return phaseCache = { hide: sm(q, 0, 0.22), tasks: [0, 1, 2, 3].map((i) => sm(q, 0.14 + i * 0.07, 0.28 + i * 0.07)), power: sm(q, 0.16, 0.5),
         recomb: sm(q, 0.56, 0.86), grow: sm(q, 0.7, 0.98), you: sm(q, 0.34, 0.5) };
     }
+    const geometry = { cx: 0, cy: 0, R: 1 };
+    const A = nodes.map(() => ({ a: 0, x: 0, y: 0, tx: 0, ty: 0 }));
+    const rimX = new Float64Array(m), rimY = new Float64Array(m);
+    const lonSin = new Float64Array(sLon.map(Math.sin)), lonCos = new Float64Array(sLon.map(Math.cos));
     function geo() {
-      const f = phases(), R0 = Math.min(H * o.radius, W * 0.3);
-      return { cx: W * (o.centerX + (0.53 - o.centerX) * f.hide), cy: H * (o.centerY + (0.42 - o.centerY) * f.hide), R: R0 * (1 + 0.16 * f.power - 0.14 * f.recomb) };
+      if (!geometryDirty) return geometry;
+      geometryDirty = false;
+      const f = phases(), R0 = Math.min(H * o.radius, W * .3);
+      const cx = geometry.cx = W * (o.centerX + (.53 - o.centerX) * f.hide);
+      const cy = geometry.cy = H * (o.centerY + (.42 - o.centerY) * f.hide);
+      const R = geometry.R = R0 * (1 + .16 * f.power - .14 * f.recomb);
+      nodes.forEach((nd, i) => {
+        const a = A[i], tx = W * nd.x, ty = H * nd.y, dx = tx - cx, dy = ty - cy, d = Math.hypot(dx, dy) || 1;
+        a.a = Math.atan2(dy, dx); a.x = cx + dx / d * R; a.y = cy + dy / d * R; a.tx = tx; a.ty = ty;
+      });
+      for (let s = 0; s < m; s++) { const la = A[sFrom[s]].a + sSpread[s] * .42; rimX[s] = cx + Math.cos(la) * R * .99; rimY[s] = cy + Math.sin(la) * R * .99; }
+      return geometry;
     }
     const TASKS = ["Write for me", "Search for me", "Click for me", "Think for me"];
     const YOU = []; for (let j = 0; j < 320; j++) { const y = 1 - (j / 319) * 2, r = Math.sqrt(1 - y * y), t = j * Math.PI * (3 - Math.sqrt(5)); YOU.push([Math.cos(t) * r, y, Math.sin(t) * r]); }
     let lastHide = -1;
-    const rgba = (a) => `rgba(${o.rgb[0]},${o.rgb[1]},${o.rgb[2]},${a})`;
     let angle = 0.6, last = performance.now(); const start = last;
     const ease = (t) => 1 - Math.pow(1 - t, 3);
 
     function frame(now) {
-      requestAnimationFrame(frame);
-      if (!visible || document.hidden) { last = now; return; }
+      frameId = 0;
+      if (!visible || !enabled || document.hidden) { last = now; return; }
+      wake();
       const dt = Math.min(0.05, (now - last) / 1000); last = now;
       const p = reduce ? 1 : ease(Math.min(1, (now - start) / 1900));
       const { cx, cy, R } = geo();
@@ -164,46 +197,43 @@
         pd[i] = (z2 + 1) / 2;
       }
 
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, W, H);
+      draw.begin(W, H, dpr);
       const lineP = Math.max(0, (p - 0.3) / 0.7);
 
       // soft body glow behind the sphere
-      const bg = ctx.createRadialGradient(cx, cy, R * 0.1, cx, cy, R * 1.25);
-      bg.addColorStop(0, "rgba(120,140,220,0.07)"); bg.addColorStop(1, "rgba(120,140,220,0)");
-      ctx.fillStyle = bg; ctx.fillRect(cx - R * 1.3, cy - R * 1.3, R * 2.6, R * 2.6);
+      draw.rgb(120, 140, 220); draw.glow(cx, cy, R * 0.1, R * 1.25, 0.07);
 
       // anchors on the sphere's rim, toward each node
-      const A = nodes.map((nd) => { const tx = W * nd.x, ty = H * nd.y, dx = tx - cx, dy = ty - cy, d = Math.hypot(dx, dy) || 1; return { a: Math.atan2(dy, dx), x: cx + (dx / d) * R, y: cy + (dy / d) * R, tx, ty }; });
       const f = phases();
       const Hx0 = A[hub].x + (cx + R - A[hub].x) * f.hide, Hy0 = A[hub].y + (cy - A[hub].y) * f.hide;
       const Y = { x: W * 0.19, y: H * 0.6 };
       const Hx = Hx0 + (Y.x - Hx0) * f.recomb, Hy = Hy0 + (Y.y - Hy0) * f.recomb;
       const hl = Math.hypot(cx - Hx, cy - Hy) || 1, hubIn = { x: (cx - Hx) / hl, y: (cy - Hy) / hl };
       const mix = (c, t) => [Math.round(o.rgb[0] + (c[0] - o.rgb[0]) * t), Math.round(o.rgb[1] + (c[1] - o.rgb[1]) * t), Math.round(o.rgb[2] + (c[2] - o.rgb[2]) * t)];
-      const sc = mix([214, 172, 102], f.recomb), scol = (a) => `rgba(${sc[0]},${sc[1]},${sc[2]},${a})`;
+      const sc = mix([214, 172, 102], f.recomb);
       if (Math.abs(f.hide - lastHide) > 0.002) { labels.forEach((d) => { d.style.opacity = String(1 - f.hide); d.style.pointerEvents = f.hide > 0.5 ? "none" : ""; }); lastHide = f.hide; }
 
       // combed strands
-      ctx.lineWidth = 0.6;
+      draw.rgb(sc[0], sc[1], sc[2]);
       for (let s = 0; s < m; s++) {
-        const src = A[sFrom[s]];
-        const lon = sLon[s] + angle, sl = Math.sin(lon), depth = (Math.cos(lon) + 1) / 2;
-        // leave from a spread of points on the source side of the rim
-        const la = src.a + sSpread[s] * 0.42;
-        const x0 = cx + Math.cos(la) * R * 0.99, y0 = cy + Math.sin(la) * R * 0.99;
+        const sl = lonSin[s] * ca + lonCos[s] * sa, depth = (lonCos[s] * ca - lonSin[s] * sa + 1) / 2;
+        const x0 = rimX[s], y0 = rimY[s];
         // start heading into the sphere, swung left/right by the strand's longitude (the 3D sweep)
         const inx = (cx - x0) / R, iny = (cy - y0) / R, sw = sl * 1.05 * sBend[s];
-        const t0x = inx * Math.cos(sw) - iny * Math.sin(sw), t0y = inx * Math.sin(sw) + iny * Math.cos(sw);
+        const swc = Math.cos(sw), sws = Math.sin(sw);
+        const t0x = inx * swc - iny * sws, t0y = inx * sws + iny * swc;
         const L = Math.hypot(Hx - x0, Hy - y0);
         let c1x = x0 + t0x * L * 0.62, c1y = y0 + t0y * L * 0.62;
         // arrive at the hub almost straight, a slight twist so the pinch has depth
         const tw = sl * 0.35;
-        const t1x = hubIn.x * Math.cos(tw) - hubIn.y * Math.sin(tw), t1y = hubIn.x * Math.sin(tw) + hubIn.y * Math.cos(tw);
+        const twc = Math.cos(tw), tws = Math.sin(tw);
+        const t1x = hubIn.x * twc - hubIn.y * tws, t1y = hubIn.x * tws + hubIn.y * twc;
         let c2x = Hx + t1x * L * 0.42, c2y = Hy + t1y * L * 0.42;
         // keep control points inside the sphere so every strand stays inside it
-        const clamp = (x, y) => { const dx = x - cx, dy = y - cy, d = Math.hypot(dx, dy), lim = R * 0.93; return d > lim ? [cx + (dx / d) * lim, cy + (dy / d) * lim] : [x, y]; };
-        [c1x, c1y] = clamp(c1x, c1y); [c2x, c2y] = clamp(c2x, c2y);
+        const dx1 = c1x - cx, dy1 = c1y - cy, d1 = Math.hypot(dx1, dy1), lim = R * .93;
+        if (d1 > lim) { c1x = cx + dx1 / d1 * lim; c1y = cy + dy1 / d1 * lim; }
+        const dx2 = c2x - cx, dy2 = c2y - cy, d2c = Math.hypot(dx2, dy2);
+        if (d2c > lim) { c2x = cx + dx2 / d2c * lim; c2y = cy + dy2 / d2c * lim; }
         // springy middle: the cursor parts the strands like hair
         const mx = (x0 + 3 * c1x + 3 * c2x + Hx) / 8, my = (y0 + 3 * c1y + 3 * c2y + Hy) / 8;
         if (ptr.in) {
@@ -214,27 +244,19 @@
         qox[s] += qvx[s] * dt; qoy[s] += qvy[s] * dt;
         const lit = hover === sFrom[s] || hover === hub;
         const a = (0.035 + 0.3 * depth * depth) * (lit ? 2 : hover >= 0 ? 0.45 : 1) * lineP * (1 + 0.8 * f.power * (1 - f.recomb) + 0.4 * f.recomb);
-        ctx.strokeStyle = scol(Math.min(0.85, a));
-        ctx.beginPath();
-        ctx.moveTo(x0, y0);
-        ctx.bezierCurveTo(c1x + qox[s] * 1.3, c1y + qoy[s] * 1.3, c2x + qox[s] * 1.3, c2y + qoy[s] * 1.3, Hx, Hy);
-        ctx.stroke();
+        draw.curve(x0, y0, c1x + qox[s] * 1.3, c1y + qoy[s] * 1.3, c2x + qox[s] * 1.3, c2y + qoy[s] * 1.3, Hx, Hy, Math.min(0.85, a), 0.6);
       }
 
       // particles, brighter toward the rim
+      draw.rgb(o.rgb[0], o.rgb[1], o.rgb[2]);
       for (let i = 0; i < n; i++) {
         const d = pd[i], rx = (px[i] - cx) / R, ry = (py[i] - cy) / R, rim = Math.min(1, Math.max(0, (rx * rx + ry * ry - 0.6) / 0.4));
         const r = (0.5 + d * 1.2) * pr[i];
-        ctx.fillStyle = rgba(Math.min(1, (0.16 + 0.84 * d * d + rim * 0.18) * (0.25 + 0.75 * p)));
-        ctx.fillRect(px[i] - r / 2, py[i] - r / 2, r, r);
+        draw.rect(px[i] - r / 2, py[i] - r / 2, r, r, Math.min(1, (0.16 + 0.84 * d * d + rim * 0.18) * (0.25 + 0.75 * p)));
       }
 
       // the pinch point at the hub
-      if (lineP > 0) {
-        const g = ctx.createRadialGradient(Hx, Hy, 0, Hx, Hy, 22);
-        g.addColorStop(0, scol(0.85 * lineP)); g.addColorStop(0.25, scol(0.28 * lineP)); g.addColorStop(1, scol(0));
-        ctx.fillStyle = g; ctx.fillRect(Hx - 22, Hy - 22, 44, 44);
-      }
+      if (lineP > 0) { draw.rgb(sc[0], sc[1], sc[2]); draw.glow(Hx, Hy, 0, 22, 0.85 * lineP, 0.25, 0.28 * lineP); }
 
       // links out to the node dots, with a light flowing in
       const tNow = now / 1000;
@@ -242,45 +264,51 @@
         const span = Math.hypot(an.x - an.tx, an.y - an.ty), ux = (an.x - cx) / R, uy = (an.y - cy) / R;
         const x1 = an.tx + Math.sign(an.x - an.tx) * span * 0.4, y1 = an.ty, x2 = an.x + ux * span * 0.4, y2 = an.y + uy * span * 0.4;
         const on = hover === i;
-        ctx.lineWidth = on ? 1.1 : 0.8; ctx.strokeStyle = rgba((on ? 0.9 : 0.45) * lineP * (1 - f.hide));
-        ctx.beginPath(); ctx.moveTo(an.tx, an.ty); ctx.bezierCurveTo(x1, y1, x2, y2, an.x, an.y); ctx.stroke();
+        draw.rgb(o.rgb[0], o.rgb[1], o.rgb[2]);
+        draw.curve(an.tx, an.ty, x1, y1, x2, y2, an.x, an.y, (on ? 0.9 : 0.45) * lineP * (1 - f.hide), on ? 1.1 : 0.8);
         if (lineP >= 1 && f.hide < 0.98) {
           const t = (tNow * 0.22 + i * 0.29) % 1, u = 1 - t;
           const bx = u * u * u * an.tx + 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t * an.x;
           const by = u * u * u * an.ty + 3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t * an.y;
-          const gl = Math.sin(Math.PI * t) * (on ? 1 : 0.75) * (1 - f.hide), g2 = ctx.createRadialGradient(bx, by, 0, bx, by, 7);
-          g2.addColorStop(0, `rgba(255,255,255,${0.9 * gl})`); g2.addColorStop(1, rgba(0));
-          ctx.fillStyle = g2; ctx.fillRect(bx - 7, by - 7, 14, 14);
+          const gl = Math.sin(Math.PI * t) * (on ? 1 : 0.75) * (1 - f.hide);
+          draw.rgb(255, 255, 255); draw.glow(bx, by, 0, 7, 0.9 * gl);
         }
       });
 
-      // the tasks that plug into the orb ("Most AI gets more capable")
+      // canvas text goes on the words layer, which is only touched while there is something to say
       const mono = `500 ${Math.max(10, Math.min(12, W / 110))}px "JetBrains Mono", ui-monospace, monospace`;
+      let wrote = false;
+      const say = (text, x, y, align, colour) => {
+        if (!wrote) { wctx.setTransform(dpr, 0, 0, dpr, 0, 0); wctx.clearRect(0, 0, W, H); wctx.font = mono; wrote = true; }
+        wctx.textAlign = align; wctx.fillStyle = colour; wctx.fillText(text, x, y);
+      };
+
+      // the tasks that plug into the orb ("Most AI gets more capable")
       if (o.tasks !== false) TASKS.forEach((label, i) => {   // tasks:false replays only the re-comb (final CTA)
         const a = f.tasks[i] * (1 - f.recomb); if (a <= 0.01) return;
         const tx = W * 0.8, ty = H * (0.25 + i * 0.12);
-        ctx.strokeStyle = `rgba(185,193,211,${0.5 * a})`; ctx.lineWidth = 0.8;
-        ctx.beginPath(); ctx.moveTo(Hx0, Hy0); ctx.bezierCurveTo(Hx0 + (tx - Hx0) * 0.5, Hy0, Hx0 + (tx - Hx0) * 0.5, ty, tx, ty); ctx.stroke();
-        ctx.fillStyle = `rgba(238,240,250,${a})`; ctx.beginPath(); ctx.arc(tx, ty, 3.5, 0, 6.283); ctx.fill();
-        ctx.font = mono; ctx.fillStyle = `rgba(139,150,174,${0.95 * a})`; ctx.fillText(label.toUpperCase(), tx + 14, ty + 4);
+        draw.rgb(185, 193, 211); draw.curve(Hx0, Hy0, Hx0 + (tx - Hx0) * 0.5, Hy0, Hx0 + (tx - Hx0) * 0.5, ty, tx, ty, 0.5 * a, 0.8);
+        draw.rgb(238, 240, 250); draw.disc(tx, ty, 3.5, a);
+        say(label.toUpperCase(), tx + 14, ty + 4, "left", `rgba(139,150,174,${0.95 * a})`);
       });
 
       // you: a small brass point that the strands pour into, then its own sphere
       if (f.you > 0) {
         const yr = 4 + f.grow * Math.min(W, H) * 0.075;
-        const glow = ctx.createRadialGradient(Y.x, Y.y, 0, Y.x, Y.y, yr * 2.2 + 24);
-        glow.addColorStop(0, `rgba(209,167,95,${(0.2 + 0.45 * f.recomb) * f.you})`); glow.addColorStop(1, "rgba(209,167,95,0)");
-        ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(Y.x, Y.y, yr * 2.2 + 24, 0, 6.283); ctx.fill();
+        draw.rgb(209, 167, 95); draw.glow(Y.x, Y.y, 0, yr * 2.2 + 24, (0.2 + 0.45 * f.recomb) * f.you);
         if (f.grow > 0.02) {
           const ya = -angle * 1.8, yc = Math.cos(ya), ys = Math.sin(ya);
+          draw.rgb(214, 172, 102);
           for (const q of YOU) { const x1 = q[0] * yc + q[2] * ys, z1 = -q[0] * ys + q[2] * yc, d = (z1 + 1) / 2;
-            ctx.fillStyle = `rgba(214,172,102,${(0.18 + 0.82 * d * d) * f.grow})`; ctx.fillRect(Y.x + x1 * yr - 0.7, Y.y + q[1] * yr - 0.7, 1.4, 1.4); }
+            draw.rect(Y.x + x1 * yr - 0.7, Y.y + q[1] * yr - 0.7, 1.4, 1.4, (0.18 + 0.82 * d * d) * f.grow); }
         }
-        ctx.fillStyle = `rgba(222,184,118,${f.you})`; ctx.beginPath(); ctx.arc(Y.x, Y.y, 3.5 * (1 - f.grow) + 1, 0, 6.283); ctx.fill();
-        ctx.font = mono; ctx.textAlign = "center"; ctx.fillStyle = `rgba(209,167,95,${0.95 * f.you})`; ctx.fillText("YOU", Y.x, Y.y + yr + 26); ctx.textAlign = "left";
+        draw.rgb(222, 184, 118); draw.disc(Y.x, Y.y, 3.5 * (1 - f.grow) + 1, f.you);
+        say("YOU", Y.x, Y.y + yr + 26, "center", `rgba(209,167,95,${0.95 * f.you})`);
       }
+      draw.end();
+      if (!wrote && wordsShown) { wctx.setTransform(dpr, 0, 0, dpr, 0, 0); wctx.clearRect(0, 0, W, H); }
+      wordsShown = wrote;
     }
-    requestAnimationFrame(frame);
     labels.forEach((d, i) => setTimeout(() => d.classList.add("in"), 900 + i * 120));
   }
   window.NusOrb = NusOrb;

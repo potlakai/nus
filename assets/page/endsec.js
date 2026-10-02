@@ -18,14 +18,21 @@
     root.innerHTML = `<div class="track"><div class="stage"><div class="orbbox"></div><div class="copy">${HEAD}${buttons()}</div></div></div>`;
     const track = root.querySelector(".track"), copy = root.querySelector(".copy");
     const orb = window.NusOrb ? new NusOrb(root.querySelector(".orbbox"), { tasks: false }) : null;
+    let trackTop = 0, trackHeight = 1, pending = 0, lastProgress = -1;
+    function measure() { trackTop = track.getBoundingClientRect().top + scrollY; trackHeight = track.offsetHeight; lastProgress = -1; queue(); }
+    function queue() { if (!pending) pending = requestAnimationFrame(onScroll); }
     function onScroll() {
-      const r = track.getBoundingClientRect(), p = clamp(-r.top / Math.max(1, track.offsetHeight - innerHeight));
+      pending = 0;
+      const p = clamp((scrollY - trackTop) / Math.max(1, trackHeight - innerHeight));
+      if (p === lastProgress) return;
+      lastProgress = p;
       if (orb) orb.setStory(reduce ? 1 : 0.5 + 0.5 * sm(p, 0, 0.7));
       const a = reduce ? 1 : sm(p, 0.45, 0.75); copy.style.opacity = a; copy.style.transform = `translateY(${(1 - a) * 24}px)`; copy.style.pointerEvents = a > 0.5 ? "" : "none";
     }
     // read layout only while the ending is near, so scrolling elsewhere never forces a reflow here
     let near = false; new IntersectionObserver((es) => { near = es[0].isIntersecting; if (near) onScroll(); }, { rootMargin: "100% 0px" }).observe(track);
-    addEventListener("scroll", () => near && onScroll(), { passive: true }); addEventListener("resize", onScroll); onScroll();
+    addEventListener("scroll", () => near && queue(), { passive: true });
+    NusMotion.onLayout(measure); measure();
   }
   function words(root) {
     const W = ["Start", "with", "step", "one."];

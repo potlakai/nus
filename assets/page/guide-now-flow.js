@@ -20,7 +20,7 @@
   const text = (el) => { const r = document.createRange(); r.selectNodeContents(el); const b = r.getBoundingClientRect(); return { l: b.left, r: b.right, t: b.top, b: b.bottom, cx: (b.left + b.right) / 2 }; };
 
   const layer = document.createElement('canvas'); layer.className = 'nus-flow-bridge'; layer.setAttribute('aria-hidden', 'true'); document.body.append(layer);
-  const ctx = layer.getContext('2d');
+  const pen = NusDraw(layer);   // one draw call a frame (gl2d.js)
   let W = 1, H = 1, dpr = 1;
   function size() { W = innerWidth; H = innerHeight; dpr = Math.min(1.5, devicePixelRatio || 1); layer.width = Math.round(W * dpr); layer.height = Math.round(H * dpr); }
   size(); addEventListener('resize', size, { passive: true });
@@ -66,7 +66,7 @@
     return { x: bez(o.x, o.x, ex + s.sp * 20, ex, t), y: bez(o.y, o.y + dy * 0.5, ey - dy * 0.35, ey, t) };
   }
   function strands(g, p, dt, now, still, path) {
-    const damp = Math.exp(-5 * dt), rad = 110; ctx.lineWidth = 0.6;
+    const damp = Math.exp(-5 * dt), rad = 110; pen.rgb(g.rgb[0], g.rgb[1], g.rgb[2]);
     for (const s of S) {
       s._o = src(g, s);   // once per strand per frame, not once per point
       if (!still) {
@@ -76,24 +76,21 @@
       }
       const end = clamp(p * 1.18 - s.s * 0.18); if (end <= 0) continue;
       const a = (0.05 + 0.15 * (1 - Math.abs(s.sp) * 0.6)) * glow;
-      ctx.strokeStyle = `rgba(${g.rgb},${Math.min(0.7, a)})`; ctx.beginPath();
       const n = Math.max(1, Math.round(40 * end));
-      for (let j = 0; j <= n; j++) { const t = (j / n) * end, q = path(g, s, t), bell = Math.sin(Math.PI * t); j ? ctx.lineTo(q.x + s.ox * bell, q.y + s.oy * bell) : ctx.moveTo(q.x, q.y); }
-      ctx.stroke();
-      if (!still && p > 0.98 && s.s < (hot ? 0.12 : 0.045)) { const t = ((now / 1000) * 0.3 + s.s * 9) % 1; light(path(g, s, t), t); }
+      for (let j = 0; j <= n; j++) { const t = (j / n) * end, q = path(g, s, t), bell = Math.sin(Math.PI * t); j ? pen.to(q.x + s.ox * bell, q.y + s.oy * bell) : pen.start(q.x, q.y, Math.min(0.7, a), 0.6); }
+      pen.stroke();
+      if (!still && p > 0.98 && s.s < (hot ? 0.12 : 0.045)) { const t = ((now / 1000) * 0.3 + s.s * 9) % 1; light(path(g, s, t), t); pen.rgb(g.rgb[0], g.rgb[1], g.rgb[2]); }
     }
     tip(p, still, path(g, S[0], Math.min(1, p * 1.18)));
   }
   function halo(x, y, R, on, core = 0.9) {
-    if (on <= 0) return; const gr = ctx.createRadialGradient(x, y, 0, x, y, R);
-    gr.addColorStop(0, `rgba(255,246,228,${core * on})`); gr.addColorStop(0.25, `rgba(232,214,176,${0.35 * on})`); gr.addColorStop(1, 'rgba(176,190,255,0)');
-    ctx.fillStyle = gr; ctx.fillRect(x - R, y - R, R * 2, R * 2);
+    if (on <= 0) return; pen.rgb(255, 246, 228); pen.glow(x, y, 0, R, core * on, 0.25, 0.35 * on);
   }
   function drawA(g, p, dt, t, still) { strands(g, p, dt, t, still, pathA); const Q = beadA(g); halo(Q.x, Q.y, 20 * (still ? 1 : 0.85 + 0.15 * Math.sin(t / 520)), sm(p, 0.7, 0.95)); }
   function drawC(g, p, dt, t, still) {
     strands(g, p, dt, t, still, pathC);
     // the orb takes the light as the strands land
-    const on = sm(p, 0.8, 1), O = g.orb; if (on > 0) { const gr = ctx.createRadialGradient(O.x, O.y, O.r * 0.4, O.x, O.y, O.r * 1.9); gr.addColorStop(0, `rgba(${g.rgb},${0.16 * on * (still ? 1 : 0.85 + 0.15 * Math.sin(t / 600))})`); gr.addColorStop(1, `rgba(${g.rgb},0)`); ctx.fillStyle = gr; ctx.fillRect(O.x - O.r * 2, O.y - O.r * 2, O.r * 4, O.r * 4); }
+    const on = sm(p, 0.8, 1), O = g.orb; if (on > 0) { pen.rgb(g.rgb[0], g.rgb[1], g.rgb[2]); pen.glow(O.x, O.y, O.r * 0.4, O.r * 1.9, 0.16 * on * (still ? 1 : 0.85 + 0.15 * Math.sin(t / 600))); }
   }
 
   /* ---------- B: one thread from the last step into the Now dot ---------- */
@@ -104,15 +101,15 @@
   const at = (pts, l) => { let i = 1; while (i < pts.length - 1 && pts[i].l < l) i++; const a = pts[i - 1], b = pts[i], u = clamp((l - a.l) / Math.max(1e-6, b.l - a.l)); return { x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u }; };
   function lanes(pts, upto, rgb, alpha) {
     for (let lane = 0; lane < 5; lane++) {
-      const off = (lane - 2) * 1.5; ctx.beginPath(); let started = false;
+      const off = (lane - 2) * 1.5; let started = false; pen.rgb(rgb[0], rgb[1], rgb[2]);
       for (let i = 0; i < pts.length; i++) {
         const q = pts[i]; if (q.l > upto) break;
         const nb = pts[Math.min(pts.length - 1, i + 1)], pb = pts[Math.max(0, i - 1)], tx = nb.x - pb.x, ty = nb.y - pb.y, tl = Math.hypot(tx, ty) || 1;
         let x = q.x - (ty / tl) * off, y = q.y + (tx / tl) * off; const dx = x - soft.x, dy = y - soft.y, d = Math.hypot(dx, dy);
         if (d < 80 && d > 0.5) { const f = (1 - d / 80) ** 2 * (10 + Math.abs(off) * 6); x += (dx / d) * f; y += (dy / d) * f; }
-        started ? ctx.lineTo(x, y) : (ctx.moveTo(x, y), (started = true));
+        started ? pen.to(x, y) : (pen.start(x, y, alpha * (lane === 2 ? 1 : 0.45), lane === 2 ? 0.9 : 0.6), (started = true));
       }
-      ctx.lineWidth = lane === 2 ? 0.9 : 0.6; ctx.strokeStyle = `rgba(${rgb},${alpha * (lane === 2 ? 1 : 0.45)})`; ctx.stroke();
+      if (started) pen.stroke();
     }
   }
   function pathB(g) {
@@ -129,28 +126,32 @@
     const D = g.dot; halo(D.cx, D.cy, 22 * (still ? 1 : 0.85 + 0.15 * Math.sin(t / 520)), sm(p, 0.9, 1), 0.7);
   }
 
-  function light(q, t, r = 6) { const gl = Math.sin(Math.PI * t), gr = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, r); gr.addColorStop(0, `rgba(255,248,235,${0.85 * gl})`); gr.addColorStop(1, 'rgba(255,248,235,0)'); ctx.fillStyle = gr; ctx.fillRect(q.x - r, q.y - r, r * 2, r * 2); }
-  function tip(p, still, q) { if (still || p < 0.01 || p > 0.99) return; const gr = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, 14); gr.addColorStop(0, 'rgba(238,240,250,.7)'); gr.addColorStop(1, 'rgba(176,190,255,0)'); ctx.fillStyle = gr; ctx.fillRect(q.x - 14, q.y - 14, 28, 28); }
-  function clear(T) { for (let i = 0; i < 8; i++) { const pad = 4 + (8 - i) * 2.2; ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.roundRect(T.l - pad, T.t - pad * 0.7, T.r - T.l + pad * 2, T.b - T.t + pad * 1.4, 12); ctx.fill(); } }
+  function light(q, t, r = 6) { pen.rgb(255, 248, 235); pen.glow(q.x, q.y, 0, r, 0.85 * Math.sin(Math.PI * t)); }
+  function tip(p, still, q) { if (still || p < 0.01 || p > 0.99) return; pen.rgb(238, 240, 250); pen.glow(q.x, q.y, 0, 14, 0.7); }
+  function clear(T) { for (let i = 0; i < 8; i++) { const pad = 4 + (8 - i) * 3.4; pen.erase(T.l - pad, T.t - pad * 0.8, T.r - T.l + pad * 2, T.b - T.t + pad * 1.6, 14, 0.3); } }
 
   let frame = 0, last = performance.now(), drawn = false;
   const inRange = (g) => Math.min(g.last.b, g.low) < H + 80 && g.orb.y + 120 > -80;
   function draw(t) {
     frame = 0; const dt = Math.min(0.05, (t - last) / 1000); last = t;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     // clear only when something was drawn, so scrolling elsewhere never touches this full-screen canvas
-    const off = () => { if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; } layer.style.visibility = 'hidden'; };
+    const off = () => { if (drawn) { pen.begin(W, H, dpr); pen.end(); drawn = false; } layer.style.visibility = 'hidden'; };
     if (mode === 'original') return off();
     const g = geo(); if (!g || !inRange(g)) return off();
-    ctx.clearRect(0, 0, W, H); drawn = true; layer.style.visibility = '';
+    pen.begin(W, H, dpr); drawn = true; layer.style.visibility = '';
     soft.x += (ptr.x - soft.x) * Math.min(1, dt * 10); soft.y += (ptr.y - soft.y) * Math.min(1, dt * 10);
     glow += ((hot ? 1.6 : 1) - glow) * Math.min(1, dt * 5);
     const p = progress(g), still = reduced.matches;
     (mode === 'a' ? drawA : mode === 'b' ? drawB : drawC)(g, p, dt, t, still);
-    if (mode === 'c') { ctx.globalCompositeOperation = 'destination-out'; clear(g.kicker); clear(g.h2); clear(g.sub); ctx.globalCompositeOperation = 'source-over'; }
+    if (mode === 'c') { clear(g.kicker); clear(g.h2); clear(g.sub); }
+    pen.end();
     if (!still) queue();
   }
-  function queue() { if (!frame && !document.hidden) frame = requestAnimationFrame(draw); }
+  const gate = NusMotion.observe([guide, now], active => {
+    if (active) queue();
+    else { cancelAnimationFrame(frame); frame = 0; if (drawn) { pen.begin(W, H, dpr); pen.end(); drawn = false; } layer.style.visibility = 'hidden'; }
+  });
+  function queue() { if (!frame && !document.hidden && gate.active) frame = requestAnimationFrame(draw); }
   addEventListener('scroll', queue, { passive: true }); addEventListener('resize', queue, { passive: true });
   document.addEventListener('visibilitychange', () => { if (document.hidden) { cancelAnimationFrame(frame); frame = 0; } else queue(); });
   reduced.addEventListener('change', queue);

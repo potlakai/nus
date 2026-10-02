@@ -14,6 +14,7 @@
 /* the fork: orb above, strands into two equal cards */
 .ways .fork { position:relative; max-width:1180px; margin:0 auto; padding:0 40px 14vh }
 .ways .fork canvas.strands { position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none }
+.ways .fork .orbtag { position:absolute; left:0; top:0; font:500 10px/1 "JetBrains Mono",monospace; color:rgba(139,150,174,.9); white-space:nowrap; pointer-events:none }
 .ways .fork .gap { height:310px }
 .ways .pair { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:36px; align-items:stretch }
 .ways .or { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:44px; height:44px; border-radius:50%; display:grid; place-items:center; background:var(--ink); border:1px solid var(--line2); color:var(--muted); font:italic 18px "Instrument Serif",serif; z-index:2 }
@@ -104,7 +105,7 @@
 .ways .desk .keys { right:21%; bottom:8%; border-radius:999px; padding:6px 10px; display:flex; gap:5px; font-size:11px }
 .ways .desk kbd { font:600 10.5px var(--sys); padding:3px 7px; border-radius:6px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.06); color:#fff }
 .ways .desk .bub { max-width:44%; padding:9px 12px 8px; border-radius:12px; font-size:12px; line-height:1.4 }
-.ways .desk .bub .k { margin-bottom:4px; color:var(--accent); font:700 8px/1 var(--sys); letter-spacing:.16em; text-transform:uppercase }
+.ways .desk .bub .k { margin-bottom:4px; color:var(--accent); font:700 9.5px/1 var(--sys); letter-spacing:.16em; text-transform:uppercase }
 .ways .desk .bub.b1 { left:30%; top:56% } .ways .desk .bub.b2 { left:8%; top:22% }
 .ways .desk .mapmini { left:9%; top:12%; width:60%; padding:10px 12px 6px; border-radius:14px }
 .ways .mapmini .mh { font:600 12px var(--sys) } .ways .mapmini svg { display:block; width:100%; overflow:visible }

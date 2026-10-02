@@ -2,7 +2,7 @@
 .faqsec { --line:rgba(206,216,246,.14); --line2:rgba(206,216,246,.26); --muted:#8b96ae; --accent:#90A5FF; --sys:-apple-system,"SF Pro Text",Inter,system-ui,"Segoe UI",sans-serif; position:relative }
 .faqsec em { color:var(--brass); font-style:italic } .faqsec .serif { font-family:"Instrument Serif",serif; font-weight:400 }
 .faqsec .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap }
-.faqsec .sec { position:relative; max-width:1100px; margin:0 auto; padding:14vh 40px 16vh }
+.faqsec .sec { position:relative; max-width:1100px; margin:0 auto; padding:14vh 40px 7vh }
 .faqsec .head { text-align:center } .faqsec .head .mono { color:var(--cobalt); margin-bottom:16px }
 .faqsec .head h2 { font-size:clamp(46px,5.6vw,76px); line-height:1 } .faqsec .head p { margin:16px auto 0; max-width:560px; color:var(--mist); font-size:16px; line-height:1.6 }
 .faqsec .reveal { opacity:0; transform:translateY(26px); transition:opacity 1s cubic-bezier(.2,.8,.2,1), transform 1s cubic-bezier(.2,.8,.2,1) } .faqsec .reveal.in { opacity:1; transform:none }
@@ -27,7 +27,7 @@
 .faqsec .body { display:grid; grid-template-rows:0fr; transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1) } .faqsec .body > div { overflow:hidden }
 .faqsec .qrow.open { border-color:rgba(144,165,255,.4); background:rgba(144,165,255,.05) } .faqsec .qrow.open .body { grid-template-rows:1fr } .faqsec .qrow.open .pl { transform:rotate(180deg) } .faqsec .qrow.open .pl::after { opacity:0 }
 .faqsec .bub { margin:0 20px 18px 56px; padding:12px 14px; border-radius:12px; background:linear-gradient(150deg, rgba(18,20,31,.96), rgba(8,10,18,.94)); border:1px solid rgba(242,239,230,.13) }
-.faqsec .bub .k { margin-bottom:6px; color:var(--accent); font:700 8.5px/1 var(--sys); letter-spacing:.16em; text-transform:uppercase }
+.faqsec .bub .k { margin-bottom:6px; color:var(--accent); font:700 9.5px/1 var(--sys); letter-spacing:.16em; text-transform:uppercase }
 .faqsec .none { display:none; text-align:center; color:var(--mist); margin-top:20px } .faqsec .none.on { display:block }
 .faqsec .more { margin:36px auto 0; max-width:820px; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 26px; border-radius:18px; border:1px solid var(--line); background:rgba(241,236,223,.03) }
 .faqsec .more b { font:400 26px "Instrument Serif",serif } .faqsec .more p { margin-top:4px; color:var(--mist); font-size:14.5px }

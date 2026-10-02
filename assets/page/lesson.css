@@ -16,7 +16,7 @@
 
 /* the three rounds, as a rail above the window */
 .steps { list-style:none; display:grid; grid-template-columns:repeat(3,1fr); gap:14px }
-.step { position:relative; padding:18px 18px 16px; border-radius:14px; border:1px solid var(--line); opacity:.42; transition:opacity .4s, border-color .4s, background .4s }
+.step { position:relative; padding:18px 18px 16px; border-radius:14px; border:1px solid var(--line); opacity:.6; transition:opacity .4s, border-color .4s, background .4s }
 .step::before { content:""; position:absolute; left:18px; right:18px; top:-1px; height:2px; border-radius:2px; background:var(--brass); transform:scaleX(0); transform-origin:left; transition:transform .6s cubic-bezier(.2,.8,.2,1) }
 .step.on { opacity:1; border-color:var(--line2); background:rgba(241,236,223,.03) }
 .step.on::before { transform:scaleX(.18) } .step.done::before { transform:scaleX(1) }
@@ -25,7 +25,7 @@
 .step .n { color:var(--muted) } .step .t { color:var(--brass); font-variant-numeric:tabular-nums }
 .step h3 { margin-top:8px; font-size:26px; line-height:1.05 }
 .step p { margin-top:6px; color:var(--mist); font-size:14px; line-height:1.5 }
-.step .tag { color:var(--cobalt); margin-left:4px; font-size:10px }
+.step .tag { color:#90a5ff; margin-left:4px; font-size:10.5px }
 
 /* stage: the window, with the Companion floating over it like on a real desktop */
 .stage { position:relative; margin:30px 0 0; font-family:var(--sys) }

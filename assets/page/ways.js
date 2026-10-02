@@ -123,7 +123,9 @@
   /* ---------- the orb and its strands ---------- */
   function StrandField(host, opts) {
     const c = document.createElement("canvas"); c.className = "strands"; c.setAttribute("aria-hidden", "true"); host.prepend(c);
-    const ctx = c.getContext("2d"), N = 720, g = Math.PI * (3 - Math.sqrt(5)), P = [];
+    const pen = NusDraw(c), N = 720, g = Math.PI * (3 - Math.sqrt(5)), P = [];   // one draw call a frame (gl2d.js)
+    const tag = document.createElement("span"); tag.className = "orbtag"; tag.setAttribute("aria-hidden", "true"); tag.textContent = "NŪS"; c.after(tag);
+    let tagAt = "";
     for (let i = 0; i < N; i++) { const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), t = g * i; P.push([Math.cos(t) * r, y, Math.sin(t) * r]); }
     const S = [];
     for (let i = 0; i < opts.per * 2; i++) S.push({ side: i % 2, s: Math.random(), sp: (Math.random() - 0.5) * 2, ox: 0, oy: 0, vx: 0, vy: 0 });
@@ -133,23 +135,21 @@
     function size() { const r = host.getBoundingClientRect(); W = r.width; H = opts.bottom ? Math.min(r.height, Math.max(1, opts.bottom())) : r.height; dpr = Math.min(1.5, devicePixelRatio || 1); c.width = W * dpr; c.height = H * dpr; c.style.height = H + "px"; }
     size(); new ResizeObserver(size).observe(host);
     new IntersectionObserver((es) => (visible = es[0].isIntersecting), { threshold: 0 }).observe(c);   // the canvas itself, which stops where the strands end
-    addEventListener("pointermove", (e) => { const r = c.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, now = performance.now(), dt = Math.max(1, now - ptr.t) / 1000;
+    addEventListener("pointermove", (e) => { if (!visible || document.hidden) return; const r = c.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, now = performance.now(), dt = Math.max(1, now - ptr.t) / 1000;
       ptr.vx = ptr.vx * 0.5 + ((x - ptr.x) / dt) * 0.5; ptr.vy = ptr.vy * 0.5 + ((y - ptr.y) / dt) * 0.5; ptr.x = x; ptr.y = y; ptr.t = now; }, { passive: true });
     const bez = (a, b, c2, d, t) => { const u = 1 - t; return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c2 + t * t * t * d; };
     const COL = [[176, 190, 255], [232, 204, 150]];
-    (function frame(now) {
-      requestAnimationFrame(frame);
-      if (!visible || document.hidden) { last = now; return; }
-      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    NusMotion.loop(c, (now, dt) => {
+      if (!visible || document.hidden) return;
+      last = now;
       const st = opts.state();
       if (st.scrub) grow = reduce ? 1 : clamp(st.grow);
       else grow += ((reduce ? 1 : st.grow) - grow) * Math.min(1, dt * 2.2);
       lean += ((st.focus === 0 ? -1 : st.focus === 1 ? 1 : 0) - lean) * Math.min(1, dt * 4);
       for (let k = 0; k < 2; k++) { const want = !st.targets[k] ? 0 : st.focus < 0 ? 1 : st.focus === k ? 1.9 : 0.35; w[k] += (want - w[k]) * Math.min(1, dt * 5); }
       if (!reduce) angle += dt * 0.12;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+      pen.begin(W, H, dpr);
       const O = st.orb, ox = O.x + lean * 12, oy = O.y, R = O.r, K = 14, damp = Math.exp(-5 * dt), rad = 120;
-      ctx.lineWidth = 0.6;
       for (const s of S) {
         const T = st.targets[s.side]; if (!T || w[s.side] < 0.02) continue;
         const dir = s.side ? 1 : -1, a0 = Math.PI / 2 - dir * (0.35 + 0.5 * ((s.sp + 1) / 2));
@@ -161,26 +161,27 @@
         s.vx = (s.vx - K * s.ox * dt) * damp; s.vy = (s.vy - K * s.oy * dt) * damp; s.ox += s.vx * dt; s.oy += s.vy * dt;
         x1 += s.ox; y1 += s.oy; x2 += s.ox; y2 += s.oy;
         const a = (0.05 + 0.16 * (1 - Math.abs(s.sp) * 0.6)) * Math.min(1, w[s.side]) * (0.6 + 0.4 * Math.min(2, w[s.side]));
-        const col = COL[s.side]; ctx.strokeStyle = `rgba(${col[0]},${col[1]},${col[2]},${Math.min(0.7, a)})`;
-        ctx.beginPath(); ctx.moveTo(x0, y0);
+        const col = COL[s.side]; pen.rgb(col[0], col[1], col[2]);
+        pen.start(x0, y0, Math.min(0.7, a), 0.6);
         const steps = 26, end = clamp(grow * 1.15 - s.s * 0.15);
-        for (let k = 1; k <= steps * end; k++) { const t = k / steps; ctx.lineTo(bez(x0, x1, x2, x3, t), bez(y0, y1, y2, y3, t)); }
-        ctx.stroke();
+        for (let k = 1; k <= steps * end; k++) { const t = k / steps; pen.to(bez(x0, x1, x2, x3, t), bez(y0, y1, y2, y3, t)); }
+        pen.stroke();
         if (grow > 0.98 && s.s < (w[s.side] > 1.2 ? 0.16 : 0.05)) {
           const t = ((now / 1000) * 0.28 + s.s * 7) % 1, bx = bez(x0, x1, x2, x3, t), by = bez(y0, y1, y2, y3, t), gl = Math.sin(Math.PI * t);
-          const gr = ctx.createRadialGradient(bx, by, 0, bx, by, 6); gr.addColorStop(0, `rgba(255,248,235,${0.85 * gl})`); gr.addColorStop(1, "rgba(255,248,235,0)");
-          ctx.fillStyle = gr; ctx.fillRect(bx - 6, by - 6, 12, 12);
+          pen.rgb(255, 248, 235); pen.glow(bx, by, 0, 6, 0.85 * gl);
         }
       }
-      const bg = ctx.createRadialGradient(ox, oy, R * 0.1, ox, oy, R * 1.6); bg.addColorStop(0, "rgba(120,140,220,.12)"); bg.addColorStop(1, "rgba(120,140,220,0)");
-      ctx.fillStyle = bg; ctx.fillRect(ox - R * 1.7, oy - R * 1.7, R * 3.4, R * 3.4);
+      pen.rgb(120, 140, 220); pen.glow(ox, oy, R * 0.1, R * 1.6, 0.12);
+      pen.rgb(238, 240, 250);
       const ca = Math.cos(angle), sa = Math.sin(angle), ct = Math.cos(0.32), stt = Math.sin(0.32);
       for (const p of P) {
         const x1 = p[0] * ca + p[2] * sa, z1 = -p[0] * sa + p[2] * ca, y2 = p[1] * ct - z1 * stt, z2 = p[1] * stt + z1 * ct, d = (z2 + 1) / 2, r = 0.5 + d * 1.1;
-        ctx.fillStyle = `rgba(238,240,250,${0.14 + 0.8 * d * d})`; ctx.fillRect(ox + x1 * R - r / 2, oy + y2 * R - r / 2, r, r);
+        pen.rect(ox + x1 * R - r / 2, oy + y2 * R - r / 2, r, r, 0.14 + 0.8 * d * d);
       }
-      ctx.font = '500 10px "JetBrains Mono", monospace'; ctx.textAlign = "center"; ctx.fillStyle = "rgba(139,150,174,.9)"; ctx.fillText("NŪS", ox, oy - R - 14);
-    })(last);
+      pen.end();
+      // the label over the orb is a page element now; it only moves when the orb leans
+      const at = `translate(${Math.round(ox * 2) / 2}px,${Math.round((oy - R - 22) * 2) / 2}px) translateX(-50%)`; if (at !== tagAt) tag.style.transform = tagAt = at;
+    });
   }
   const rel = (el, host) => { const a = el.getBoundingClientRect(), h = host.getBoundingClientRect(); return { x: a.left - h.left + a.width / 2, y: a.top - h.top, w: a.width }; };
 
@@ -190,11 +191,13 @@
     cards[1].querySelector(".media").innerHTML = studentsMedia(); cards[1].querySelector(".copy").innerHTML = studentsCopy();
     mountDesk(cards[0]); mountTabs(cards[1].querySelector(".media"));
     let focus = -1, seen = 0;
+    // a phone cannot hover: say what a finger can do
+    if (matchMedia("(hover: none)").matches) { const p = root.querySelector(".head p"); if (p) p.textContent = p.textContent.replace("Hover one", "Tap one"); }
     cards.forEach((cd, k) => { cd.addEventListener("mouseenter", () => (focus = k)); cd.addEventListener("mouseleave", () => (focus = -1)); cd.addEventListener("focusin", () => (focus = k)); cd.addEventListener("focusout", () => (focus = -1)); });
     new IntersectionObserver((es) => { if (es[0].isIntersecting) seen = 1; }, { threshold: 0.25 }).observe(root.querySelector(".pair"));
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add("in")), { threshold: 0.15 });
     root.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-    StrandField(root, { per: 90, bottom: () => Math.min(...cards.map((cd) => rel(cd.querySelector(".media"), root).y)) + 60, state: () => ({ orb: { x: root.clientWidth / 2, y: root.querySelector(".gap").offsetTop + 96, r: 58 }, targets: cards.map((cd) => rel(cd.querySelector(".media"), root)), focus, grow: entryProgress.has(root) ? entryProgress.get(root) : seen, scrub: entryProgress.has(root) }) });
+    StrandField(root, { per: 90, bottom: () => { const tops = cards.map((cd) => rel(cd.querySelector(".media"), root).y); return Math.abs(tops[0] - tops[1]) > 40 ? rel(cards[0], root).y : Math.min(...tops) + 60; }, /* stacked cards: the strands tuck in behind the first card */ state: () => ({ orb: { x: root.clientWidth / 2, y: root.querySelector(".gap").offsetTop + 96, r: 58 }, targets: cards.map((cd) => rel(cd.querySelector(".media"), root)), focus, grow: entryProgress.has(root) ? entryProgress.get(root) : seen, scrub: entryProgress.has(root) }) });
   }
   const setEntryProgress = (root, value) => value == null ? entryProgress.delete(root) : entryProgress.set(root, clamp(value));
   window.NusWays = { mountFork, mountTabs, mountDesk, StrandField, companionCopy, studentsCopy, companionMedia, studentsMedia, rel, setEntryProgress };

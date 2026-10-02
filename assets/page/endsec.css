@@ -10,7 +10,7 @@
 .endsec .cbtn.solid { background:var(--cream); color:#0b1020 } .endsec .cbtn.solid:hover { background:#fff }
 .endsec .cbtn.ghost { border-color:var(--line2); color:var(--cream); background:rgba(6,8,16,.4); backdrop-filter:blur(8px) } .endsec .cbtn.ghost:hover { background:rgba(241,236,223,.1) }
 .endsec .btns { display:flex; flex-wrap:wrap; gap:12px; justify-content:center }
-.endsec .fine { margin-top:16px; color:var(--muted); font-size:13.5px; text-align:center }
+.endsec .fine { margin-top:16px; color:var(--muted); font-size:13.5px; text-align:center } .endsec .fine svg.os { width:13px; height:13px; margin-right:3px; vertical-align:-1.5px; transform:none }
 .endsec .kick { color:var(--cobalt); text-align:center; margin-bottom:16px }
 .endsec h2 { font-size:clamp(52px,6.6vw,96px); line-height:1; text-align:center }
 

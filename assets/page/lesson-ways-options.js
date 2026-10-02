@@ -16,7 +16,7 @@
     original:['Original','The approved section entry, with the chosen hero handoff A.']
   };
   let mode=review&&variants[params.get('connection')]?params.get('connection'):'b';
-  let frame=0, W,H,dpr, start,end, headY, forkX, orbY, sourceY, sourceX, sourceSize, statusY;
+  let frame=0, W,H,dpr, start,end, headY, forkX, orbY, sourceY, sourceX, sourceSize, statusY, cardY;
   const clamp=v=>Math.min(1,Math.max(0,v));
   const mix=(a,b,t)=>a+(b-a)*t;
   const ease=(v,a,b)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t);};
@@ -50,6 +50,7 @@
     const k=knot.getBoundingClientRect(), f=fork.getBoundingClientRect();
     sourceX=k.left+k.width/2;sourceY=top(knot)+knot.offsetHeight/2;sourceSize=knot.offsetWidth;
     forkX=f.left+fork.clientWidth/2;orbY=top(gap)+96;headY=top(head);statusY=top(status);
+    cardY=cards.map(top);
     start=sourceY-H*.62;end=Math.max(start+H*.55,orbY-H*.54);
   }
   function reset(){
@@ -73,7 +74,7 @@
     const y=scrollY,p=clamp((y-start)/(end-start));
     const entry=1-ease((headY-y)/H,.32,.89);
     head.style.opacity=String(entry);head.style.transform=`translate3d(0,${(1-entry)*24}px,0)`;
-    const split=1-ease((top(cards[0])-y)/H,.30,.91);
+    const split=1-ease((cardY[0]-y)/H,.30,.91);
     const orbEntry=mode==='c'?entry:ease(p,.68,.98);
     if(mode==='a'&&y>=start) knot.style.opacity=String(1-ease(p,0,.12));
     else if(y>=start) knot.style.opacity='';
@@ -81,7 +82,7 @@
     field.style.transform=mode==='c'?`translate3d(0,${(1-entry)*24}px,0)`:'';
     NusWays.setEntryProgress(fork,split);
     cards.forEach((card,i)=>{
-      const progress=W>980?split:1-ease((top(card)-y)/H,.38,.96);
+      const progress=W>980?split:1-ease((cardY[i]-y)/H,.38,.96);
       card.toggleAttribute('data-connection-entering',progress<.999);
       card.style.opacity=String(progress);
       card.style.transform=progress>=.999?'':`translate3d(${mode==='c'&&W>980?(i?1:-1)*(1-progress)*18:0}px,${(1-progress)*(mode==='c'?44:24)}px,0)`;   // translate + opacity only: scaling the blurred cards re-rasterises them every frame
@@ -115,7 +116,8 @@
       ctx.fillStyle=glow;ctx.fillRect(point.x-12,point.y-12,24,24);
     }
   }
-  function queue(){if(!frame&&!document.hidden)frame=requestAnimationFrame(draw);}
+  const gate=NusMotion.observe([lesson,ways],()=>{if(!frame&&!document.hidden)frame=requestAnimationFrame(draw);});
+  function queue(){if(!frame&&!document.hidden&&gate.active)frame=requestAnimationFrame(draw);}
   if(review){
   select.addEventListener('change',()=>{mode=select.value;choose();});calm.addEventListener('change',choose);
   ui.querySelector('[data-replay]').addEventListener('click',()=>scrollTo({top:Math.max(0,start-H*.17),behavior:'instant'}));
@@ -128,5 +130,6 @@
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else queue();});
   reduced.addEventListener('change',choose);
   new ResizeObserver(()=>{measure();queue();}).observe(lesson);
+  NusMotion.onLayout(()=>{measure();queue();});
   choose();if(document.fonts)document.fonts.ready.then(()=>{measure();queue();});
 })();

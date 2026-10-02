@@ -22,8 +22,8 @@ canvas.guide-strand { position:fixed; inset:0; width:100vw; height:100vh; pointe
 /* steps + screen */
 .guide .fa { display:grid; grid-template-columns:400px 1fr; gap:48px; align-items:start; margin-top:48px }
 .guide .gsteps { list-style:none; display:grid; gap:10px }
-.guide .gsteps button { width:100%; text-align:left; display:grid; grid-template-columns:34px 1fr; gap:14px; padding:15px 18px; border-radius:16px; border:1px solid var(--line); background:rgba(241,236,223,.02); color:var(--cream); cursor:pointer; opacity:.55; transition:opacity .35s, border-color .35s, background .35s; font:inherit; position:relative; overflow:hidden }
-.guide .gsteps button:hover { opacity:.85 } .guide .gsteps button.on { opacity:1; border-color:var(--line2); background:rgba(241,236,223,.05) }
+.guide .gsteps button { width:100%; text-align:left; display:grid; grid-template-columns:34px 1fr; gap:14px; padding:15px 18px; border-radius:16px; border:1px solid var(--line); background:rgba(241,236,223,.02); color:var(--cream); cursor:pointer; opacity:.7; transition:opacity .35s, border-color .35s, background .35s; font:inherit; position:relative; overflow:hidden }
+.guide .gsteps button:hover { opacity:.9 } .guide .gsteps button.on { opacity:1; border-color:var(--line2); background:rgba(241,236,223,.05) }
 .guide .gsteps .n { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; border:1px solid var(--line2); font:500 12px "JetBrains Mono",monospace; color:var(--mist) }
 .guide .gsteps button.on .n { background:var(--cream); color:#0b1020; border-color:var(--cream) }
 .guide .gsteps .ttl { display:block; font-size:16px; font-weight:600 } .guide .gsteps .d { display:block; margin-top:5px; color:var(--mist); font-size:14px; line-height:1.55 } .guide .gsteps .d b { color:var(--cream); font-weight:600 }
@@ -48,7 +48,7 @@ canvas.guide-strand { position:fixed; inset:0; width:100vw; height:100vh; pointe
 
 /* Your keys (Companion window) */
 .guide .keys-card { position:relative; width:86%; padding:16px 18px }
-.guide .keys-card .ey { font:700 9px/1 var(--sys); letter-spacing:.16em; color:var(--accent) } .guide .keys-card h5, .guide .fold h5 { margin-top:6px; font:600 18px var(--sys) }
+.guide .keys-card .ey { font:700 10px/1 var(--sys); letter-spacing:.16em; color:var(--accent) } .guide .keys-card h5, .guide .fold h5 { margin-top:6px; font:600 18px var(--sys) }
 .guide .krow { margin-top:8px; display:grid; grid-template-columns:1fr auto auto 1.1fr; gap:10px; align-items:center; padding:8px 10px; border-radius:12px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.025); transition:border-color .3s, background .3s }
 .guide .krow.hi { border-color:rgba(144,165,255,.55); background:rgba(144,165,255,.07) }
 .guide .krow label { font:600 13px var(--sys) } .guide .krow label small { display:block; font-weight:400; font-size:11px; color:rgba(243,240,232,.5) }
@@ -88,7 +88,7 @@ canvas.guide-strand { position:fixed; inset:0; width:100vw; height:100vh; pointe
 .guide .pknot { position:absolute; right:3%; bottom:3%; width:21%; aspect-ratio:1 }
 .guide .point-bub, .guide .scene[data-s=point] .bub { position:absolute; left:34%; top:62%; max-width:40%; padding:11px 13px 10px; border-radius:12px; font-size:13px; line-height:1.45; opacity:0; transform:translateY(6px); transition:opacity .3s, transform .3s }
 .guide .scene[data-s=point] .bub.on { opacity:1; transform:none }
-.guide .bub .k { margin-bottom:5px; color:var(--accent); font:700 8.5px/1 var(--sys); letter-spacing:.16em; text-transform:uppercase }
+.guide .bub .k { margin-bottom:5px; color:var(--accent); font:700 9.5px/1 var(--sys); letter-spacing:.16em; text-transform:uppercase }
 
 /* Map (Companion window) */
 .guide .mapcard { width:90%; padding:16px 18px 12px }

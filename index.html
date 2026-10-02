@@ -45,6 +45,7 @@
   #orb.grabbing { cursor:grabbing }
   .orb-node { position:absolute; transform:translate(-4px,-50%); display:flex; align-items:center; gap:12px; padding:6px 8px 6px 0; white-space:nowrap; user-select:none; opacity:0; transition:opacity .8s }
   .orb-node.in { opacity:1 }
+  .orb-node.flip { flex-direction:row-reverse; transform:translate(calc(-100% + 4px),-50%); padding:6px 0 6px 8px }
   .orb-dot { width:8px; height:8px; border-radius:50%; background:#eef0fa; box-shadow:0 0 8px 1px rgba(214,219,234,.45); transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s }
   .orb-label { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#d6dbea; opacity:.85; transition:opacity .3s }
   .orb-node.on .orb-dot { transform:scale(1.6); box-shadow:0 0 16px 4px rgba(214,219,234,.8) }
@@ -82,13 +83,13 @@
     .right .btns { flex-wrap:wrap } .btn { padding:12px 18px; font-size:14px }
   }
 </style>
-<link rel="stylesheet" href="assets/page/lesson.css?v=2">
-<link rel="stylesheet" href="assets/page/ways.css?v=9">
-<link rel="stylesheet" href="assets/page/plans.css?v=3">
-<link rel="stylesheet" href="assets/page/guide.css?v=5">
-<link rel="stylesheet" href="assets/page/nowsec.css?v=2">
-<link rel="stylesheet" href="assets/page/faqsec.css?v=1">
-<link rel="stylesheet" href="assets/page/endsec.css?v=3">
+<link rel="stylesheet" href="assets/page/lesson.css?v=3">
+<link rel="stylesheet" href="assets/page/ways.css?v=10">
+<link rel="stylesheet" href="assets/page/plans.css?v=4">
+<link rel="stylesheet" href="assets/page/guide.css?v=6">
+<link rel="stylesheet" href="assets/page/nowsec.css?v=3">
+<link rel="stylesheet" href="assets/page/faqsec.css?v=2">
+<link rel="stylesheet" href="assets/page/endsec.css?v=4">
 <link rel="stylesheet" href="assets/page/motion-options.css?v=3">
 <link rel="stylesheet" href="assets/page/lesson-ways-options.css?v=4">
 <link rel="stylesheet" href="assets/page/ways-plans-flow.css?v=1">
@@ -159,18 +160,19 @@
 <section class="faqsec" id="faq" aria-label="Questions"></section>
 <section class="endsec full" id="start" aria-label="Get started"></section>
 <footer class="sitefoot" id="footer"></footer>
-<script src="assets/page/orb.js?v=6"></script>
+<script src="assets/page/gl2d.js?v=2"></script>
+<script src="assets/page/orb.js?v=8"></script>
 <canvas id="strandLayer" class="strand-layer" aria-hidden="true"></canvas>
 <script src="assets/page/companion/knot3d.js?v=1"></script>
-<script src="assets/page/perf.js?v=2"></script>
+<script src="assets/page/perf.js?v=3"></script>
 <script src="assets/page/companion/strand.js?v=3"></script>
 <script src="assets/page/lesson.js?v=10"></script>
-<script src="assets/page/ways.js?v=8"></script>
-<script src="assets/page/plans.js?v=9"></script>
+<script src="assets/page/ways.js?v=10"></script>
+<script src="assets/page/plans.js?v=11"></script>
 <script src="assets/page/guide.js?v=3"></script>
-<script src="assets/page/nowsec.js?v=4"></script>
+<script src="assets/page/nowsec.js?v=5"></script>
 <script src="assets/page/faqsec.js?v=2"></script>
-<script src="assets/page/endsec.js?v=5"></script>
+<script src="assets/page/endsec.js?v=6"></script>
 <script>
   // stars that twinkle
   (function () {
@@ -178,9 +180,9 @@
     function size() { const r = c.getBoundingClientRect(); dpr = 1; W = r.width;   /* one-pixel stars need no more than 1x */ H = r.height; c.width = W * dpr; c.height = H * dpr;
       S = Array.from({ length: Math.round(W * H / 2600) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.1 + 0.3, p: Math.random() * 6.28, s: 0.4 + Math.random() * 1.2 })); }
     size(); addEventListener("resize", size);
-    const tr = document.getElementById("track");   // the hero is pinned inside the track: no stars to draw once it has scrolled away
-    (function tick(t) { requestAnimationFrame(tick); if (document.hidden || scrollY > tr.offsetHeight) return; x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H);
-      for (const s of S) { const a = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin(t / 1000 * s.s + s.p)); x.fillStyle = `rgba(185,193,211,${a})`; x.fillRect(s.x, s.y, s.r, s.r); } })(0);
+    let tick = 0;   // the twinkle is slow, so every other frame is enough
+    NusMotion.loop(c, (t) => { if (tick++ & 1) return; x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H); x.fillStyle = "rgb(185,193,211)";
+      for (const s of S) { x.globalAlpha = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin(t / 1000 * s.s + s.p)); x.fillRect(s.x, s.y, s.r, s.r); } });
   })();
   const heroOrb = new NusOrb(document.getElementById("orb"));
   // narrow screens: place the orb and its four labels in the space between the buttons and the wordmark
@@ -218,7 +220,7 @@
   let trackH = track.offsetHeight, lastQ = -1; addEventListener("resize", () => { trackH = track.offsetHeight; lastQ = -1; onScroll(); });
   function onScroll() {
     const q = Math.min(1, Math.max(0, scrollY / Math.max(1, trackH - innerHeight)));
-    if (q === lastQ && q === 1) return;   // past the hero: its story is finished, nothing to update
+    if (q === lastQ) return;   // past the hero: its story is finished, nothing to update
     lastQ = q;
     const out = sm(q, 0, 0.18);
     [L, Rt].forEach((el) => { el.style.opacity = 1 - out; el.style.transform = `translateY(${-40 * out}px)`; el.style.pointerEvents = out > 0.5 ? "none" : ""; });
@@ -231,11 +233,11 @@
   }
   addEventListener("scroll", onScroll, { passive: true }); onScroll();
 </script>
-<script src="assets/page/motion-options.js?v=7"></script>
-<script src="assets/page/lesson-ways-options.js?v=7"></script>
-<script src="assets/page/ways-plans-flow.js?v=7"></script>
-<script src="assets/page/plans-guide-flow.js?v=4"></script>
-<script src="assets/page/guide-now-flow.js?v=5"></script>
+<script src="assets/page/motion-options.js?v=9"></script>
+<script src="assets/page/lesson-ways-options.js?v=8"></script>
+<script src="assets/page/ways-plans-flow.js?v=9"></script>
+<script src="assets/page/plans-guide-flow.js?v=6"></script>
+<script src="assets/page/guide-now-flow.js?v=7"></script>
 <script src="assets/page/site.js?v=3"></script>
 <script src="assets/attrib.js"></script>
 <script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

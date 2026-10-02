@@ -50,9 +50,9 @@
     new IntersectionObserver((es) => { vis = es[0].isIntersecting; if (vis) seen = true; }, { threshold: 0.2 }).observe(root);
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add("in")), { threshold: 0.12 });
     host.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-    (function frame(now) {
-      requestAnimationFrame(frame); if (!vis || document.hidden) { last = now; return; }
-      const dt = Math.min(0.05, (now - last) / 1000); last = now; if (seen && !reduce) grow = Math.min(1, grow + dt * 0.6); if (!reduce) angle += dt * 0.15;
+    NusMotion.loop(c, (now, dt) => {
+      if (!vis || document.hidden) return;
+      last = now; if (seen && !reduce) grow = Math.min(1, grow + dt * 0.6); if (!reduce) angle += dt * 0.15;
       const want = hot ? (L.contains(hot) ? -1 : 1) : 0; lean += (want - lean) * Math.min(1, dt * 4);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
       const h = root.getBoundingClientRect(), m = mid.getBoundingClientRect(), ox = m.left - h.left + m.width / 2 + lean * 10, oy = m.top - h.top + m.height / 2 - 20, Ro = 86;
@@ -69,7 +69,7 @@
       });
       ctx.setLineDash([]); drawOrb(ctx, ox, oy, Ro, angle);
       ctx.font = '500 10px "JetBrains Mono", monospace'; ctx.textAlign = "center"; ctx.fillStyle = "rgba(139,150,174,.9)"; ctx.fillText("NŪS", ox, oy - Ro - 16);
-    })(last);
+    });
   }
   window.NusNow = { mount };
 })();

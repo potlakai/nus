@@ -21,7 +21,7 @@
   const docTop = (el) => el.getBoundingClientRect().top + scrollY;
 
   const layer = document.createElement('canvas'); layer.className = 'nus-flow-bridge'; layer.setAttribute('aria-hidden', 'true'); document.body.append(layer);
-  const ctx = layer.getContext('2d');
+  const pen = NusDraw(layer);   // one draw call a frame (gl2d.js)
   let W = 1, H = 1, dpr = 1;
   function size() { W = innerWidth; H = innerHeight; dpr = Math.min(1.5, devicePixelRatio || 1); layer.width = Math.round(W * dpr); layer.height = Math.round(H * dpr); }
   size(); addEventListener('resize', size, { passive: true });
@@ -92,18 +92,15 @@
   function inRange(g) { const top = mode === 'b' && !g.stacked ? g.orb.y : g.low; return top < H + 60 && g.pTop > -60; }
   function draw(now) {
     frame = 0; const dt = Math.min(0.05, (now - last) / 1000); last = now;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const off = () => { if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; } layer.style.visibility = 'hidden'; };
+    const off = () => { if (drawn) { pen.begin(W, H, dpr); pen.end(); drawn = false; } layer.style.visibility = 'hidden'; };
     if (mode === 'original' || !pricing.querySelector('.sec')) return off();
     const g = geo(); if (!inRange(g)) return off();
-    ctx.clearRect(0, 0, W, H); drawn = true; layer.style.visibility = ''; g.Q = pinchPoint(g);
+    pen.begin(W, H, dpr); drawn = true; layer.style.visibility = ''; g.Q = pinchPoint(g);
     const p = progress(g), still = reduced.matches, path = PATH[mode], steps = mode === 'b' ? 56 : 40;
     for (let k = 0; k < 2; k++) { const want = focus < 0 ? 1 : focus === k ? 1.9 : 0.4; w[k] += (want - w[k]) * Math.min(1, dt * 5); }
     const damp = Math.exp(-5 * dt), rad = 110, EXT = 0.22, dim = mode === 'b' && !g.stacked ? 0.42 : 1;
     // soften where pricing's own strands begin, so the bridge runs into them with no seam
-    const band = ctx.createLinearGradient(0, g.pTop - 2, 0, g.pTop + 64); band.addColorStop(0, 'rgba(6,8,16,1)'); band.addColorStop(1, 'rgba(6,8,16,0)');
-    ctx.save(); ctx.beginPath(); ctx.rect(g.cx - 170, g.pTop - 2, 340, 66); ctx.clip(); ctx.fillStyle = band; ctx.fillRect(g.cx - 170, g.pTop - 2, 340, 66); ctx.restore();
-    ctx.lineWidth = 0.6;
+    pen.rgb(6, 8, 16); for (let i = 0; i < 33; i++) pen.rect(g.cx - 170, g.pTop - 2 + i * 2, 340, 2, 1 - (i + 0.5) / 33);   // ink fading out downwards
     for (const s of S) {
       s._o = source(g, s);   // once per strand per frame, not once per point
       // cursor parts the strands, then they spring back (same feel as the fork and pricing)
@@ -118,7 +115,8 @@
       const n = Math.max(1, Math.round(steps * end));
       // one stroke per run of equal (quantised) alpha keeps the draw calls low
       let px = 0, py = 0, run = -1;
-      const flush = () => { if (run > 0) { ctx.strokeStyle = `rgba(${col[0]},${col[1]},${col[2]},${Math.min(0.7, run / 125)})`; ctx.stroke(); } };
+      const flush = () => { if (run > 0) pen.stroke(); };
+      pen.rgb(col[0], col[1], col[2]);
       for (let j = 0; j <= n; j++) {
         // past t = 1 the strand carries on straight down over pricing's first strands, fading out
         const t = (j / n) * end, q = t <= 1 ? path(g, s, t) : { ...path(g, s, 1), depth: 0 }, bell = mode === 'b' ? Math.exp(-((q.y - s.py) ** 2) / 12800) : Math.sin(Math.PI * Math.min(1, t));
@@ -126,8 +124,8 @@
         const x = q.x + s.ox * bell, y = q.y + (mode === 'b' ? 0 : s.oy * bell);
         if (j) {
           const a = Math.round(125 * base * (1 + 0.45 * q.depth) * sm(t, 0, 0.06) * (1 - sm(t, 1, 1 + EXT)));
-          if (a !== run) { flush(); run = a; ctx.beginPath(); ctx.moveTo(px, py); }
-          ctx.lineTo(x, y);
+          if (a !== run) { flush(); run = a; if (a > 0) pen.start(px, py, Math.min(0.7, a / 125), 0.6); }
+          if (a > 0) pen.to(x, y);
         }
         px = x; py = y;
       }
@@ -135,32 +133,31 @@
       // lights run down once the bridge is complete
       if (!still && p > 0.98 && s.s < (w[s.side] > 1.2 ? 0.14 : 0.045)) {
         const t = ((now / 1000) * 0.3 + s.s * 9) % 1, q = path(g, s, t), gl = Math.sin(Math.PI * t);
-        const gr = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, 6); gr.addColorStop(0, `rgba(255,248,235,${0.85 * gl})`); gr.addColorStop(1, 'rgba(255,248,235,0)');
-        ctx.fillStyle = gr; ctx.fillRect(q.x - 6, q.y - 6, 12, 12);
+        pen.rgb(255, 248, 235); pen.glow(q.x, q.y, 0, 6, 0.85 * gl);
       }
     }
     // the drawing tip: a soft light that leads the thread while you scroll
     if (!still && p > 0.01 && p < 0.99) {
-      const q = path(g, S[0], Math.min(1, p * 1.18)), gr = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, 14);
-      gr.addColorStop(0, 'rgba(238,240,250,.7)'); gr.addColorStop(1, 'rgba(176,190,255,0)'); ctx.fillStyle = gr; ctx.fillRect(q.x - 14, q.y - 14, 28, 28);
+      const q = path(g, S[0], Math.min(1, p * 1.18));
+      pen.rgb(238, 240, 250); pen.glow(q.x, q.y, 0, 14, 0.7);
     }
     if (mode === 'c' || (mode === 'b' && g.stacked)) {
       const Q = pinchPoint(g), on = sm(p, 0.55, 0.8), pulse = still ? 1 : 0.85 + 0.15 * Math.sin(now / 520), R = 22 * on * pulse;
-      if (on > 0) {
-        const gr = ctx.createRadialGradient(Q.x, Q.y, 0, Q.x, Q.y, R); gr.addColorStop(0, `rgba(255,246,228,${0.9 * on})`); gr.addColorStop(0.25, `rgba(232,214,176,${0.35 * on})`); gr.addColorStop(1, 'rgba(176,190,255,0)');
-        ctx.fillStyle = gr; ctx.fillRect(Q.x - R, Q.y - R, R * 2, R * 2);
-      }
+      if (on > 0) { pen.rgb(255, 246, 228); pen.glow(Q.x, Q.y, 0, R, 0.9 * on, 0.25, 0.35 * on); }
     }
     // the foot line and the "or" disc sit in front: erase a soft box behind them
-    ctx.globalCompositeOperation = 'destination-out';
-    const T = g.text; for (let i = 0; i < 8; i++) { const pad = 4 + (8 - i) * 2.2; ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.roundRect(T.l - pad, T.t - pad * 0.7, T.r - T.l + pad * 2, T.b - T.t + pad * 1.4, 12); ctx.fill(); }
-    if (g.or) { ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(g.or.x, g.or.y, g.or.r + 1, 0, 6.3); ctx.fill(); }
-    ctx.globalCompositeOperation = 'source-over';
+    const T = g.text; for (let i = 0; i < 8; i++) { const pad = 4 + (8 - i) * 2.2; pen.erase(T.l - pad, T.t - pad * 0.7, T.r - T.l + pad * 2, T.b - T.t + pad * 1.4, 12, 0.2); }
+    if (g.or) { const r = g.or.r + 1; pen.erase(g.or.x - r, g.or.y - r, r * 2, r * 2, r, 1); }
+    pen.end();
     queue(true);
   }
   let idle = false;
+  const gate = NusMotion.observe([fork, pricing], active => {
+    if (active) queue();
+    else { cancelAnimationFrame(frame); frame = 0; if (drawn) { pen.begin(W, H, dpr); pen.end(); drawn = false; } layer.style.visibility = 'hidden'; }
+  });
   function queue(fromDraw) {
-    if (frame || document.hidden) return;
+    if (frame || document.hidden || !gate.active) return;
     if (fromDraw && reduced.matches) { idle = true; return; }   // draw() only gets here while in range, so no second geo()
     idle = false; frame = requestAnimationFrame(draw);
   }

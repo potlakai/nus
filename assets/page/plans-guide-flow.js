@@ -19,7 +19,7 @@
   const text = (el) => { const r = document.createRange(); r.selectNodeContents(el); const b = r.getBoundingClientRect(); return { l: b.left, r: b.right, t: b.top, b: b.bottom, cx: (b.left + b.right) / 2 }; };
 
   const layer = document.createElement('canvas'); layer.className = 'nus-flow-bridge'; layer.setAttribute('aria-hidden', 'true'); document.body.append(layer);
-  const ctx = layer.getContext('2d');
+  const pen = NusDraw(layer);   // one draw call a frame (gl2d.js)
   let W = 1, H = 1, dpr = 1;
   function size() { W = innerWidth; H = innerHeight; dpr = Math.min(1.5, devicePixelRatio || 1); layer.width = Math.round(W * dpr); layer.height = Math.round(H * dpr); }
   size(); addEventListener('resize', size, { passive: true });
@@ -64,7 +64,7 @@
   function drawA(g, p, dt, now, still) {
     const want = [0, 1, 2].map((k) => (hotCol < 0 && hotTab < 0 ? 1 : hotCol === k || (hotTab === 0 && k === 0) || (hotTab === 1 && k > 0) ? 1.9 : 0.4));
     w.forEach((v, k) => (w[k] += (want[k] - v) * Math.min(1, dt * 5)));
-    const damp = Math.exp(-5 * dt), rad = 110; ctx.lineWidth = 0.6;
+    const damp = Math.exp(-5 * dt), rad = 110;
     for (const s of S) {
       if (!still) {
         const m = pathA(g, s, 0.5), dx = m.x + s.ox - ptr.x, dy = m.y + s.oy - ptr.y, d2 = dx * dx + dy * dy;
@@ -73,14 +73,14 @@
       }
       const end = clamp(p * 1.18 - s.s * 0.18); if (end <= 0) continue;
       const col = s.col === 2 ? WARM : COOL, a = (0.05 + 0.15 * (1 - Math.abs(s.sp) * 0.6)) * Math.min(1, w[s.col]) * (0.6 + 0.4 * Math.min(2, w[s.col]));
-      ctx.strokeStyle = `rgba(${col[0]},${col[1]},${col[2]},${Math.min(0.7, a)})`; ctx.beginPath();
+      pen.rgb(col[0], col[1], col[2]);
       const n = Math.max(1, Math.round(40 * end));
-      for (let j = 0; j <= n; j++) { const t = (j / n) * end, q = pathA(g, s, t), bell = Math.sin(Math.PI * t); j ? ctx.lineTo(q.x + s.ox * bell, q.y + s.oy * bell) : ctx.moveTo(q.x, q.y); }
-      ctx.stroke();
+      for (let j = 0; j <= n; j++) { const t = (j / n) * end, q = pathA(g, s, t), bell = Math.sin(Math.PI * t); j ? pen.to(q.x + s.ox * bell, q.y + s.oy * bell) : pen.start(q.x, q.y, Math.min(0.7, a), 0.6); }
+      pen.stroke();
       if (!still && p > 0.98 && s.s < (w[s.col] > 1.2 ? 0.14 : 0.045)) light(pathA(g, s, ((now / 1000) * 0.3 + s.s * 9) % 1), ((now / 1000) * 0.3 + s.s * 9) % 1);
     }
     const Q = bead(g), on = sm(p, 0.7, 0.95), R = 20 * on * (still ? 1 : 0.85 + 0.15 * Math.sin(now / 520));
-    if (on > 0) { const gr = ctx.createRadialGradient(Q.x, Q.y, 0, Q.x, Q.y, R); gr.addColorStop(0, `rgba(255,246,228,${0.9 * on})`); gr.addColorStop(0.25, `rgba(232,214,176,${0.35 * on})`); gr.addColorStop(1, 'rgba(176,190,255,0)'); ctx.fillStyle = gr; ctx.fillRect(Q.x - R, Q.y - R, R * 2, R * 2); }
+    if (on > 0) { pen.rgb(255, 246, 228); pen.glow(Q.x, Q.y, 0, R, 0.9 * on, 0.25, 0.35 * on); }
     tip(g, p, still, pathA(g, S[0], Math.min(1, p * 1.18)));
   }
 
@@ -95,19 +95,19 @@
   // a few hairlines along the path; near the cursor they part like hair
   function lanes(pts, upto, rgb, alpha, from = 0, fade = null) {
     for (let lane = 0; lane < 5; lane++) {
-      const off = (lane - 2) * 1.5; ctx.beginPath(); let started = false;
+      const off = (lane - 2) * 1.5; let started = false; pen.rgb(rgb[0], rgb[1], rgb[2]);
       for (let i = 0; i < pts.length; i++) {
         const q = pts[i]; if (q.l < from) continue; if (q.l > upto) break;
         const nb = pts[Math.min(pts.length - 1, i + 1)], pb = pts[Math.max(0, i - 1)], tx = nb.x - pb.x, ty = nb.y - pb.y, tl = Math.hypot(tx, ty) || 1, nx = -ty / tl, ny = tx / tl;
         let x = q.x + nx * off, y = q.y + ny * off; const dx = x - soft.x, dy = y - soft.y, d = Math.hypot(dx, dy);
         if (d < 80 && d > 0.5) { const f = (1 - d / 80) ** 2 * (10 + Math.abs(off) * 6); x += (dx / d) * f; y += (dy / d) * f; }
-        started ? ctx.lineTo(x, y) : (ctx.moveTo(x, y), (started = true));
+        started ? pen.to(x, y) : (pen.start(x, y, alpha * (lane === 2 ? 1 : 0.45) * (fade ?? 1), lane === 2 ? 0.9 : 0.6), (started = true));
       }
-      ctx.lineWidth = lane === 2 ? 0.9 : 0.6; ctx.strokeStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${alpha * (lane === 2 ? 1 : 0.45) * (fade ?? 1)})`; ctx.stroke();
+      if (started) pen.stroke();
     }
   }
-  function light(q, t, r = 6) { const gl = Math.sin(Math.PI * t), gr = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, r); gr.addColorStop(0, `rgba(255,248,235,${0.85 * gl})`); gr.addColorStop(1, 'rgba(255,248,235,0)'); ctx.fillStyle = gr; ctx.fillRect(q.x - r, q.y - r, r * 2, r * 2); }
-  function tip(g, p, still, q) { if (still || p < 0.01 || p > 0.99) return; const gr = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, 14); gr.addColorStop(0, 'rgba(238,240,250,.7)'); gr.addColorStop(1, 'rgba(176,190,255,0)'); ctx.fillStyle = gr; ctx.fillRect(q.x - 14, q.y - 14, 28, 28); }
+  function light(q, t, r = 6) { pen.rgb(255, 248, 235); pen.glow(q.x, q.y, 0, r, 0.85 * Math.sin(Math.PI * t)); }
+  function tip(g, p, still, q) { if (still || p < 0.01 || p > 0.99) return; pen.rgb(238, 240, 250); pen.glow(q.x, q.y, 0, 14, 0.7); }
 
   /* ---------- B · your key ---------- */
   function pathB(g) {
@@ -117,12 +117,18 @@
   function drawB(g, p, dt, now, still) {
     const under = sm(p, 0, 0.16), f = sm(p, 0.12, 1), pts = pathB(g), hot = hotTab >= 0 || hotCol >= 0 ? 1.6 : 1;
     // the key phrase gets a brass underline first
-    if (under > 0) { ctx.lineWidth = 1; ctx.strokeStyle = `rgba(${BRASS},${0.75 * under})`; ctx.beginPath(); ctx.moveTo(g.keyB.l, g.keyB.b + 3); ctx.lineTo(g.keyB.l + g.keyB.w * under, g.keyB.b + 3); ctx.stroke(); }
+    if (under > 0) { pen.rgb(BRASS[0], BRASS[1], BRASS[2]); pen.line(g.keyB.l, g.keyB.b + 3, g.keyB.l + g.keyB.w * under, g.keyB.b + 3, 0.75 * under, 1); }
     if (f > 0) lanes(pts, f * pts.L, BRASS, Math.min(0.8, 0.38 * hot));
     tip(g, f, still, at(pts, f * pts.L));
     if (!still && p > 0.98) for (let k = 0; k < 2; k++) { const t = ((now / 1000) * 0.35 + k * 0.5) % 1; light(at(pts, t * pts.L), t, 7); }
     // arrival: the app switcher takes a brass rim
-    const arr = sm(p, 0.9, 1); if (arr > 0) { const s = g.seg; ctx.save(); ctx.shadowColor = `rgba(${BRASS},${0.7 * arr})`; ctx.shadowBlur = 18; ctx.lineWidth = 1; ctx.strokeStyle = `rgba(${BRASS},${0.55 * arr * (still ? 1 : 0.8 + 0.2 * Math.sin(now / 600))})`; ctx.beginPath(); ctx.roundRect(s.l, s.t, s.w, s.h, s.h / 2); ctx.stroke(); ctx.restore(); }
+    // (a plain outline: this option was not the one picked, and its soft shadow has no cheap equivalent)
+    const arr = sm(p, 0.9, 1); if (arr > 0) { const s = g.seg, r = s.h / 2, a = 0.55 * arr * (still ? 1 : 0.8 + 0.2 * Math.sin(now / 600)); pen.rgb(BRASS[0], BRASS[1], BRASS[2]);
+      pen.start(s.l + r, s.t, a, 1); pen.to(s.r - r, s.t);
+      for (let k = 1; k <= 16; k++) { const th = -Math.PI / 2 + Math.PI * k / 16; pen.to(s.r - r + Math.cos(th) * r, s.cy + Math.sin(th) * r); }
+      pen.to(s.l + r, s.b);
+      for (let k = 1; k <= 16; k++) { const th = Math.PI / 2 + Math.PI * k / 16; pen.to(s.l + r + Math.cos(th) * r, s.cy + Math.sin(th) * r); }
+      pen.stroke(); }
   }
 
   /* ---------- C · the thread becomes the steps ---------- */
@@ -145,39 +151,39 @@
       const onL = railStart + (n[g.on].cy - n[0].t), op = g.faOp;
       lanes(pts, Math.min(upto, onL), BRASS, 0.6 * op, railStart - 1);
       lanes(pts, upto, COOL, 0.22 * op, Math.min(upto, onL) - 1);
-      if (upto >= onL) { const c = n[g.on], R = c.w / 2 + 7, gr = ctx.createRadialGradient(c.cx, c.cy, R * 0.55, c.cx, c.cy, R + 8); gr.addColorStop(0, `rgba(${BRASS},${0.5 * op})`); gr.addColorStop(1, `rgba(${BRASS},0)`); ctx.fillStyle = gr; ctx.fillRect(c.cx - R - 8, c.cy - R - 8, (R + 8) * 2, (R + 8) * 2); }
+      if (upto >= onL) { const c = n[g.on], R = c.w / 2 + 7; pen.rgb(BRASS[0], BRASS[1], BRASS[2]); pen.glow(c.cx, c.cy, R * 0.55, R + 8, 0.5 * op); }
     }
     tip(g, p, still, at(pts, upto));
     if (!still && p > 0.98) { const t = ((now / 1000) * 0.22) % 1; light(at(pts, t * pts.L), t, 7); }
     // numbers sit on the rail like beads
-    ctx.globalCompositeOperation = 'destination-out'; ctx.fillStyle = '#000';
-    n.forEach((c) => { ctx.beginPath(); ctx.arc(c.cx, c.cy, c.w / 2 + 1, 0, 6.3); ctx.fill(); });
-    ctx.globalCompositeOperation = 'source-over';
+    n.forEach((c) => { const r = c.w / 2 + 1; pen.erase(c.cx - r, c.cy - r, r * 2, r * 2, r, 1); });
   }
 
   // text in front: erase a soft box behind each line a thread passes
-  function clear(T) { if (!T) return; for (let i = 0; i < 8; i++) { const pad = 4 + (8 - i) * 2.2; ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.roundRect(T.l - pad, T.t - pad * 0.7, T.r - T.l + pad * 2, T.b - T.t + pad * 1.4, 12); ctx.fill(); } }
+  function clear(T) { if (!T) return; for (let i = 0; i < 8; i++) { const pad = 4 + (8 - i) * 2.2; pen.erase(T.l - pad, T.t - pad * 0.7, T.r - T.l + pad * 2, T.b - T.t + pad * 1.4, 12, 0.2); } }
 
   let frame = 0, last = performance.now(), idle = false, drawn = false;
   const inRange = (g) => g.low < H + 80 && Math.max(g.nums[g.nums.length - 1].b, g.seg.b) > -80;
   function draw(now) {
     frame = 0; const dt = Math.min(0.05, (now - last) / 1000); last = now;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     // clear only when something was drawn, so scrolling elsewhere never touches this full-screen canvas
-    const off = () => { if (drawn) { ctx.clearRect(0, 0, W, H); drawn = false; } layer.style.visibility = 'hidden'; };
+    const off = () => { if (drawn) { pen.begin(W, H, dpr); pen.end(); drawn = false; } layer.style.visibility = 'hidden'; };
     if (mode === 'original') return off();
     const g = geo(); if (!g || !inRange(g)) { idle = true; return off(); }
-    ctx.clearRect(0, 0, W, H); drawn = true; layer.style.visibility = ''; g.bead = bead(g);
+    pen.begin(W, H, dpr); drawn = true; layer.style.visibility = ''; g.bead = bead(g);
     soft.x += (ptr.x - soft.x) * Math.min(1, dt * 10); soft.y += (ptr.y - soft.y) * Math.min(1, dt * 10);
     const p = progress(g), still = reduced.matches;
     if (mode === 'a') drawA(g, p, dt, now, still); else if (mode === 'b') drawB(g, p, dt, now, still); else drawC(g, p, dt, now, still);
-    ctx.globalCompositeOperation = 'destination-out';
     clear(g.keys); if (mode === 'b') { clear(g.kicker); clear(g.h2); clear(g.sub); }
-    ctx.globalCompositeOperation = 'source-over';
+    pen.end();
     if (still) { idle = true; return; }
     idle = false; queue();
   }
-  function queue() { if (!frame && !document.hidden) frame = requestAnimationFrame(draw); }
+  const gate = NusMotion.observe([plans, guide], active => {
+    if (active) queue();
+    else { cancelAnimationFrame(frame); frame = 0; if (drawn) { pen.begin(W, H, dpr); pen.end(); drawn = false; } layer.style.visibility = 'hidden'; }
+  });
+  function queue() { if (!frame && !document.hidden && gate.active) frame = requestAnimationFrame(draw); }
   addEventListener('scroll', queue, { passive: true }); addEventListener('resize', queue, { passive: true });
   document.addEventListener('visibilitychange', () => { if (document.hidden) { cancelAnimationFrame(frame); frame = 0; } else queue(); });
   reduced.addEventListener('change', queue);
