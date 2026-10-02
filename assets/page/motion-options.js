@@ -25,12 +25,11 @@
   canvas.className = 'nus-motion-bridge';
   canvas.setAttribute('aria-hidden', 'true');
   document.body.append(canvas);
-  const ctx = canvas.getContext('2d');
-  // Only the brass sphere's 320 points, using the hero's Fibonacci geometry.
-  // This keeps fast scrolls and direct lesson links independent of a canvas cache.
-  const crop = document.createElement('canvas');
-  const cropCtx = crop.getContext('2d');
-  let W, H, dpr, end, from, to, headDoc, stageDoc, targetDoc, cropSide, pending = 0;
+  const pen = NusDraw(canvas);   // one draw call a frame (gl2d.js)
+  let W, H, dpr, end, from, to, headDoc, stageDoc, sheetDoc, targetDoc, cropSide, pending = 0;
+  // styles are only written when they change, so a settled page is never touched by scrolling
+  const written = new Map();
+  const put = (el, prop, value) => { let was = written.get(el); if (!was) written.set(el, was = {}); if (was[prop] !== value) el.style[prop] = was[prop] = value; };
   let interacting = false, drawn = false;
 
   // Shadow DOM keeps the review controls out of the approved page's styles.
@@ -61,10 +60,10 @@
   // the hero orb stops drawing while it is faded out; it sits behind the lesson in its most expensive pose
   const orbActive = on => { if (typeof heroOrb !== 'undefined' && heroOrb.setActive) heroOrb.setActive(on); };
   function reset() {
-    orbActive(true);
+    orbActive(true); written.clear();
     [orb,caps,head,sheet,knot].forEach(el => { el.style.opacity=''; el.style.transform=''; });
     hero.style.filter = '';
-    ctx.clearRect(0,0,canvas.width,canvas.height); drawn = false;
+    if (drawn) { pen.begin(W,H,dpr); pen.end(); drawn = false; }
   }
   function choose() {
     reset();
@@ -97,52 +96,50 @@
     end=track.offsetTop+track.offsetHeight-H;
     from=end*.88;
     headDoc=layoutTop(head);stageDoc=layoutTop(stage);
+    sheetDoc={x:stage.getBoundingClientRect().left+sheet.offsetLeft,y:layoutTop(sheet),w:sheet.offsetWidth,h:sheet.offsetHeight};
     const r=knot.getBoundingClientRect();
     targetDoc={x:r.left+r.width/2,y:layoutTop(knot)+knot.offsetHeight/2,r:knot.offsetWidth*.37};
     to=Math.max(from+H*.8,targetDoc.y-H*.73);
     cropSide=(4+Math.min(W,H)*.075)*2.2+24;
-    crop.width=crop.height=Math.ceil(cropSide*2*dpr);
   }
-  function sphere(t) {
-    cropCtx.clearRect(0,0,crop.width,crop.height);
-    cropCtx.setTransform(dpr,0,0,dpr,0,0);
-    const r=4+Math.min(W,H)*.075, cx=cropSide, cy=cropSide;
-    const glow=cropCtx.createRadialGradient(cx,cy,0,cx,cy,cropSide);
-    glow.addColorStop(0,'rgba(209,167,95,.65)');glow.addColorStop(1,'rgba(209,167,95,0)');
-    cropCtx.fillStyle=glow;cropCtx.fillRect(0,0,cropSide*2,cropSide*2);
-    cropCtx.fillStyle='rgb(214,172,102)';
+  function sphere(t,cx,cy,scale,a) {
+    const r=(4+Math.min(W,H)*.075)*scale, dot=1.4*scale;
+    pen.rgb(209,167,95); pen.glow(cx,cy,0,cropSide*scale,.65*a);
+    pen.rgb(214,172,102);
     for(let j=0;j<320;j++) {
       const y=1-j/319*2, rad=Math.sqrt(1-y*y), angle=j*Math.PI*(3-Math.sqrt(5))-1.2-t*.6;
       const x=Math.cos(angle)*rad, z=Math.sin(angle)*rad, depth=(z+1)/2;
-      cropCtx.globalAlpha=.18+.82*depth*depth;
-      cropCtx.fillRect(cx+x*r-.7,cy+y*r-.7,1.4,1.4);
+      pen.rect(cx+x*r-dot/2,cy+y*r-dot/2,dot,dot,(.18+.82*depth*depth)*a);
     }
-    cropCtx.globalAlpha=1;
-    cropCtx.setTransform(1,0,0,1,0,0);
   }
   function cubic(a,b,c,d,t) { const u=1-t;return {x:u*u*u*a.x+3*u*u*t*b.x+3*u*t*t*c.x+t*t*t*d.x,y:u*u*u*a.y+3*u*u*t*b.y+3*u*t*t*c.y+t*t*t*d.y}; }
   function paint() {
     pending=0;
-    ctx.setTransform(dpr,0,0,dpr,0,0); if(drawn){ctx.clearRect(0,0,W,H);drawn=false;}   // a blank canvas is left alone
     if(mode==='original'||reduced.matches) { reset(); canvas.style.visibility='hidden'; return; }
     const y=scrollY, p=clamp((y-from)/(to-from));
     const enter=1-smooth((headDoc-y)/H,.5,.96);
     const sheetIn=1-smooth((stageDoc-y)/H,.30,.95);
     const visibleSheet=interacting?1:sheetIn;
-    head.style.opacity=String(enter);
-    head.style.transform=`translate3d(0,${(1-enter)*(mode==='c'?64:28)}px,0)`;
-    sheet.style.opacity=String(visibleSheet);
-    sheet.style.transform=`translate3d(0,${(1-visibleSheet)*(mode==='c'?80:38)}px,0) scale(${1-(1-visibleSheet)*(mode==='c'?.035:.018)})`;
+    put(head,'opacity',String(enter));
+    put(head,'transform',`translate3d(0,${(1-enter)*(mode==='c'?64:28)}px,0)`);
+    // The window itself stays still and fully drawn, and a veil of page colour on this canvas lifts off it.
+    // Fading or sliding the real window made the browser redraw the whole spreadsheet and its soft shadow on every scroll frame.
+    let veil=0;
+    if(mode==='c') { put(sheet,'opacity',String(visibleSheet)); put(sheet,'transform',`translate3d(0,${(1-visibleSheet)*80}px,0) scale(${1-(1-visibleSheet)*.035})`); }
+    else { put(sheet,'opacity','1'); put(sheet,'transform','none'); veil=1-visibleSheet; }
     const fade=smooth(p,0,.24);
     const orbOpacity=mode==='a'?1-fade:1-smooth(p,.06,.34);
-    orb.style.opacity=String(orbOpacity); orbActive(orbOpacity>.004);
-    caps.style.opacity=String(1-smooth(p,.04,.3));
+    put(orb,'opacity',String(orbOpacity)); orbActive(orbOpacity>.004);
+    put(caps,'opacity',String(1-smooth(p,.04,.3)));
     hero.style.filter=mode==='c'?`blur(${smooth(p,0,.38)*3}px)`:'';
     const kr=1-smooth(p,.76,.98);
-    knot.style.opacity=interacting?'':String(mode==='a'?1-kr:sheetIn);
+    put(knot,'opacity',interacting?'':String(mode==='a'?1-kr:sheetIn));
+    const veilTop=sheetDoc.y-y, veiled=veil>.002&&veilTop<H+60&&veilTop+sheetDoc.h>-90, sphereOn=!(y<from||y>to+H*.25);
     // an idle full-screen overlay still costs compositing on 2x screens, so it is hidden when blank
-    if(y<from||y>to+H*.25) { canvas.style.visibility='hidden'; return; }
-    canvas.style.visibility=''; drawn=true;
+    if(!sphereOn&&!veiled) { if(drawn){pen.begin(W,H,dpr);pen.end();drawn=false;} canvas.style.visibility='hidden'; return; }   // a blank canvas is left alone
+    canvas.style.visibility=''; drawn=true; pen.begin(W,H,dpr);
+    if(veiled) { pen.rgb(6,8,16); pen.rect(sheetDoc.x-44,veilTop-26,sheetDoc.w+88,sheetDoc.h+102,veil); }
+    if(!sphereOn) { pen.end(); return; }
     const t=smooth(p,0,1), start={x:W*.19,y:H*.6+(mode==='b'?Math.min(0,end-y):0)};
     const dest={x:targetDoc.x,y:targetDoc.y-y};
     // The route stays at the right margin of the lesson copy.
@@ -155,30 +152,26 @@
     }
     const a=smooth(p,0,.12)*(1-smooth(p,.84,1));
     if(mode==='a') {
-      sphere(t);
       const initialR=4+Math.min(W,H)*.075;
       const radius=W<640?lerp(lerp(initialR,18,smooth(p,0,.22)),targetDoc.r,smooth(p,.84,1)):lerp(initialR,targetDoc.r,t);
-      const scale=radius/initialR;
-      ctx.globalAlpha=a;
-      ctx.drawImage(crop,pos.x-cropSide*scale,pos.y-cropSide*scale,cropSide*2*scale,cropSide*2*scale);
-      ctx.globalAlpha=1;
+      sphere(t,pos.x,pos.y,radius/initialR,a);
     }
     if(mode==='b') {
       // A thin combed bundle, drawn only as far as the scroll has travelled.
+      pen.rgb(209,167,95);
       for(let strand=0;strand<7;strand++) {
-        ctx.beginPath(); const spread=(strand-3)*1.7;
+        const spread=(strand-3)*1.7;
         for(let j=0;j<=64;j++) {
           const s=t*j/64;
           const v=cubic(start,{x:bend.x+spread,y:start.y+H*.2},{x:dest.x+spread,y:dest.y-H*.4},dest,s);
-          if(j===0)ctx.moveTo(v.x,v.y);else ctx.lineTo(v.x,v.y);
+          if(j===0)pen.start(v.x,v.y,a*(strand===3?.55:.16),.65);else pen.to(v.x,v.y);
         }
-        ctx.lineWidth=.65;ctx.strokeStyle=`rgba(209,167,95,${a*(strand===3?.55:.16)})`;ctx.stroke();
+        pen.stroke();
       }
       const tip=cubic(start,{x:bend.x,y:start.y+H*.2},{x:dest.x,y:dest.y-H*.4},dest,t);
-      const glow=ctx.createRadialGradient(tip.x,tip.y,0,tip.x,tip.y,14);
-      glow.addColorStop(0,`rgba(241,236,223,${a*.8})`);glow.addColorStop(1,'rgba(209,167,95,0)');
-      ctx.fillStyle=glow;ctx.fillRect(tip.x-14,tip.y-14,28,28);
+      pen.rgb(241,236,223); pen.glow(tip.x,tip.y,0,14,a*.8);
     }
+    pen.end();
   }
   const gate = NusMotion.observe([track, document.querySelector('#next')], () => {
     // Paint terminal values once on exit, including after a fast anchor jump.
