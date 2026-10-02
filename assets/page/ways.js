@@ -10,7 +10,7 @@
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
   const REL = "https://github.com/potlakai/nus-desktop/releases";
   const L = {
-    companion: `${REL}/download/companion-v0.1.1/Nus-Companion-Setup.exe`,
+    companion: `${REL}/download/companion-v0.1.2/Nus-Companion-Setup.exe`,
     win: `${REL}/latest/download/Nus-Setup.exe`, macArm: `${REL}/latest/download/Nus-arm64.dmg`, macIntel: `${REL}/latest/download/Nus-x64.dmg`,
   };
 
@@ -25,12 +25,12 @@
       <ul>
         <li><span><b>Say it, it acts.</b> <span class="d">“Open Notepad, type hello.” Voice actions run on Jev.</span></span></li>
         <li><span><b>Point and ask.</b> <span class="d">Press Ctrl+Shift+T on anything. The answer shows up right there.</span></span></li>
-        <li><span><b>Knows your stuff.</b> <span class="d">Add folders of notes, docs and your calendar. Its map connects them with your routines and chats.</span></span></li>
+        <li><span><b>Knows your stuff.</b> <span class="d">Add folders of notes, docs and your calendar. It answers from them when they help.</span></span></li>
       </ul>
       <div class="bottom">
         <div class="chips"><span class="chip hi">Free</span><span class="chip">Windows 10 and 11</span><span class="chip">Your own AI keys</span></div>
         <div class="acts"><a class="btn solid" href="${L.companion}">Download for Windows</a><a class="link" href="#setup" data-guide="companion">Setup guide</a></div>
-        <div class="small">Version 0.1.1${isMac ? ". Windows only for now." : ""}</div>
+        <div class="small">Version 0.1.2${isMac ? ". Windows only for now." : ""}</div>
       </div>`;
   }
   function studentsCopy() {
@@ -51,7 +51,7 @@
       </div>`;
   }
   const VIEWS = [["Today", "What matters now", "assets/app-today.webp"], ["Review", "Check what it read", "assets/app-review.webp"], ["Map", "How it connects", "assets/app-map.webp"]];
-  const SCENES = [["Say it", "Voice actions", 5.6], ["Point and ask", "Ctrl+Shift+T", 5.4], ["Your map", "Your notes, connected", 6.2]];
+  const SCENES = [["Say it", "Voice actions", 5.6], ["Point and ask", "Ctrl+Shift+T", 5.4], ["Your folders", "It knows them", 6.2]];
   const tabRow = (items, label, cls) => `<div class="tabs ${cls}" role="tablist" aria-label="${label}">${items.map((t, i) => `<button type="button" role="tab" aria-selected="${!i}" class="${i ? "" : "on"}">${t[0]}<small>${t[1]}</small><i></i></button>`).join("")}</div>`;
   function studentsMedia() {
     return `<div class="appwin"><div class="tb"><div class="l"><i class="r"></i><i class="y"></i><i class="g"></i></div><span>NŪS</span></div>
@@ -67,7 +67,7 @@
       <div class="gl pill"><span class="dot"></span><span class="words"></span></div>
       <div class="gl keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>T</kbd></div>
       <div class="gl bub b1"><div class="k">Explain</div>The link points to a file that moved. Relink it from Insert, then Link.</div>
-      <div class="gl mapmini"><div class="mh">Your map</div><svg viewBox="0 0 300 150" aria-hidden="true"><line class="ed" style="--i:0" x1="150" y1="76" x2="52" y2="34"/><line class="ed" style="--i:1" x1="150" y1="76" x2="60" y2="118"/><line class="ed" style="--i:2" x1="150" y1="76" x2="248" y2="32"/><line class="ed" style="--i:3" x1="150" y1="76" x2="252" y2="116"/><line class="ed" style="--i:4" x1="150" y1="76" x2="150" y2="18"/><circle class="hub" cx="150" cy="76" r="13"/><g class="nd folder" style="--i:0"><circle cx="52" cy="34" r="5"/><text x="43" y="37.5" text-anchor="end">Class notes</text></g><g class="nd folder" style="--i:1"><circle cx="60" cy="118" r="5"/><text x="51" y="121.5" text-anchor="end">Resume docs</text></g><g class="nd routine" style="--i:2"><circle cx="248" cy="32" r="5"/><text x="257" y="35.5" text-anchor="start">Morning setup</text></g><g class="nd conversation" style="--i:3"><circle cx="252" cy="116" r="5"/><text x="261" y="119.5" text-anchor="start">Tuesday call</text></g><g class="nd folder" style="--i:4"><circle cx="150" cy="18" r="5"/><text x="159" y="21.5" text-anchor="start">Fall calendar</text></g></svg></div>
+      <div class="gl foldmini"><div class="mh">Your folders</div><div class="fr" style="--i:0"><i class="ic"></i><b>Class notes</b><i class="tg"></i></div><div class="fr" style="--i:1"><i class="ic"></i><b>Resume docs</b><i class="tg"></i></div><div class="fr" style="--i:2"><i class="ic"></i><b>Fall calendar</b><i class="tg"></i></div></div>
       <div class="dknot"><canvas></canvas></div></div>
       ${tabRow(SCENES, "What the Companion does", "cool")}`;
   }
@@ -92,7 +92,7 @@
     const desk = root.querySelector(".desk"), q = (s) => desk.querySelector(s);
     const knot = window.NusKnot3D ? NusKnot3D.mount(q(".dknot canvas"), { ground: false, scale: 0.3, focusGate: false }) : null;
     const st = (s) => knot && knot.setState && knot.setState(s);
-    const pill = q(".pill"), words = q(".words"), note = q(".note"), txt = q(".note .txt"), keys = q(".keys"), b1 = q(".b1"), b2 = q(".mapmini"), ring = q(".ring"), cur = q(".cursor"), err = q(".err");
+    const pill = q(".pill"), words = q(".words"), note = q(".note"), txt = q(".note .txt"), keys = q(".keys"), b1 = q(".b1"), b2 = q(".foldmini"), ring = q(".ring"), cur = q(".cursor"), err = q(".err");
     const btns = [...root.querySelectorAll(".tabs button")];
     let visible = false, run = 0; new IntersectionObserver((es) => (visible = es[0].isIntersecting), { threshold: 0.3 }).observe(desk);
     const on = (el, v) => el.classList.toggle("on", v);

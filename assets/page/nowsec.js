@@ -7,7 +7,7 @@
   const NOW = [
     { t: "Say it, it acts", d: "Voice actions with Jev. It picks each action in about a quarter second.", tag: "companion" },
     { t: "Point at anything", d: "Ctrl+Shift+T. The thread runs to the spot and the answer lands there.", tag: "both" },
-    { t: "Your folders, mapped", d: "Add notes and docs. The Map connects them with your routines and chats.", tag: "companion" },
+    { t: "Knows your stuff", d: "Add notes and docs. It answers from them when they help.", tag: "companion" },
     { t: "Routines", d: "Say a few actions in a row, keep them, then say “run my routine”.", tag: "companion" },
     { t: "Syllabus in, semester mapped", d: "It reads your syllabus. Nothing is saved until you check it.", tag: "students" },
     { t: "Today, Review, Map", d: "What matters now, what it read, and how it all connects.", tag: "students" },

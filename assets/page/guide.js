@@ -1,7 +1,7 @@
 /* Setup, option A "Follow along" (picked 2026-09-30). Companion / Students tabs; numbered steps on the left
    auto-advance and a screen on the right shows each step where it happens. The Companion guide shows it as
-   your own Jarvis: keys, your folders, voice actions, pointing with the Knot's real thread, and the map.
-   Facts: nus-desktop-day1 Companion window (Map, Saved, Folders, Settings; Your keys rows; folders take PDF,
+   your own Jarvis: keys, your folders, voice actions, and pointing with the Knot's real thread.
+   Facts: nus-desktop-day1 Companion window (Saved, Folders, Settings; Your keys rows; folders take PDF,
    Word, text, Markdown and calendar files), hotkeys, the live site's install notes, and the student app's
    Settings cards (renderer/index.html). Usage: NusGuide.mount(el)  (el is an empty .guide element) */
 (function () {
@@ -19,12 +19,11 @@
   };
   const GUIDES = {
     companion: [
-      { t: "Download and install", d: "Get NŪS Companion 0.1.1 for Windows. If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>. It isn’t code-signed yet.", scene: "smart", dur: 6 },
+      { t: "Download and install", d: "Get NŪS Companion 0.1.2 for Windows. If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>. It isn’t code-signed yet.", scene: "smart", dur: 6 },
       { t: "Add your keys", d: "In the Companion window, under <b>Your keys</b>: TypeSafe for voice actions, Gemini for answers, Anthropic for pointing. Have Claude Code? Skip Anthropic.", scene: "keys", dur: 8 },
       { t: "Give it your stuff", d: "This is what makes it your Jarvis. Under <b>Folders</b>, add your notes, docs and calendar: PDF, Word, text, Markdown and calendar files. It answers from them when they help.", scene: "folders", dur: 7 },
       { t: "Say it, it acts", d: `Hold ${K("Ctrl", "Alt", "Space")} and say “open Notepad, type hello”. Jev does it while you’re still talking. Say a few in a row and it offers to save them as a routine.`, scene: "voice", dur: 7.5 },
       { t: "Point at anything", d: `Press ${K("Ctrl", "Shift", "T")} on a button, an error or a slide. The Knot’s thread runs to that exact spot, and the answer lands right there.`, scene: "point", dur: 7 },
-      { t: "Watch your map grow", d: "The <b>Map</b> connects your folders, routines and conversations around the Knot. Drag it, zoom it, open any node.", scene: "map", dur: 7 },
     ],
     students: [
       { t: "Download", d: `The Windows installer, or the ${APPLE}Mac beta for Apple silicon or Intel. On a Mac, if it won’t open: System Settings, Privacy &amp; Security, <b>Open Anyway</b>.`, scene: "dl", dur: 6 },

@@ -6,7 +6,7 @@
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
   const sm = (x, a, b) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
   const REL = "https://github.com/potlakai/nus-desktop/releases";
-  const L = { companion: `${REL}/download/companion-v0.1.1/Nus-Companion-Setup.exe`, win: `${REL}/latest/download/Nus-Setup.exe`, macArm: `${REL}/latest/download/Nus-arm64.dmg`, macIntel: `${REL}/latest/download/Nus-x64.dmg`,
+  const L = { companion: `${REL}/download/companion-v0.1.2/Nus-Companion-Setup.exe`, win: `${REL}/latest/download/Nus-Setup.exe`, macArm: `${REL}/latest/download/Nus-arm64.dmg`, macIntel: `${REL}/latest/download/Nus-x64.dmg`,
     pro: "https://potlakai.github.io/nus/pro.html", privacy: "https://potlakai.github.io/nus/privacy.html", feedback: "feedback.html", repo: "https://github.com/potlakai/nus-desktop", releases: REL };
   const APPLE = '<svg class="os" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.64c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.3-.88-2.29-3.52zM14.2 6.18c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.08 1.96-.49 2.56-1.22z"/></svg>';
   const buttons = () => `<div class="btns"><a class="cbtn solid" href="${L.companion}">Get NŪS Companion</a>${isMac
@@ -49,7 +49,7 @@
   }
   function footer(root) {
     root.innerHTML = `<div class="top">
-      <div class="brand"><b>NŪS</b><p>A more capable <em>you.</em> Personal AI that does the busywork and shows you the rest.</p><div class="status mono"><span>● Companion 0.1.1</span><span>Students v0.2.6 · Mac beta</span></div></div>
+      <div class="brand"><b>NŪS</b><p>A more capable <em>you.</em> Personal AI that does the busywork and shows you the rest.</p><div class="status mono"><span>● Companion 0.1.2</span><span>Students v0.2.6 · Mac beta</span></div></div>
       <div><h4 class="mono">Get it</h4><ul><li><a href="${L.companion}">NŪS Companion</a></li><li><a href="${L.win}">NŪS for Students</a></li><li><a href="${L.macArm}">${APPLE}Mac beta</a></li><li><a href="${L.pro}">Pro</a></li></ul></div>
       <div><h4 class="mono">Set up</h4><ul><li><a href="#setup" data-guide="companion">Companion setup</a></li><li><a href="#setup" data-guide="students">Students setup</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#faq">Questions</a></li></ul></div>
       <div><h4 class="mono">Open</h4><ul><li><a href="${L.repo}">GitHub</a></li><li><a href="${L.releases}">All releases</a></li><li><a href="${L.privacy}">Privacy</a></li></ul></div>
