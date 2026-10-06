@@ -47,6 +47,7 @@
   <h2>1. The Nūs app</h2>
   <div class="card">
     <p><b>Your semester content stays local.</b> Courses, deadlines, tasks, imports, chats, and Companion transcripts live in the Nūs data folder on your computer. Nūs accounts store an email address, user identifier, and subscription status in Supabase. Stripe processes payment details when you choose to buy Pro; Nūs does not receive or store your full card number. Local crash logs may record technical diagnostics such as the app version and error stack, but are designed not to include imported content.</p>
+    <p><b>Anonymous usage stats.</b> From desktop 0.2.7 and Companion 0.1.3, the apps send anonymous usage stats so we can see which features get used: event names such as "app opened", "first import", "first question", the app version, your operating system, and a random install id that is created on your computer and is never tied to your email or account. They never include your coursework, your questions, what you type, your keys, or transcripts. There is one optional one-click question on first launch ("Where did you hear about Nūs?"). Turn stats off in Settings at any time; the app then sends one "stats off" event and nothing more. Full list in the app's docs/stats.md.</p>
     <p><b>Feedback you choose to send.</b> The app, the Companion, and this site each have a feedback form. When you press Send we receive the text you wrote, the kind you picked (bug, idea, other), and, from the app, the app version and operating system plus, if you leave the box ticked, a short technical note: which screen you were on, whether you were signed in, whether an AI path is set up (yes or no), the last error line, and the tail of the crash log. It never includes your coursework, keys, or transcripts, and the form shows the exact note before you send. If you are signed in, your account email is attached so we can reply; otherwise you may type one. A random per-install id and a salted hash of your IP address are used only to cap submissions per hour; the hash is deleted after 24 hours. Feedback is kept until it has been acted on, and you can ask for yours to be deleted at the contact address below.</p>
   </div>
   <p>Account identity and subscription records are kept while your account is active and as needed to operate or document the subscription. You can ask to have your Nūs account data deleted using the contact address below. Stripe may retain payment and transaction records under its own legal obligations and privacy terms.</p>
@@ -83,7 +84,7 @@
   Nūs · <a href="index.html">Home</a> · <a href="pro.html">Account</a> · <a href="https://github.com/potlakai/nus-desktop">Desktop app on GitHub</a>
 </footer>
 
-<script data-goatcounter="https://terstu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://nus.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
 </body>
 </html>
