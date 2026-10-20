@@ -10,7 +10,7 @@
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
   const REL = "https://github.com/potlakai/nus-desktop/releases";
   const L = {
-    companion: `${REL}/download/companion-v0.1.6/Nus-Companion-Setup.exe`,
+    companion: `${REL}/download/companion-v0.1.7/Nus-Companion-Setup.exe`,
     win: `${REL}/latest/download/Nus-Setup.exe`, macArm: `${REL}/download/v0.2.6/Nus-arm64.dmg`, macIntel: `${REL}/download/v0.2.6/Nus-x64.dmg`,
   };
 
