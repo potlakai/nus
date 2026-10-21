@@ -29,7 +29,19 @@
       </ul>
       <div class="bottom">
         <div class="chips"><span class="chip hi">Free</span><span class="chip">Windows 10 and 11</span><span class="chip">Your own AI keys</span></div>
-        <div class="acts"><a class="btn solid" href="${L.companion}">Download for Windows</a><a class="link" href="#setup" data-guide="companion">Setup guide</a></div>
+        <div class="acts"><a class="btn solid" href="${L.companion}" data-didit-dl>Download for Windows</a><a class="link" href="#setup" data-guide="companion">Setup guide</a></div>
+        <details class="didit" data-didit>
+          <summary>Did it install?</summary>
+          <div class="didit-body">
+            <p>Windows may stop it the first time, because Nūs is new and not signed yet. Two clicks get past it.</p>
+            <ol class="didit-steps">
+              <li><img src="assets/page/companion/smartscreen-1.svg" width="160" height="100" alt="Windows protected your PC, with More info circled" loading="lazy"><span>1. Click <b>More info</b>.</span></li>
+              <li><img src="assets/page/companion/smartscreen-2.svg" width="160" height="100" alt="The same screen after More info, with Run anyway circled" loading="lazy"><span>2. Click <b>Run anyway</b>.</span></li>
+            </ol>
+            <button type="button" class="didit-no" data-goatcounter-click="companion-did-not-install">It did not install</button>
+            <p class="didit-note" aria-live="polite" hidden></p>
+          </div>
+        </details>
         <div class="small">Version 0.1.2${isMac ? ". Windows only for now." : ""}</div>
       </div>`;
   }
@@ -183,11 +195,36 @@
       const at = `translate(${Math.round(ox * 2) / 2}px,${Math.round((oy - R - 22) * 2) / 2}px) translateX(-50%)`; if (at !== tagAt) tag.style.transform = tagAt = at;
     });
   }
+  /* "Did it install?" under the Companion download (feedback collector 4). It opens by itself a moment
+     after the download click. "It did not install" sends one fixed note to the same intake feedback.html
+     uses; while that endpoint is not deployed (or cannot be reached) it opens the GitHub issues page. */
+  const FEEDBACK_API = "https://xnpkplcjurzwanotmwwt.supabase.co/functions/v1/submit-feedback";
+  const FEEDBACK_KEY = "sb_publishable_yBEA9loOsDI9E_HMFIVCRQ_PZvTD8rB";
+  const ISSUES = "https://github.com/potlakai/nus-desktop/issues/new?title=" + encodeURIComponent("Nūs Companion did not install");
+  const DIDNT_NOTE = "Nūs Companion did not install (from the site's Did it install? box).";
+  function siteId() {
+    try { let id = localStorage.getItem("nus-site-id"); if (!id) { id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now() + "-" + Math.random().toString(16).slice(2); localStorage.setItem("nus-site-id", id); } return id; } catch (e) { return null; }
+  }
+  function mountDidIt(card) {
+    const box = card.querySelector("[data-didit]"), dl = card.querySelector("[data-didit-dl]");
+    if (!box) return;
+    if (dl) dl.addEventListener("click", () => setTimeout(() => { box.open = true; }, 1200));
+    const btn = box.querySelector(".didit-no"), note = box.querySelector(".didit-note");
+    btn.addEventListener("click", () => {
+      btn.disabled = true; note.hidden = false; note.textContent = "Telling Pranav...";
+      const ctrl = window.AbortController ? new AbortController() : null;
+      const timer = ctrl ? setTimeout(() => ctrl.abort(), 6000) : null;
+      fetch(FEEDBACK_API, { method: "POST", headers: { apikey: FEEDBACK_KEY, "content-type": "application/json" }, body: JSON.stringify({ source: "site", kind: "bug", message: DIDNT_NOTE, install_id: siteId(), website: "" }), signal: ctrl ? ctrl.signal : undefined })
+        .then((r) => { if (!r.ok) throw new Error("http " + r.status); note.textContent = "Thanks. Pranav got a note that it did not install. Nothing about you was sent."; })
+        .catch(() => { window.open(ISSUES, "_blank", "noopener"); note.textContent = "Opened a GitHub issue page. Say what you saw and Pranav will help."; btn.disabled = false; })
+        .finally(() => { if (timer) clearTimeout(timer); });
+    });
+  }
   const rel = (el, host) => { const a = el.getBoundingClientRect(), h = host.getBoundingClientRect(); return { x: a.left - h.left + a.width / 2, y: a.top - h.top, w: a.width }; };
 
   function mountFork(root) {
     const cards = [...root.querySelectorAll(".card")];
-    cards[0].querySelector(".media").innerHTML = companionMedia(); cards[0].querySelector(".copy").innerHTML = companionCopy();
+    cards[0].querySelector(".media").innerHTML = companionMedia(); cards[0].querySelector(".copy").innerHTML = companionCopy(); mountDidIt(cards[0]);
     cards[1].querySelector(".media").innerHTML = studentsMedia(); cards[1].querySelector(".copy").innerHTML = studentsCopy();
     mountDesk(cards[0]); mountTabs(cards[1].querySelector(".media"));
     let focus = -1, seen = 0;
@@ -200,5 +237,5 @@
     StrandField(root, { per: 90, bottom: () => { const tops = cards.map((cd) => rel(cd.querySelector(".media"), root).y); return Math.abs(tops[0] - tops[1]) > 40 ? rel(cards[0], root).y : Math.min(...tops) + 60; }, /* stacked cards: the strands tuck in behind the first card */ state: () => ({ orb: { x: root.clientWidth / 2, y: root.querySelector(".gap").offsetTop + 96, r: 58 }, targets: cards.map((cd) => rel(cd.querySelector(".media"), root)), focus, grow: entryProgress.has(root) ? entryProgress.get(root) : seen, scrub: entryProgress.has(root) }) });
   }
   const setEntryProgress = (root, value) => value == null ? entryProgress.delete(root) : entryProgress.set(root, clamp(value));
-  window.NusWays = { mountFork, mountTabs, mountDesk, StrandField, companionCopy, studentsCopy, companionMedia, studentsMedia, rel, setEntryProgress };
+  window.NusWays = { mountFork, mountTabs, mountDesk, StrandField, companionCopy, mountDidIt, studentsCopy, companionMedia, studentsMedia, rel, setEntryProgress };
 })();

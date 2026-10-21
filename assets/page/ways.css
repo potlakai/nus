@@ -132,3 +132,15 @@
   .ways .card, .ways .card::before, .ways .card::after, .ways .btn, .ways .shots img, .ways .gl, .ways .desk .note, .ways .foldmini.on .fr { transition:none } .ways .card:hover, .ways .btn:hover { transform:none }
   .ways .tabs button.on i { animation:none; transform:none }
 }
+/* "Did it install?" under the Companion download */
+.didit { margin-top:14px; color:var(--muted); font-size:13px }
+.didit summary { cursor:pointer; color:var(--accent); width:max-content }
+.didit-body { margin-top:10px }
+.didit-body p { margin:0 0 10px }
+.didit-steps { list-style:none; display:flex; flex-wrap:wrap; gap:10px; margin:0 0 12px; padding:0 }
+.didit-steps li { display:flex; flex-direction:column; gap:6px; font-size:12.5px }
+.didit-steps img { display:block; width:160px; height:auto; border-radius:6px; border:1px solid var(--line) }
+.didit-no { font:inherit; font-size:12.5px; color:inherit; background:transparent; border:1px solid var(--line); border-radius:999px; padding:6px 14px; cursor:pointer }
+.didit-no:hover { border-color:var(--accent); color:#fff }
+.didit-no:disabled { opacity:.5; cursor:wait }
+.didit-note { margin-top:10px }

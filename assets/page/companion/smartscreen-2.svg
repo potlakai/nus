@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200" role="img" aria-label="After More info: the app is Nus-Companion-Setup.exe, publisher unknown. Click Run anyway.">
+  <rect width="320" height="200" rx="6" fill="#0063b1"/>
+  <g font-family="'Segoe UI',system-ui,sans-serif" fill="#fff">
+    <text x="18" y="38" font-size="17" font-weight="600">Windows protected your PC</text>
+    <text x="18" y="66" font-size="10.5" opacity=".92">Microsoft Defender SmartScreen prevented an</text>
+    <text x="18" y="81" font-size="10.5" opacity=".92">unrecognized app from starting.</text>
+    <text x="18" y="108" font-size="10.5">App: Nus-Companion-Setup.exe</text>
+    <text x="18" y="124" font-size="10.5">Publisher: Unknown publisher</text>
+  </g>
+  <rect x="134" y="160" width="80" height="26" fill="none" stroke="#fff" stroke-opacity=".7"/>
+  <text x="174" y="177" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#fff" text-anchor="middle">Run anyway</text>
+  <rect x="129" y="155" width="90" height="36" rx="5" fill="none" stroke="#ffd166" stroke-width="2.5"/>
+  <rect x="226" y="160" width="80" height="26" fill="none" stroke="#fff" stroke-opacity=".7"/>
+  <text x="266" y="177" font-family="'Segoe UI',system-ui,sans-serif" font-size="11" fill="#fff" text-anchor="middle">Don't run</text>
+</svg>
