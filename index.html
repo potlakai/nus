@@ -82,6 +82,28 @@
     .links a:not(.btn) { display:none }
     .right .btns { flex-wrap:wrap } .btn { padding:12px 18px; font-size:14px }
   }
+
+  /* Phone handoff card (2026-10-23): NŪS runs on a computer, so phone visitors get a clear next step
+     instead of a Windows download they cannot use. Hidden unless the script marks the page as a phone. */
+  #phoneCard { display:none }
+  html.is-phone #phoneCard { display:block; position:fixed; left:12px; right:12px;
+    bottom:calc(12px + env(safe-area-inset-bottom, 0px)); z-index:9999;
+    background:#0e1224; border:1px solid var(--line); border-radius:18px; isolation:isolate;
+    padding:16px 16px 14px; box-shadow:0 18px 50px rgba(0,0,0,.65); color:var(--cream);
+    font-family:Inter,system-ui,sans-serif; animation:pcIn .35s ease-out both }
+  @keyframes pcIn { from { transform:translateY(16px); opacity:0 } to { transform:none; opacity:1 } }
+  #phoneCard .pc-k { font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--brass) }
+  #phoneCard .pc-t { font-family:"Instrument Serif",serif; font-size:24px; line-height:1.15; margin:6px 0 4px }
+  #phoneCard .pc-p { font-size:14px; line-height:1.45; color:var(--mist) }
+  #phoneCard .pc-row { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap }
+  #phoneCard .pc-b { flex:1 1 auto; min-height:44px; border-radius:999px; border:1px solid var(--line);
+    background:transparent; color:var(--cream); font:500 15px Inter,system-ui,sans-serif; padding:0 16px;
+    display:inline-flex; align-items:center; justify-content:center; text-decoration:none; cursor:pointer }
+  #phoneCard .pc-b.solid { background:var(--cream); color:var(--ink); border-color:var(--cream) }
+  #phoneCard .pc-x { position:absolute; top:6px; right:8px; width:44px; height:44px; border:0; background:none;
+    color:var(--mist); font-size:22px; line-height:1; cursor:pointer }
+  #phoneCard .pc-done { font-size:13px; color:var(--brass); margin-top:8px; min-height:1em }
 </style>
 <link rel="stylesheet" href="assets/page/lesson.css?v=3">
 <link rel="stylesheet" href="assets/page/ways.css?v=12">
@@ -95,6 +117,53 @@
 <link rel="stylesheet" href="assets/page/ways-plans-flow.css?v=1">
 </head>
 <body>
+<aside id="phoneCard" role="dialog" aria-labelledby="pcTitle">
+  <button type="button" class="pc-x" id="pcClose" aria-label="Close">&times;</button>
+  <div class="pc-k">On your phone?</div>
+  <div class="pc-t" id="pcTitle">NŪS runs on your computer.</div>
+  <p class="pc-p">It's a free app for Windows 10 and 11 (Mac beta for Students). Send yourself the link and open it on your laptop to install.</p>
+  <div class="pc-row">
+    <button type="button" class="pc-b solid" id="pcShare">Send me the link</button>
+    <button type="button" class="pc-b" id="pcCopy">Copy link</button>
+  </div>
+  <div class="pc-row"><a class="pc-b" id="pcMail" href="#">Email it to me</a></div>
+  <div class="pc-done" id="pcDone" aria-live="polite"></div>
+</aside>
+<script>
+(function () {
+  var ua = navigator.userAgent || "";
+  var touchMac = /Macintosh/.test(ua) && navigator.maxTouchPoints > 1; // iPadOS reports as a Mac
+  var phone = /iPhone|iPad|iPod|Android|Mobile/i.test(ua) || touchMac;
+  if (!phone) return;
+  try { if (sessionStorage.getItem("pcClosed") === "1") return; } catch (e) {}
+  document.documentElement.classList.add("is-phone");
+  var link = "https://potlakai.github.io/nus/?utm_source=phone-handoff&utm_medium=" +
+    (/utm_medium=dm/.test(location.search) ? "dm" : "web");
+  var done = function (t) { var el = document.getElementById("pcDone"); if (el) el.textContent = t; };
+  var copy = function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).then(function () { done("Link copied. Paste it on your computer."); },
+        function () { done(link); });
+    } else { done(link); }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    var mail = document.getElementById("pcMail");
+    mail.href = "mailto:?subject=" + encodeURIComponent("NŪS for my computer") +
+      "&body=" + encodeURIComponent("Open this on your laptop to install NŪS: " + link);
+    document.getElementById("pcShare").addEventListener("click", function () {
+      if (navigator.share) {
+        navigator.share({ title: "NŪS", text: "Open this on my laptop to install NŪS", url: link })
+          .catch(function () {});
+      } else { copy(); }
+    });
+    document.getElementById("pcCopy").addEventListener("click", copy);
+    document.getElementById("pcClose").addEventListener("click", function () {
+      document.documentElement.classList.remove("is-phone");
+      try { sessionStorage.setItem("pcClosed", "1"); } catch (e) {}
+    });
+  });
+})();
+</script>
 <div class="hero-track" id="track">
 <section class="hero" id="hero">
   <canvas id="stars" aria-hidden="true"></canvas>
