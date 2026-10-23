@@ -26,6 +26,7 @@
         <li><span><b>Say it, it acts.</b> <span class="d">“Open Notepad, type hello.” Voice actions run on Jev.</span></span></li>
         <li><span><b>Point and ask.</b> <span class="d">Press Ctrl+Shift+T on anything. The answer shows up right there.</span></span></li>
         <li><span><b>Knows your stuff.</b> <span class="d">Add folders of notes, docs and your calendar. It answers from them when they help.</span></span></li>
+        <li><span><b>Or keep it up top.</b> <span class="d">Island mode puts the Knot in a small bar at the top of your screen. Turn it on in Settings.</span></span></li>
       </ul>
       <div class="bottom">
         <div class="chips"><span class="chip hi">Free</span><span class="chip">Windows 10 and 11</span><span class="chip">Your own AI keys</span></div>
@@ -42,7 +43,7 @@
             <p class="didit-note" aria-live="polite" hidden></p>
           </div>
         </details>
-        <div class="small">Version 0.1.2${isMac ? ". Windows only for now." : ""}</div>
+        <div class="small">Version 0.1.9${isMac ? ". Windows only for now." : ""}</div>
       </div>`;
   }
   function studentsCopy() {
@@ -63,7 +64,7 @@
       </div>`;
   }
   const VIEWS = [["Today", "What matters now", "assets/app-today.webp"], ["Review", "Check what it read", "assets/app-review.webp"], ["Map", "How it connects", "assets/app-map.webp"]];
-  const SCENES = [["Say it", "Voice actions", 5.6], ["Point and ask", "Ctrl+Shift+T", 5.4], ["Your folders", "It knows them", 6.2]];
+  const SCENES = [["Say it", "Voice actions", 5.6], ["Point and ask", "Ctrl+Shift+T", 5.4], ["Your folders", "It knows them", 6.2], ["Island mode", "A bar up top", 10.4]];
   const tabRow = (items, label, cls) => `<div class="tabs ${cls}" role="tablist" aria-label="${label}">${items.map((t, i) => `<button type="button" role="tab" aria-selected="${!i}" class="${i ? "" : "on"}">${t[0]}<small>${t[1]}</small><i></i></button>`).join("")}</div>`;
   function studentsMedia() {
     return `<div class="appwin"><div class="tb"><div class="l"><i class="r"></i><i class="y"></i><i class="g"></i></div><span>NŪS</span></div>
@@ -80,7 +81,9 @@
       <div class="gl keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>T</kbd></div>
       <div class="gl bub b1"><div class="k">Explain</div>The link points to a file that moved. Relink it from Insert, then Link.</div>
       <div class="gl foldmini"><div class="mh">Your folders</div><div class="fr" style="--i:0"><i class="ic"></i><b>Class notes</b><i class="tg"></i></div><div class="fr" style="--i:1"><i class="ic"></i><b>Resume docs</b><i class="tg"></i></div><div class="fr" style="--i:2"><i class="ic"></i><b>Fall calendar</b><i class="tg"></i></div></div>
-      <div class="dknot"><canvas></canvas></div></div>
+      <div class="dknot"><canvas></canvas></div>
+      <div class="isl"><span class="isl-slot"><canvas></canvas></span><span class="isl-text"><b class="isl-word"></b><span class="isl-line"></span></span></div>
+      <div class="gl islcard"><div class="k">Ask first</div>Click “Send”?<div class="h">This looks like it sends something.</div><div class="a"><span class="y">Yes</span><span>Not now</span></div></div></div>
       ${tabRow(SCENES, "What the Companion does", "cool")}`;
   }
 
@@ -110,7 +113,35 @@
     const on = (el, v) => el.classList.toggle("on", v);
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     function tab(k) { btns.forEach((b, j) => { b.classList.toggle("on", j === k); b.setAttribute("aria-selected", j === k); }); btns[k].style.setProperty("--dur", SCENES[k][2] + "s"); restartBar(btns[k]); }
-    function reset() { [pill, note, keys, b1, b2, ring].forEach((e) => on(e, false)); cur.style.opacity = 0; cur.style.left = "70%"; cur.style.top = "80%"; txt.textContent = ""; words.textContent = ""; st("idle"); }
+    // Island mode (Companion 0.1.8+): the same Knot docked at the left end of a black bar at the top centre.
+    // Idle is the Knot alone; the state word and one line grow the bar to the right; cards drop below it.
+    const isl = q(".isl"), islSlot = q(".isl-slot"), islWord = q(".isl-word"), islLine = q(".isl-line"), islCard = q(".islcard");
+    let islKnot = null;
+    const ISL_ACC = { listening: "#EF5350", thinking: "#8C96FF", acting: "#8C96FF" };
+    function islFit() {   // the bar's width animates between measured sizes; its left edge never moves
+      const was = isl.style.width; isl.classList.remove("wrap"); isl.style.width = "auto";
+      if (isl.scrollWidth > isl.clientWidth + 1) isl.classList.add("wrap");
+      const wd = isl.offsetWidth; isl.style.width = was; void isl.offsetWidth; isl.style.width = wd + "px";
+    }
+    function islSet(tone, word, line) {
+      isl.dataset.state = tone; islWord.textContent = word || ""; islLine.textContent = line || "";
+      isl.classList.toggle("has-text", !!(word || line)); isl.classList.toggle("has-line", !!line);
+      if (ISL_ACC[tone]) islSlot.style.setProperty("--knot-accent", ISL_ACC[tone]); else islSlot.style.removeProperty("--knot-accent");
+      if (islKnot) islKnot.setState(tone === "acting" ? "thinking" : tone);
+      islFit();
+    }
+    function islCardAt() {   // like the app: left edge under the Knot, kept 8 px inside the screen
+      const W = desk.clientWidth, bw = islCard.offsetWidth;
+      islCard.style.left = Math.max(8, Math.min(W - bw - 8, isl.offsetLeft + isl.clientLeft + 3)) + "px"; islCard.style.top = isl.offsetTop + isl.offsetHeight + 7 + "px";
+    }
+    function islOn(v) {
+      if (v && !islKnot && window.NusKnot3D) islKnot = NusKnot3D.mount(q(".isl-slot canvas"), { ground: false, scale: 0.27, focusGate: false });
+      on(isl, v); desk.classList.toggle("docked", v);
+      if (knot) v ? knot.pause() : knot.resume();
+      if (islKnot) v ? islKnot.resume() : islKnot.pause();
+    }
+    function reset() { [pill, note, keys, b1, b2, ring, islCard].forEach((e) => on(e, false)); cur.style.opacity = 0; cur.style.left = "70%"; cur.style.top = "80%"; txt.textContent = ""; words.textContent = ""; st("idle");
+      if (isl.classList.contains("on") || islKnot) { islSet("idle"); islOn(false); } islCard.classList.remove("pressed"); }
     // each scene checks its token, so clicking a tab cuts the current one short
     const scenes = [
       async (w, type) => { pill.querySelector(".dot").style.display = ""; on(pill, true); st("listening");
@@ -120,6 +151,15 @@
         on(keys, true); st("thinking"); ring.style.cssText = `left:${er.left - dr.left - 5}px;top:${er.top - dr.top - 5}px;width:${er.width + 10}px;height:${er.height + 10}px`; on(ring, true);
         await w(900); on(keys, false); on(b1, true); st("ready"); await w(2600); },
       async (w) => { st("thinking"); await w(300); on(b2, true); await w(1600); st("ready"); await w(3600); },
+      async (w) => { islSet("idle"); islOn(true); await w(1700);
+        const said = "You: email Sam the lab report";
+        islSet("listening", "Listening", "You:"); for (let n = 5; n <= said.length; n++) { islLine.textContent = said.slice(0, n); islFit(); await w(40); } await w(350);
+        islSet("thinking", "Thinking"); await w(700);
+        islSet("acting", "Acting", "Writing the email"); await w(1300);
+        islSet("acting", "Acting", "Ready to send"); await w(250); islCardAt(); on(islCard, true); await w(2300);
+        islCard.classList.add("pressed"); await w(260); on(islCard, false);
+        islSet("speaking", "Speaking", "Sent it to Sam."); await w(1700);
+        islSet("idle"); await w(1600); },
     ];
     function play(k) {
       const tok = ++run;

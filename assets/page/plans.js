@@ -16,7 +16,7 @@
   const PLANS = [
     { k: "The Knot on its own", name: "NŪS Companion", price: "$0", one: "No plan, no account.",
       list: ["Your own Jarvis: voice actions and pointing", "Your folders of notes and docs, mapped", "On top of every Windows app", "Your own AI keys"],
-      foot: `<a class="btn ghost" href="${L.companion}">Download for Windows</a>`, small: isMac ? "Version 0.1.2. Windows only for now." : "Version 0.1.2. Windows 10 and 11." },
+      foot: `<a class="btn ghost" href="${L.companion}">Download for Windows</a>`, small: isMac ? "Version 0.1.9. Windows only for now." : "Version 0.1.9. Windows 10 and 11." },
     { k: "Students", name: "Free", price: "$0", one: "Forever. No trial clock.",
       list: ["Unlimited courses, tasks and calendar", "3 syllabus imports, 10 questions a day", "Companion 20 minutes a day", "1 connected account, 1 automation rule", "7 days of history, 512 MB"],
       foot: studentsBtns, small: isMac ? "Apple silicon or Intel. Windows too." : "Windows, and Mac beta." },

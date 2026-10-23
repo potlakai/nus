@@ -96,6 +96,39 @@
 .ways .desk .note.on { opacity:1; transform:none }
 .ways .desk .dknot { position:absolute; right:1%; bottom:1%; width:22%; aspect-ratio:1 }
 .ways .desk .dknot canvas { width:100%; height:100% }
+/* Island mode: the shipped bar (companion styles.css #island) at the desk's scale. Black, fully rounded, a little
+   below the top edge; the Knot at its left end, the state word and one line grow it to the right. */
+.ways .desk { --ih:clamp(26px, 6.4cqw, 34px); --ip:3px }
+.ways .desk .dknot { transition:opacity .3s, transform .45s cubic-bezier(.2,1.2,.3,1) }
+.ways .desk.docked .dknot { opacity:0; transform:scale(.6) translate(-20%,-30%) }
+.ways .desk .isl { position:absolute; z-index:3; top:3.2%; left:calc(50% - var(--ih) / 2 - var(--ip)); width:calc(var(--ih) + var(--ip) * 2); max-width:calc(50% + var(--ih) / 2 + var(--ip) - 8px); min-height:var(--ih); padding:0 var(--ip);
+  display:flex; align-items:flex-start; overflow:hidden; background:#000; color:#eceef5; border-radius:calc(var(--ih) / 2);
+  box-shadow:0 8px 26px rgba(0,0,0,.42), inset 0 0 0 1px rgba(255,255,255,.07); opacity:0; transform:translateY(-8px) scale(.85); transform-origin:calc(var(--ih) / 2) 50%;
+  transition:opacity .3s, transform .4s cubic-bezier(.2,1.2,.3,1), width .18s cubic-bezier(.22,1.12,.36,1), box-shadow .18s ease }
+.ways .desk .isl.on { opacity:1; transform:none }
+.ways .desk .isl-slot { position:relative; flex:0 0 var(--ih); height:var(--ih) }
+.ways .desk .isl-slot canvas { position:absolute; left:50%; top:50%; width:calc(var(--ih) * 1.5); height:calc(var(--ih) * 1.5); transform:translate(-50%,-50%) }
+.ways .desk .isl-text { display:none; flex-direction:column; justify-content:center; min-height:var(--ih); padding:0 12px 0 3px; min-width:0 }
+.ways .desk .isl.has-text .isl-text { display:flex }
+.ways .desk .isl.has-line .isl-text { padding-top:4px; padding-bottom:5px }
+.ways .desk .isl-word { font:600 10.5px/14px var(--sys); letter-spacing:.01em; white-space:nowrap; color:rgb(var(--isl-acc, 214,219,234)) }
+.ways .desk .isl-word:empty, .ways .desk .isl-line:empty { display:none }
+.ways .desk .isl-line { font:11.5px/1.35 var(--sys); color:#c9ccd8; white-space:nowrap }
+.ways .desk .isl.wrap .isl-line { white-space:normal }   /* only when one line will not fit the screen */
+.ways .desk .isl[data-state="listening"] { --isl-acc:239,83,80; box-shadow:0 8px 26px rgba(0,0,0,.42), 0 0 0 1px rgba(239,83,80,.55), 0 0 18px rgba(239,83,80,.25) }
+.ways .desk .isl[data-state="thinking"] { --isl-acc:140,150,255; box-shadow:0 8px 26px rgba(0,0,0,.42), 0 0 0 1px rgba(140,150,255,.5), 0 0 18px rgba(140,150,255,.22) }
+.ways .desk .isl[data-state="acting"] { --isl-acc:140,150,255; box-shadow:0 8px 26px rgba(0,0,0,.42), 0 0 0 1px rgba(140,150,255,.6), 0 0 20px rgba(140,150,255,.28) }
+/* its card drops below the bar as a card of its own, left edge under the Knot */
+.ways .desk .islcard { left:calc(50% - var(--ih) / 2); top:calc(3.2% + var(--ih) + 7px); z-index:3; width:max-content; max-width:min(62%, 260px); padding:9px 12px 10px; border-radius:12px; font-size:12px; line-height:1.35; transform:translateY(-8px) scale(.96); transform-origin:12px 0 }
+.ways .desk .islcard.on { transform:none }
+.ways .desk .islcard .k { margin-bottom:4px; color:var(--accent); font:700 9.5px/1 var(--sys); letter-spacing:.16em; text-transform:uppercase }
+.ways .desk .islcard .h { margin-top:3px; color:rgba(243,240,232,.45); font-size:10.5px }
+.ways .desk .islcard .a { display:flex; gap:5px; margin-top:7px }
+.ways .desk .islcard .a span { padding:3px 10px; border-radius:999px; border:1px solid rgba(242,239,230,.14); background:rgba(255,255,255,.06); font:600 10.5px var(--sys); transition:transform .1s }
+.ways .desk .islcard .a .y { background:#D6DBEA; color:#0B1020; border-color:transparent }
+.ways .desk .islcard.pressed .a .y { transform:scale(.92) }
+/* four scene tabs only fit one row on a wide card; narrower, they sit two by two */
+@container (max-width:470px) { .ways .tabs.cool { display:grid; grid-template-columns:1fr 1fr } }
 .ways .gl { position:absolute; background:linear-gradient(150deg, rgba(18,20,31,.95), rgba(8,10,18,.92)); border:1px solid rgba(242,239,230,.13); box-shadow:0 18px 42px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.07); color:rgba(255,255,255,.95);
   opacity:0; transform:translateY(6px); transition:opacity .25s, transform .25s }
 .ways .gl.on { opacity:1; transform:none }
@@ -129,7 +162,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .ways .reveal { opacity:1; transform:none; transition:none }
-  .ways .card, .ways .card::before, .ways .card::after, .ways .btn, .ways .shots img, .ways .gl, .ways .desk .note, .ways .foldmini.on .fr { transition:none } .ways .card:hover, .ways .btn:hover { transform:none }
+  .ways .card, .ways .card::before, .ways .card::after, .ways .btn, .ways .shots img, .ways .gl, .ways .desk .note, .ways .desk .isl, .ways .desk .dknot, .ways .foldmini.on .fr { transition:none } .ways .card:hover, .ways .btn:hover { transform:none }
   .ways .tabs button.on i { animation:none; transform:none }
 }
 /* "Did it install?" under the Companion download */

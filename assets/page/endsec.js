@@ -49,7 +49,7 @@
   }
   function footer(root) {
     root.innerHTML = `<div class="top">
-      <div class="brand"><b>NŪS</b><p>A more capable <em>you.</em> Personal AI that does the busywork and shows you the rest.</p><div class="status mono"><span>● Companion 0.1.2</span><span>Students v0.2.6 · Mac beta</span></div></div>
+      <div class="brand"><b>NŪS</b><p>A more capable <em>you.</em> Personal AI that does the busywork and shows you the rest.</p><div class="status mono"><span>● Companion 0.1.9</span><span>Students v0.2.6 · Mac beta</span></div></div>
       <div><h4 class="mono">Get it</h4><ul><li><a href="${L.companion}">NŪS Companion</a></li><li><a href="${L.win}">NŪS for Students</a></li><li><a href="${L.macArm}">${APPLE}Mac beta</a></li><li><a href="${L.pro}">Pro</a></li></ul></div>
       <div><h4 class="mono">Set up</h4><ul><li><a href="#setup" data-guide="companion">Companion setup</a></li><li><a href="#setup" data-guide="students">Students setup</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#faq">Questions</a></li></ul></div>
       <div><h4 class="mono">Open</h4><ul><li><a href="${L.repo}">GitHub</a></li><li><a href="${L.releases}">All releases</a></li><li><a href="${L.privacy}">Privacy</a></li></ul></div>
