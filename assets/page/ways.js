@@ -11,7 +11,7 @@
   const REL = "https://github.com/potlakai/nus-desktop/releases";
   const L = {
     companion: `${REL}/download/companion-v0.1.10/Nus-Companion-Setup.exe`,
-    win: `${REL}/latest/download/Nus-Setup.exe`, macArm: `${REL}/download/v0.2.6/Nus-arm64.dmg`, macIntel: `${REL}/download/v0.2.6/Nus-x64.dmg`,
+    win: `${REL}/latest/download/Nus-Setup.exe`, macArm: `${REL}/download/v0.2.7/Nus-arm64.dmg`, macIntel: `${REL}/download/v0.2.7/Nus-x64.dmg`,
   };
 
   // the Apple mark on Mac downloads, so the Mac beta reads as a real way in
