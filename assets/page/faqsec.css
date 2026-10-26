@@ -36,3 +36,4 @@
 .faqsec .fbtn:focus-visible, .faqsec .qh:focus-visible, .faqsec .tries button:focus-visible { outline:2px solid var(--brass); outline-offset:3px }
 @media (max-width:980px) { .faqsec .more { flex-direction:column; align-items:flex-start } }
 @media (prefers-reduced-motion: reduce) { .faqsec .reveal { opacity:1; transform:none; transition:none } .faqsec .body { transition:none } }
+.faqsec .ans code { font:12.5px ui-monospace,Menlo,Consolas,monospace; padding:1px 6px; border-radius:5px; background:rgba(0,0,0,.35); border:1px solid var(--line); white-space:pre }

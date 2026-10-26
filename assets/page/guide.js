@@ -19,14 +19,14 @@
   };
   const GUIDES = {
     companion: [
-      { t: "Download and install", d: "Get NŪS Companion 0.1.10 for Windows. If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>. It isn’t code-signed yet.", scene: "smart", dur: 6 },
+      { t: "Download and install", d: "Get NŪS Companion 0.1.10 for Windows. If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>. It isn’t code-signed yet. Still stuck? Open <b>Did it install?</b> under the download.", scene: "smart", dur: 6 },
       { t: "Add your keys", d: "In the Companion window, under <b>Your keys</b>: TypeSafe for voice actions, Gemini for answers, Anthropic for pointing. Have Claude Code? Skip Anthropic.", scene: "keys", dur: 8 },
       { t: "Give it your stuff", d: "This is what makes it your Jarvis. Under <b>Folders</b>, add your notes, docs and calendar: PDF, Word, text, Markdown and calendar files. It answers from them when they help.", scene: "folders", dur: 7 },
       { t: "Say it, it acts", d: `Hold ${K("Ctrl", "Alt", "Space")} and say “open Notepad, type hello”. Jev does it while you’re still talking. Say a few in a row and it offers to save them as a routine.`, scene: "voice", dur: 7.5 },
       { t: "Point at anything", d: `Press ${K("Ctrl", "Shift", "T")} on a button, an error or a slide. The Knot’s thread runs to that exact spot, and the answer lands right there.`, scene: "point", dur: 7 },
     ],
     students: [
-      { t: "Download", d: `The Windows installer, or the ${APPLE}Mac beta for Apple silicon or Intel. On a Mac, if it won’t open: System Settings, Privacy &amp; Security, <b>Open Anyway</b>.`, scene: "dl", dur: 6 },
+      { t: "Download", d: `The Windows installer, or the ${APPLE}Mac beta for Apple silicon or Intel. On a Mac, if it won’t open: System Settings, Privacy &amp; Security, <b>Open Anyway</b>. Says it’s damaged? Open <b>Mac won’t open it?</b> under the download.`, scene: "dl", dur: 6 },
       { t: "No account needed", d: "It runs in local mode on your computer. You only make an account if you want Pro.", scene: "local", dur: 5 },
       { t: "Connect your AI", d: "In Settings, the <b>AI provider</b> card uses Claude: it’s found automatically if Claude Code is installed, otherwise paste an Anthropic API key. For the built-in Knot, add a free Gemini key in <b>Companion AI key</b>.", scene: "prov", dur: 7 },
       { t: "Import a syllabus", d: "Drop in the PDF and check what it read. Nothing is saved until you confirm. The Companion is already inside.", scene: "review", dur: 6 },
@@ -52,7 +52,7 @@
         ${[[110, 60, "Class notes", "folder"], [120, 196, "Resume docs", "folder"], [450, 58, "Morning setup", "routine"], [470, 190, "Tuesday call", "conversation"], [300, 30, "Open my notes", "routine"], [285, 226, "Study plan chat", "conversation"]].map(([x, y, t, k], i) =>
           `<g class="nd ${k}" style="--i:${i}"><circle cx="${x}" cy="${y}" r="7"/><text x="${x + (x < 280 ? -12 : 12)}" y="${y + 4}" text-anchor="${x < 280 ? "end" : "start"}">${t}</text></g>`).join("")}
         </svg><div class="legend"><span class="folder">Folders</span><span class="routine">Routines</span><span class="conversation">Conversations</span></div></div>`;
-      case "dl": return WINCAP("Pick your download") + `<div class="dl"><div class="b">Windows installer <small>Nus-Setup.exe</small></div><div class="b">${APPLE}Mac beta, Apple silicon <small>Nus-arm64.dmg</small></div><div class="b">${APPLE}Mac beta, Intel <small>Nus-x64.dmg</small></div><p class="note">Mac won’t open it? System Settings, Privacy &amp; Security, Open Anyway.</p></div>`;
+      case "dl": return WINCAP("Pick your download") + `<div class="dl"><div class="b">Windows installer <small>Nus-Setup.exe</small></div><div class="b">${APPLE}Mac beta, Apple silicon <small>Nus-arm64.dmg</small></div><div class="b">${APPLE}Mac beta, Intel <small>Nus-x64.dmg</small></div><p class="note">Mac won’t open it? System Settings, Privacy &amp; Security, Open Anyway. Says it’s damaged? Run <code>xattr -cr</code> on it in Terminal.</p></div>`;
       case "local": return WINCAP("First launch") + `<div class="gl profile"><span class="av">N</span><span><b>You</b><span>Local profile</span></span></div>`;
       case "prov": return WINCAP("NŪS for Students · Settings") + `<div class="cards">
         <div class="setcard hi"><div class="kick">AI provider</div><h6>Claude Code detected</h6><p>NŪS uses your own AI to read syllabi. Claude Code is detected automatically; otherwise paste an Anthropic API key.</p></div>

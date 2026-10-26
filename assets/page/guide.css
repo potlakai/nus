@@ -123,3 +123,4 @@ canvas.guide-strand { position:fixed; inset:0; width:100vw; height:100vh; pointe
   .guide .reveal { opacity:1; transform:none; transition:none } .guide .scene, .guide .smart .run, .guide .frow, .guide .notepad, .guide .offer { transition:none }
   .guide .gsteps button.on i { animation:none; transform:none } .guide .graph .ed { stroke-dashoffset:0 } .guide .graph .nd { opacity:1; transform:none }
 }
+.guide .dl .note code { font:11.5px ui-monospace,Menlo,Consolas,monospace; color:var(--cream) }

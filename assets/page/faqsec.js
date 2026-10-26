@@ -1,5 +1,5 @@
 /* FAQ, option B "Ask it" (picked 2026-09-30). A Companion-style ask pill with the real Knot; typing filters the
-   ten real-comment questions, highlights the words and opens the best match as a NŪS answer. All ten show when
+   real-comment questions, highlights the words and opens the best match as a NŪS answer. All of them show when
    empty. Answers updated to shipped facts on 2026-09-30. Usage: NusFaq.mount(el)  (el is an empty .faqsec) */
 (function () {
   const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -15,15 +15,17 @@
     { q: "What happens when it mishears?", k: "mishear wrong mistake undo error", a: "There’s no undo yet, so you fix it by hand. You can also type a command instead of saying it." },
     { q: "Is what I saw in the videos real?", k: "real fake video demo", a: "The voice actions, pointing and routines in our videos are in the released Companion. Anything not shipped yet is labeled as where NŪS is heading." },
     { q: "Why does Windows warn me when I install?", k: "windows warning smartscreen install unsafe virus signed", a: "The installers aren’t code-signed yet, so Windows SmartScreen asks first. Choose <b>More info</b>, then <b>Run anyway</b>." },
+    { q: "It won’t install on Windows. What now?", k: "install installer windows failed not working blocked antivirus defender smart app control", a: "Check you ran <b>Nus-Companion-Setup.exe</b>, about 200 MB, not the Portable or .yml file. If your antivirus took it, restore it from quarantine and run it again. If there is no <b>Run anyway</b> button, Smart App Control or S mode is blocking apps that are not signed yet. It installs in a few seconds with no questions, so look for <b>Nus Companion</b> in the Start menu. Still stuck? Open <b>Did it install?</b> under the download and tell Pranav what you saw." },
     { q: "Is it open source? Is there a Mac version?", k: "open source github mac apple macos", a: "NŪS for Students (the NŪS Desktop app) is open source on GitHub, and its <b>Mac beta is out</b> for Apple silicon and Intel. NŪS Companion is a free download without published source, and it’s Windows only for now." },
+    { q: "My Mac says NŪS is damaged or can’t be opened.", k: "mac damaged trash open verify gatekeeper blocked malware xattr terminal", a: "The Mac beta is not notarized by Apple yet. Drag Nus into Applications first. If it says Apple could not verify it: click <b>Done</b>, then <b>System Settings</b>, <b>Privacy &amp; Security</b>, <b>Open Anyway</b>. If it says it is damaged: click <b>Cancel</b>, open <b>Terminal</b>, type <code>xattr -cr </code> with a space at the end, drag Nus from Applications into the window, and press <b>Return</b>. If it says it is not supported on this Mac, you have an Intel Mac and need the Intel download." },
   ];
   const plain = (h) => h.replace(/<[^>]+>/g, "");
   const STOP = ["is", "it", "the", "a", "an", "do", "does", "can", "how", "what", "i", "my", "to", "of", "on", "in", "there", "for"];
   function mount(root) {
     root.innerHTML = `<div class="sec">
       <div class="head reveal"><div class="mono">Questions</div><h2 class="serif">What people <em>asked.</em></h2><p>The questions that came up most under our videos. Ask it like you’d ask the Knot.</p></div>
-      <label class="ask reveal"><span class="fknot" aria-hidden="true"><canvas></canvas></span><span class="sr">Search the questions</span><input type="text" placeholder="What do you need help with?" autocomplete="off" spellcheck="false"><span class="count">10 questions</span></label>
-      <div class="tries reveal" aria-label="Try"><button type="button">Is it free?</button><button type="button">Mac</button><button type="button">Is it local?</button><button type="button">Jev</button><button type="button">Windows warning</button></div>
+      <label class="ask reveal"><span class="fknot" aria-hidden="true"><canvas></canvas></span><span class="sr">Search the questions</span><input type="text" placeholder="What do you need help with?" autocomplete="off" spellcheck="false"><span class="count">${FAQ.length} questions</span></label>
+      <div class="tries reveal" aria-label="Try"><button type="button">Is it free?</button><button type="button">Mac</button><button type="button">Is it local?</button><button type="button">Jev</button><button type="button">Won’t install</button></div>
       <div class="qlist reveal">${FAQ.map((f, i) => `<div class="qrow" data-i="${i}"><button type="button" class="qh" aria-expanded="false"><span class="n">${String(i + 1).padStart(2, "0")}</span><span class="qt">${f.q}</span><span class="pl" aria-hidden="true"></span></button>
         <div class="body"><div><div class="bub"><div class="k">NŪS</div><div class="ans">${f.a}</div></div></div></div></div>`).join("")}</div>
       <p class="none">Nothing matched. Ask us directly below.</p>
@@ -36,7 +38,7 @@
     let t = 0;
     function run() {
       const ws = words(input.value.trim());
-      if (!ws.length) { rows.forEach((r) => { r.classList.remove("hide"); r.querySelector(".qt").innerHTML = FAQ[+r.dataset.i].q; }); count.textContent = "10 questions"; none.classList.remove("on"); st("idle"); return; }
+      if (!ws.length) { rows.forEach((r) => { r.classList.remove("hide"); r.querySelector(".qt").innerHTML = FAQ[+r.dataset.i].q; }); count.textContent = FAQ.length + " questions"; none.classList.remove("on"); st("idle"); return; }
       st("thinking");
       const scored = rows.map((r) => { const f = FAQ[+r.dataset.i], hay = (f.q + " " + f.k + " " + plain(f.a)).toLowerCase(); let s = 0;
         ws.forEach((w) => { if (f.q.toLowerCase().includes(w)) s += 3; if (f.k.includes(w)) s += 2; else if (hay.includes(w)) s += 1; }); return { r, s, f }; });

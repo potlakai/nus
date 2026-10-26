@@ -14,6 +14,16 @@
     win: `${REL}/latest/download/Nus-Setup.exe`, macArm: `${REL}/download/v0.2.7/Nus-arm64.dmg`, macIntel: `${REL}/download/v0.2.7/Nus-x64.dmg`,
   };
 
+  // "It did not install", then one question: what did you see. Each answer shows its fix right away.
+  const SAW = [
+    ["smartscreen", "Windows protected your PC", "Click <b>More info</b> on that screen. <b>Run anyway</b> shows up under it."],
+    ["blocked", "Blocked, no Run anyway", "That is Smart App Control or S mode. They block apps that are not signed yet. Telling Pranav helps him see how often it happens."],
+    ["antivirus", "My antivirus took it", "Restore it from your antivirus quarantine, or allow it, then run it again."],
+    ["error", "An error message", "Type what it said below, so Pranav can fix it."],
+    ["nothing", "Nothing happened", "Look for <b>Nus Companion</b> in the Start menu. Not there? Download it again, the file may have stopped partway."],
+    ["other", "Something else", "Type what you saw below."],
+  ];
+
   // the Apple mark on Mac downloads, so the Mac beta reads as a real way in
   const APPLE = '<svg class="os" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.64c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.3-.88-2.29-3.52zM14.2 6.18c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.08 1.96-.49 2.56-1.22z"/></svg>';
 
@@ -39,7 +49,22 @@
               <li><img src="assets/page/companion/smartscreen-1.svg" width="160" height="100" alt="Windows protected your PC, with More info circled" loading="lazy"><span>1. Click <b>More info</b>.</span></li>
               <li><img src="assets/page/companion/smartscreen-2.svg" width="160" height="100" alt="The same screen after More info, with Run anyway circled" loading="lazy"><span>2. Click <b>Run anyway</b>.</span></li>
             </ol>
+            <p class="didit-h">Still stuck?</p>
+            <ul class="didit-fixes">
+              <li><b>Right file?</b> It is <b>Nus-Companion-Setup.exe</b>, about 200 MB. Not the Portable file, and not the .yml or .blockmap files.</li>
+              <li><b>No Run anyway button?</b> Smart App Control or S mode blocks apps that are not signed yet. Turning those off is a big change to Windows, so we don’t ask you to.</li>
+              <li><b>Antivirus took it?</b> Restore it from your antivirus quarantine, or allow it, then run it again.</li>
+              <li><b>Nothing happened?</b> It installs in a few seconds without asking anything. Look for <b>Nus Companion</b> in the Start menu.</li>
+              <li>It needs Windows 10 or 11, 64-bit.</li>
+            </ul>
             <button type="button" class="didit-no" data-goatcounter-click="companion-did-not-install">It did not install</button>
+            <div class="didit-ask" hidden>
+              <p class="didit-h">What did you see?</p>
+              <div class="didit-saw" role="group" aria-label="What did you see?">${SAW.map((s) => `<button type="button" data-saw="${s[0]}" aria-pressed="false">${s[1]}</button>`).join("")}</div>
+              <p class="didit-tip" aria-live="polite" hidden></p>
+              <label class="didit-say"><span>What did it say? (optional)</span><input type="text" maxlength="300" autocomplete="off"></label>
+              <button type="button" class="didit-send">Tell Pranav</button>
+            </div>
             <p class="didit-note" aria-live="polite" hidden></p>
           </div>
         </details>
@@ -47,8 +72,8 @@
       </div>`;
   }
   function studentsCopy() {
-    const main = isMac ? `<a class="btn solid" href="${L.macArm}">${APPLE}Download for Mac (beta)</a>` : `<a class="btn solid" href="${L.win}">Download for Windows</a>`;
-    const alt = isMac ? `<a class="btn ghost" href="${L.macIntel}">${APPLE}Intel Mac</a>` : `<a class="btn ghost" href="${L.macArm}">${APPLE}Mac beta</a>`;
+    const main = isMac ? `<a class="btn solid" href="${L.macArm}" data-macfix-dl>${APPLE}Download for Mac (beta)</a>` : `<a class="btn solid" href="${L.win}">Download for Windows</a>`;
+    const alt = isMac ? `<a class="btn ghost" href="${L.macIntel}" data-macfix-dl>${APPLE}Intel Mac</a>` : `<a class="btn ghost" href="${L.macArm}" data-macfix-dl>${APPLE}Mac beta</a>`;
     return `<div class="who mono">For students</div>
       <h3 class="serif">NŪS for Students</h3>
       <p class="one">Your whole semester in one app. Drop in a syllabus, check what it read, and see what matters today.</p>
@@ -60,6 +85,17 @@
       <div class="bottom">
         <div class="chips"><span class="chip hi">Free, or Pro $9.99/mo</span><span class="chip hi">Windows</span><span class="chip hi">${APPLE}Mac beta</span></div>
         <div class="acts">${main}${alt}<a class="link" href="#setup" data-guide="students">Setup guide</a></div>
+        <details class="didit" data-macfix>
+          <summary>Mac won’t open it?</summary>
+          <div class="didit-body">
+            <p>Drag Nus into Applications, then open it from there. The Mac beta is not notarized by Apple yet, so macOS blocks the first open. What does the message say?</p>
+            <p><b>“Apple could not verify Nus”</b>: click <b>Done</b>. Open <b>System Settings</b>, then <b>Privacy &amp; Security</b>. Scroll down, click <b>Open Anyway</b> and enter your password.</p>
+            <p><b>“Nus is damaged and can’t be opened”</b>: click <b>Cancel</b>, not Move to Trash. Open <b>Terminal</b> (in Applications, then Utilities) and type this, with a space at the end:</p>
+            <div class="didit-cmd"><code>xattr -cr </code><button type="button" class="didit-copy">Copy</button></div>
+            <p>Drag Nus from Applications into the Terminal window and press <b>Return</b>. Then open Nus again.</p>
+            <p><b>“Not supported on this Mac”</b>: you have an Intel Mac. <a href="${L.macIntel}">Get the Intel version</a>.</p>
+          </div>
+        </details>
         <div class="small">No account needed unless you go Pro.</div>
       </div>`;
   }
@@ -236,11 +272,13 @@
     });
   }
   /* "Did it install?" under the Companion download (feedback collector 4). It opens by itself a moment
-     after the download click. "It did not install" sends one fixed note to the same intake feedback.html
-     uses; while that endpoint is not deployed (or cannot be reached) it opens the GitHub issues page. */
+     after the download click. "It did not install" asks one question (what did you see?), shows that
+     answer's fix, and "Tell Pranav" sends one note to the same intake feedback.html uses. The note keeps
+     the old fixed first sentence so the brief still groups it; while that endpoint is not deployed (or
+     cannot be reached) it opens the GitHub issues page. */
   const FEEDBACK_API = "https://xnpkplcjurzwanotmwwt.supabase.co/functions/v1/submit-feedback";
   const FEEDBACK_KEY = "sb_publishable_yBEA9loOsDI9E_HMFIVCRQ_PZvTD8rB";
-  const ISSUES = "https://github.com/potlakai/nus-desktop/issues/new?title=" + encodeURIComponent("Nūs Companion did not install");
+  const ISSUES = "https://github.com/potlakai/nus-desktop/issues/new?title=";
   const DIDNT_NOTE = "Nūs Companion did not install (from the site's Did it install? box).";
   function siteId() {
     try { let id = localStorage.getItem("nus-site-id"); if (!id) { id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now() + "-" + Math.random().toString(16).slice(2); localStorage.setItem("nus-site-id", id); } return id; } catch (e) { return null; }
@@ -249,15 +287,38 @@
     const box = card.querySelector("[data-didit]"), dl = card.querySelector("[data-didit-dl]");
     if (!box) return;
     if (dl) dl.addEventListener("click", () => setTimeout(() => { box.open = true; }, 1200));
-    const btn = box.querySelector(".didit-no"), note = box.querySelector(".didit-note");
-    btn.addEventListener("click", () => {
-      btn.disabled = true; note.hidden = false; note.textContent = "Telling Pranav...";
+    const btn = box.querySelector(".didit-no"), note = box.querySelector(".didit-note"), ask = box.querySelector(".didit-ask");
+    const chips = [...ask.querySelectorAll("[data-saw]")], tip = ask.querySelector(".didit-tip"), say = ask.querySelector(".didit-say input"), send = ask.querySelector(".didit-send");
+    let saw = null;
+    btn.addEventListener("click", () => { btn.hidden = true; ask.hidden = false; note.hidden = true; chips[0].focus({ preventScroll: true }); });
+    chips.forEach((c) => c.addEventListener("click", () => {
+      saw = SAW.find((s) => s[0] === c.dataset.saw);
+      chips.forEach((o) => o.setAttribute("aria-pressed", String(o === c)));
+      tip.innerHTML = saw[2]; tip.hidden = false;
+    }));
+    send.addEventListener("click", () => {
+      const words = say.value.trim().slice(0, 300);
+      const message = DIDNT_NOTE + " Saw: " + (saw ? saw[1] : "not picked") + "." + (words ? " They wrote: " + words : "");
+      send.disabled = true; note.hidden = false; note.textContent = "Telling Pranav...";
       const ctrl = window.AbortController ? new AbortController() : null;
       const timer = ctrl ? setTimeout(() => ctrl.abort(), 6000) : null;
-      fetch(FEEDBACK_API, { method: "POST", headers: { apikey: FEEDBACK_KEY, "content-type": "application/json" }, body: JSON.stringify({ source: "site", kind: "bug", message: DIDNT_NOTE, install_id: siteId(), website: "" }), signal: ctrl ? ctrl.signal : undefined })
-        .then((r) => { if (!r.ok) throw new Error("http " + r.status); note.textContent = "Thanks. Pranav got a note that it did not install. Nothing about you was sent."; })
-        .catch(() => { window.open(ISSUES, "_blank", "noopener"); note.textContent = "Opened a GitHub issue page. Say what you saw and Pranav will help."; btn.disabled = false; })
+      fetch(FEEDBACK_API, { method: "POST", headers: { apikey: FEEDBACK_KEY, "content-type": "application/json" }, body: JSON.stringify({ source: "site", kind: "bug", message, install_id: siteId(), website: "" }), signal: ctrl ? ctrl.signal : undefined })
+        .then((r) => { if (!r.ok) throw new Error("http " + r.status); ask.hidden = true; note.textContent = "Thanks. Pranav got your note. Only what you picked and typed was sent."; })
+        .catch(() => { window.open(ISSUES + encodeURIComponent("Nūs Companion did not install" + (saw ? ": " + saw[1] : "")), "_blank", "noopener"); note.textContent = "Opened a GitHub issue page. Say what you saw and Pranav will help."; send.disabled = false; })
         .finally(() => { if (timer) clearTimeout(timer); });
+    });
+  }
+  /* "Mac won't open it?" under the student downloads: opens a moment after a Mac download click, and
+     Copy puts the Terminal command (with its trailing space) on the clipboard. */
+  function mountMacFix(card) {
+    const box = card.querySelector("[data-macfix]");
+    if (!box) return;
+    card.querySelectorAll("[data-macfix-dl]").forEach((a) => a.addEventListener("click", () => setTimeout(() => { box.open = true; }, 1200)));
+    const copy = box.querySelector(".didit-copy"), code = box.querySelector(".didit-cmd code");
+    copy.addEventListener("click", () => {
+      const done = () => { copy.textContent = "Copied"; setTimeout(() => (copy.textContent = "Copy"), 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.textContent).then(done, () => getSelection().selectAllChildren(code));
+      else getSelection().selectAllChildren(code);
     });
   }
   const rel = (el, host) => { const a = el.getBoundingClientRect(), h = host.getBoundingClientRect(); return { x: a.left - h.left + a.width / 2, y: a.top - h.top, w: a.width }; };
@@ -265,7 +326,7 @@
   function mountFork(root) {
     const cards = [...root.querySelectorAll(".card")];
     cards[0].querySelector(".media").innerHTML = companionMedia(); cards[0].querySelector(".copy").innerHTML = companionCopy(); mountDidIt(cards[0]);
-    cards[1].querySelector(".media").innerHTML = studentsMedia(); cards[1].querySelector(".copy").innerHTML = studentsCopy();
+    cards[1].querySelector(".media").innerHTML = studentsMedia(); cards[1].querySelector(".copy").innerHTML = studentsCopy(); mountMacFix(cards[1]);
     mountDesk(cards[0]); mountTabs(cards[1].querySelector(".media"));
     let focus = -1, seen = 0;
     // a phone cannot hover: say what a finger can do
@@ -277,5 +338,5 @@
     StrandField(root, { per: 90, bottom: () => { const tops = cards.map((cd) => rel(cd.querySelector(".media"), root).y); return Math.abs(tops[0] - tops[1]) > 40 ? rel(cards[0], root).y : Math.min(...tops) + 60; }, /* stacked cards: the strands tuck in behind the first card */ state: () => ({ orb: { x: root.clientWidth / 2, y: root.querySelector(".gap").offsetTop + 96, r: 58 }, targets: cards.map((cd) => rel(cd.querySelector(".media"), root)), focus, grow: entryProgress.has(root) ? entryProgress.get(root) : seen, scrub: entryProgress.has(root) }) });
   }
   const setEntryProgress = (root, value) => value == null ? entryProgress.delete(root) : entryProgress.set(root, clamp(value));
-  window.NusWays = { mountFork, mountTabs, mountDesk, StrandField, companionCopy, mountDidIt, studentsCopy, companionMedia, studentsMedia, rel, setEntryProgress };
+  window.NusWays = { mountFork, mountTabs, mountDesk, StrandField, companionCopy, mountDidIt, mountMacFix, studentsCopy, companionMedia, studentsMedia, rel, setEntryProgress };
 })();

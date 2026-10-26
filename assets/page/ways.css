@@ -177,3 +177,25 @@
 .didit-no:hover { border-color:var(--accent); color:#fff }
 .didit-no:disabled { opacity:.5; cursor:wait }
 .didit-note { margin-top:10px }
+/* "Still stuck?", the follow-up question, and the Mac box under the student downloads */
+.didit-body b { color:var(--cream); font-weight:600 }
+.didit-body a { color:var(--accent) }
+.didit .didit-h { margin:4px 0 8px; color:var(--cream); font-weight:600 }
+.ways .card .didit-fixes { margin:0 0 12px; gap:7px }
+.ways .card .didit-fixes li { display:block; font-size:12.5px; line-height:1.5; color:var(--muted) }
+.ways .card .didit li::before { content:none }
+.didit-ask { margin-top:4px }
+.didit-saw { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px }
+.didit-saw button, .didit-send, .didit-copy { font:inherit; font-size:12.5px; color:inherit; background:transparent; border:1px solid var(--line); border-radius:999px; padding:5px 12px; cursor:pointer }
+.didit-saw button:hover, .didit-copy:hover { border-color:var(--accent); color:#fff }
+.didit-saw button[aria-pressed="true"] { border-color:var(--accent); background:rgba(144,165,255,.14); color:#fff }
+.didit .didit-tip { padding:8px 11px; border-left:2px solid var(--accent); background:rgba(144,165,255,.06); border-radius:0 6px 6px 0 }
+.didit-say { display:grid; gap:5px; margin-bottom:10px; font-size:12.5px }
+.didit-say input { font:inherit; font-size:13px; color:var(--cream); background:rgba(241,236,223,.04); border:1px solid var(--line2); border-radius:8px; padding:8px 10px; width:100%; max-width:360px }
+.didit-say input:focus { outline:none; border-color:var(--accent) }
+.didit-send { color:#0b1020; background:var(--cream); border-color:var(--cream); font-weight:600 }
+.didit-send:hover { background:#fff }
+.didit-send:disabled { opacity:.5; cursor:wait }
+.didit-cmd { display:flex; align-items:center; gap:10px; margin:0 0 10px; padding:7px 8px 7px 12px; width:max-content; max-width:100%; border:1px solid var(--line2); border-radius:8px; background:rgba(0,0,0,.35) }
+.didit-cmd code { font:13px ui-monospace,Menlo,Consolas,monospace; color:var(--cream); white-space:pre }
+.didit summary:focus-visible, .didit button:focus-visible { outline:2px solid var(--brass); outline-offset:3px }
