@@ -22,7 +22,7 @@
   var me = document.currentScript;
   if (me && me.src && !document.querySelector("link[data-nus-feedback]")) {
     var css = document.createElement("link");
-    css.rel = "stylesheet"; css.href = me.src.replace(/feedback\.js(\?.*)?$/, "feedback.css?v=1"); css.setAttribute("data-nus-feedback", "");
+    css.rel = "stylesheet"; css.href = me.src.replace(/feedback\.js(\?.*)?$/, "feedback.css?v=3"); css.setAttribute("data-nus-feedback", "");
     document.head.appendChild(css);
   }
 

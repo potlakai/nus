@@ -29,14 +29,13 @@
 
   /* ---------- the two products (shipped facts only) ---------- */
   function companionCopy() {
-    return `<div class="who mono">For anyone on Windows</div>
-      <h3 class="serif">NŪS Companion</h3>
+    return `<h3 class="serif">NŪS Companion</h3>
       <p class="one">Your own Jarvis on Windows. It acts when you talk, points when you ask, and knows the notes you give it.</p>
       <ul>
-        <li><span><b>Say it, it acts.</b> <span class="d">“Open Notepad, type hello.” Voice actions run on Jev.</span></span></li>
-        <li><span><b>Point and ask.</b> <span class="d">Press Ctrl+Shift+T on anything. The answer shows up right there.</span></span></li>
-        <li><span><b>Knows your stuff.</b> <span class="d">Add folders of notes, docs and your calendar. It answers from them when they help.</span></span></li>
-        <li><span><b>Or keep it up top.</b> <span class="d">Island mode puts the Knot in a small bar at the top of your screen. Turn it on in Settings.</span></span></li>
+        <li><span><b>Say it, it acts.</b> <span class="d">“Open Notepad, type hello.”</span></span></li>
+        <li><span><b>Point and ask.</b> <span class="d">Ctrl+Shift+T on anything, and the answer lands there.</span></span></li>
+        <li><span><b>Knows your stuff.</b> <span class="d">Add folders of notes, docs and your calendar.</span></span></li>
+        <li><span><b>Island mode.</b> <span class="d">The Knot in a small bar at the top of your screen.</span></span></li>
       </ul>
       <div class="bottom">
         <div class="chips"><span class="chip hi">Free</span><span class="chip">Windows 10 and 11</span><span class="chip">Your own AI keys</span></div>
@@ -74,8 +73,7 @@
   function studentsCopy() {
     const main = isMac ? `<a class="btn solid" href="${L.macArm}" data-macfix-dl>${APPLE}Download for Mac (beta)</a>` : `<a class="btn solid" href="${L.win}">Download for Windows</a>`;
     const alt = isMac ? `<a class="btn ghost" href="${L.macIntel}" data-macfix-dl>${APPLE}Intel Mac</a>` : `<a class="btn ghost" href="${L.macArm}" data-macfix-dl>${APPLE}Mac beta</a>`;
-    return `<div class="who mono">For students</div>
-      <h3 class="serif">NŪS for Students</h3>
+    return `<h3 class="serif">NŪS for Students</h3>
       <p class="one">Your whole semester in one app. Drop in a syllabus, check what it read, and see what matters today.</p>
       <ul>
         <li><span><b>Syllabus in, semester mapped.</b> <span class="d">Nothing is saved until you check it.</span></span></li>
@@ -83,7 +81,7 @@
         <li><span><b>The Companion is inside.</b> <span class="d">The same Knot, built in.</span></span></li>
       </ul>
       <div class="bottom">
-        <div class="chips"><span class="chip hi">Free, or Pro $9.99/mo</span><span class="chip hi">Windows</span><span class="chip hi">${APPLE}Mac beta</span></div>
+        <div class="chips"><span class="chip hi">Free to start</span><span class="chip hi">Windows</span><span class="chip hi">${APPLE}Mac beta</span></div>
         <div class="acts">${main}${alt}<a class="link" href="#setup" data-guide="students">Setup guide</a></div>
         <details class="didit" data-macfix>
           <summary>Mac won’t open it?</summary>
@@ -96,23 +94,22 @@
             <p><b>“Not supported on this Mac”</b>: you have an Intel Mac. <a href="${L.macIntel}">Get the Intel version</a>.</p>
           </div>
         </details>
-        <div class="small">No account needed unless you go Pro.</div>
+        <div class="small">${isMac ? "" : `Mac beta is for Apple silicon. Intel Mac? <a href="${L.macIntel}" data-macfix-dl>Get the Intel build</a>. `}No account needed unless you go Pro.</div>
       </div>`;
   }
   const VIEWS = [["Today", "What matters now", "assets/app-today.webp"], ["Review", "Check what it read", "assets/app-review.webp"], ["Map", "How it connects", "assets/app-map.webp"]];
   const SCENES = [["Say it", "Voice actions", 5.6], ["Point and ask", "Ctrl+Shift+T", 5.4], ["Your folders", "It knows them", 6.2], ["Island mode", "A bar up top", 10.4]];
   const tabRow = (items, label, cls) => `<div class="tabs ${cls}" role="tablist" aria-label="${label}">${items.map((t, i) => `<button type="button" role="tab" aria-selected="${!i}" class="${i ? "" : "on"}">${t[0]}<small>${t[1]}</small><i></i></button>`).join("")}</div>`;
   function studentsMedia() {
-    return `<div class="appwin"><div class="tb"><div class="l"><i class="r"></i><i class="y"></i><i class="g"></i></div><span>NŪS</span></div>
-      <div class="shots">${VIEWS.map((t, i) => `<img src="${t[2]}" alt="NŪS for Students, ${t[0]} view" class="${i ? "" : "on"}" loading="lazy">`).join("")}</div></div>
+    return `<div class="appwin"><div class="shots">${VIEWS.map((t, i) => `<img src="${t[2]}" alt="NŪS for Students, ${t[0]} view" class="${i ? "" : "on"}" loading="lazy">`).join("")}</div></div>
       ${tabRow(VIEWS, "Student app views", "")}`;
   }
   function companionMedia() {
     return `<div class="desk" aria-label="NŪS Companion on a desktop">
-      <div class="appish"><div class="bar"><b></b>report-draft.docx</div><div class="body"><div class="ln m"></div><div class="ln"></div><div class="ln s"></div><div class="ln m"></div><div class="err">Error: the linked file was not found</div><div class="ln"></div><div class="ln s"></div></div></div>
-      <div class="note"><div class="bar">Untitled - Notepad</div><div class="txt"></div></div>
+      <div class="appish"><div class="bar">report-draft.docx</div><div class="body"><div class="ln m"></div><div class="ln"></div><div class="ln s"></div><div class="ln m"></div><div class="err">Error: the linked file was not found</div><div class="ln"></div><div class="ln s"></div></div></div>
+      <div class="note"><div class="bar">Notepad</div><div class="txt"></div></div>
       <div class="ring"></div>
-      <svg class="cursor" viewBox="0 0 18 24" style="left:70%;top:80%;opacity:0" aria-hidden="true"><path d="M1 1 L1 19 L6 14.5 L9.5 22 L12.5 20.7 L9 13.3 L16 13.3 Z" fill="#fff" stroke="#111" stroke-width="1.2"/></svg>
+      <svg class="cursor" viewBox="0 0 18 24" style="opacity:0" aria-hidden="true"><path d="M1 1 L1 19 L6 14.5 L9.5 22 L12.5 20.7 L9 13.3 L16 13.3 Z" fill="#fff" stroke="#111" stroke-width="1.2"/></svg>
       <div class="gl pill"><span class="dot"></span><span class="words"></span></div>
       <div class="gl keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>T</kbd></div>
       <div class="gl bub b1"><div class="k">Explain</div>The link points to a file that moved. Relink it from Insert, then Link.</div>
@@ -147,6 +144,9 @@
     const btns = [...root.querySelectorAll(".tabs button")];
     let visible = false, run = 0; new IntersectionObserver((es) => (visible = es[0].isIntersecting), { threshold: 0.3 }).observe(desk);
     const on = (el, v) => el.classList.toggle("on", v);
+    // the cursor glides on transform, placed as a fraction of the desk
+    const curAt = (fx, fy) => { cur.style.transform = `translate(${fx * desk.clientWidth}px,${fy * desk.clientHeight}px)`; };
+    curAt(0.7, 0.8);
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     function tab(k) { btns.forEach((b, j) => { b.classList.toggle("on", j === k); b.setAttribute("aria-selected", j === k); }); btns[k].style.setProperty("--dur", SCENES[k][2] + "s"); restartBar(btns[k]); }
     // Island mode (Companion 0.1.8+): the same Knot docked at the left end of a black bar at the top centre.
@@ -176,14 +176,14 @@
       if (knot) v ? knot.pause() : knot.resume();
       if (islKnot) v ? islKnot.resume() : islKnot.pause();
     }
-    function reset() { [pill, note, keys, b1, b2, ring, islCard].forEach((e) => on(e, false)); cur.style.opacity = 0; cur.style.left = "70%"; cur.style.top = "80%"; txt.textContent = ""; words.textContent = ""; st("idle");
+    function reset() { [pill, note, keys, b1, b2, ring, islCard].forEach((e) => on(e, false)); cur.style.opacity = 0; curAt(0.7, 0.8); txt.textContent = ""; words.textContent = ""; st("idle");
       if (isl.classList.contains("on") || islKnot) { islSet("idle"); islOn(false); } islCard.classList.remove("pressed"); }
     // each scene checks its token, so clicking a tab cuts the current one short
     const scenes = [
       async (w, type) => { pill.querySelector(".dot").style.display = ""; on(pill, true); st("listening");
         await type(words, "open notepad, new note, type hello", 42); st("thinking"); await w(300); on(pill, false); on(note, true); st("ready"); await type(txt, "hello", 90); await w(1500); },
       async (w) => { const dr = desk.getBoundingClientRect(), er = err.getBoundingClientRect();
-        cur.style.opacity = 1; await w(60); cur.style.left = ((er.left - dr.left + er.width * 0.6) / dr.width) * 100 + "%"; cur.style.top = ((er.top - dr.top + er.height * 0.5) / dr.height) * 100 + "%"; await w(950);
+        cur.style.opacity = 1; await w(60); curAt((er.left - dr.left + er.width * 0.6) / dr.width, (er.top - dr.top + er.height * 0.5) / dr.height); await w(950);
         on(keys, true); st("thinking"); ring.style.cssText = `left:${er.left - dr.left - 5}px;top:${er.top - dr.top - 5}px;width:${er.width + 10}px;height:${er.height + 10}px`; on(ring, true);
         await w(900); on(keys, false); on(b1, true); st("ready"); await w(2600); },
       async (w) => { st("thinking"); await w(300); on(b2, true); await w(1600); st("ready"); await w(3600); },
@@ -254,7 +254,7 @@
         const steps = 26, end = clamp(grow * 1.15 - s.s * 0.15);
         for (let k = 1; k <= steps * end; k++) { const t = k / steps; pen.to(bez(x0, x1, x2, x3, t), bez(y0, y1, y2, y3, t)); }
         pen.stroke();
-        if (grow > 0.98 && s.s < (w[s.side] > 1.2 ? 0.16 : 0.05)) {
+        if (!reduce && grow > 0.98 && s.s < (w[s.side] > 1.2 ? 0.16 : 0.05)) {
           const t = ((now / 1000) * 0.28 + s.s * 7) % 1, bx = bez(x0, x1, x2, x3, t), by = bez(y0, y1, y2, y3, t), gl = Math.sin(Math.PI * t);
           pen.rgb(255, 248, 235); pen.glow(bx, by, 0, 6, 0.85 * gl);
         }

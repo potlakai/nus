@@ -1,0 +1,8 @@
+/* Site-wide floor, loaded right after tokens.css on every page: no sideways scroll, a ring on whatever the
+   keyboard reaches, display heads that wrap instead of overflowing, and stillness for reduced motion. */
+html, body { overflow-x:clip }
+:where(a, button, summary, input, textarea, select, [tabindex]):focus-visible { outline:2px solid var(--focus); outline-offset:3px; transition:none }
+h1, h2, h3 { overflow-wrap:break-word; min-width:0 }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important }
+}

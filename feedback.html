@@ -10,21 +10,24 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/feedback.css?v=1" data-nus-feedback>
+<link rel="stylesheet" href="assets/tokens.css?v=3">
+<link rel="stylesheet" href="assets/base.css?v=1">
+<link rel="stylesheet" href="assets/feedback.css?v=3" data-nus-feedback>
 <style>
   :root { --ink:#060810; --cream:#f1ecdf; --mist:#b9c1d3; --muted:#8b96ae; --cobalt:#7890ff; --brass:#d1a75f; --line:rgba(206,216,246,.14); --line2:rgba(206,216,246,.26) }
   * { box-sizing:border-box; margin:0; padding:0 }
-  html, body { background:var(--ink); color:var(--cream); font-family:Inter,system-ui,sans-serif; -webkit-font-smoothing:antialiased }
-  body { min-height:100vh; background:radial-gradient(90% 60% at 50% 0%, #141b38 0%, #0a0e1e 45%, #060810 100%) no-repeat }
-  .mono { font-family:"JetBrains Mono",ui-monospace,monospace; text-transform:uppercase; letter-spacing:.16em; font-size:11px }
+  html, body { background:var(--ink); color:var(--cream); font-family:var(--font-body); -webkit-font-smoothing:antialiased }
+  body { min-height:100vh; background:radial-gradient(90% 60% at 50% 0%, var(--c-141b38) 0%, var(--c-0a0e1e) 45%, var(--c-ink) 100%) no-repeat }
+  .mono { font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.16em; font-size:11px }
   nav { display:flex; align-items:center; justify-content:space-between; height:84px; padding:0 40px }
   nav a { color:var(--mist); text-decoration:none; font-size:15px } nav a:hover { color:var(--cream) }
-  nav .logo { font:400 28px "Instrument Serif",serif; color:var(--cream); letter-spacing:.02em }
+  nav .logo { font:400 28px var(--font-display); color:var(--cream); letter-spacing:.02em }
   main { max-width:680px; margin:0 auto; padding:10vh 24px 16vh }
   .kicker { color:var(--cobalt); margin-bottom:16px }
-  h1 { font:400 clamp(44px,7vw,68px)/1 "Instrument Serif",serif; letter-spacing:-.01em } h1 em { color:var(--brass) }
+  h1 { font:400 clamp(44px,7vw,68px)/1 var(--font-display); letter-spacing:-.01em } h1 em { color:var(--brass) }
   .lede { margin-top:18px; color:var(--mist); font-size:16px; line-height:1.6 }
-  .card { margin-top:36px; padding:28px; border-radius:22px; border:1px solid var(--line); background:linear-gradient(180deg,rgba(20,25,46,.72),rgba(9,12,24,.72)) }
+  .card { margin-top:36px; padding:28px; border-radius:22px; border:1px solid var(--line); background:linear-gradient(180deg,var(--c-14192e-72),var(--c-090c18-72)) }
+  nav a:focus-visible, .back:focus-visible { outline:2px solid var(--focus); outline-offset:3px }
   .back { display:inline-block; margin-top:34px; color:var(--mist); font-size:14.5px; text-decoration:none; border-bottom:1px solid var(--line2) } .back:hover { color:var(--cream) }
   @media (max-width:640px) { nav { padding:0 20px } main { padding-top:6vh } .card { padding:20px } }
 </style>
@@ -33,7 +36,7 @@
 <nav><a class="logo" href="index.html">NŪS</a><a href="index.html">Back to NŪS</a></nav>
 <main>
   <div class="kicker mono">Built with you</div>
-  <h1>What should it do <em>next?</em></h1>
+  <h1>What should NŪS do <em>next?</em></h1>
   <p class="lede" id="fb-lede">Leave the friction you want NŪS to remove, or say what broke. It goes straight to Pranav, and he reads every note.</p>
   <div class="card" data-nus-feedback-form="page"><noscript><p class="lede">This form needs JavaScript. You can email Pranav at <a href="mailto:pranavfromthegrowth@gmail.com" style="color:inherit">pranavfromthegrowth@gmail.com</a> instead.</p></noscript></div>
   <a class="back" href="index.html#faq">Back to the questions</a>
@@ -45,7 +48,7 @@
     document.getElementById("fb-lede").textContent = "What made you uninstall? One honest line helps Pranav fix it for the next person.";
   }
 </script>
-<script src="assets/feedback.js?v=1"></script>
+<script src="assets/feedback.js?v=3"></script>
 <script src="assets/attrib.js"></script>
 <script data-goatcounter="https://nus.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>

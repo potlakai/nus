@@ -32,32 +32,32 @@
       { t: "Import a syllabus", d: "Drop in the PDF and check what it read. Nothing is saved until you confirm. The Companion is already inside.", scene: "review", dur: 6 },
     ],
   };
-  const NOTEPAD = `<div class="notepad"><div class="bar">Untitled - Notepad</div><div class="txt"></div></div>`;
+  const NOTEPAD = `<div class="notepad"><div class="bar">Notepad</div><div class="txt"></div></div>`;
   const WINCAP = (t) => `<div class="cap">${t}</div>`;
 
   function sceneHTML(name) {
     switch (name) {
       case "smart": return WINCAP("Windows, first launch") + `<div class="smart"><h4>Windows protected your PC</h4><p>Microsoft Defender SmartScreen prevented an unrecognized app from starting.</p><div class="more">More info</div><div class="row"><span class="run">Run anyway</span><span>Don’t run</span></div><div class="ring"></div></div>`;
-      case "keys": return WINCAP("Companion window · Settings") + `<div class="gl keys-card"><div class="ey">01 / CONNECTIONS</div><h5>Your keys</h5><div class="m">Stored on this device. Saved keys are never shown here.</div>
-        ${["typesafe", "gemini", "anthropic"].map((k) => `<div class="krow"><label>${KEYS[k].name}<small>${KEYS[k].role}</small></label><span class="badge">Not set</span><span class="get">Get a key ↗</span><div class="field"></div></div>`).join("")}<span class="save">Save keys</span></div>`;
-      case "folders": return WINCAP("Companion window · Folders") + `<div class="gl fold"><h5>A little context goes a long way.</h5><div class="m">Add PDF, Word, text, Markdown, and calendar files.</div><span class="add">+ Add folder</span>
+      case "keys": return WINCAP("Companion window, Settings") + `<div class="gl keys-card"><h5>Your keys</h5><div class="m">Stored on this device. Saved keys are never shown here.</div>
+        ${["typesafe", "gemini", "anthropic"].map((k) => `<div class="krow"><label>${KEYS[k].name}<small>${KEYS[k].role}</small></label><span class="badge">Not set</span><span class="get">Get a key</span><div class="field"></div></div>`).join("")}<span class="save">Save keys</span></div>`;
+      case "folders": return WINCAP("Companion window, Folders") + `<div class="gl fold"><h5>A little context goes a long way.</h5><div class="m">Add PDF, Word, text, Markdown, and calendar files.</div><span class="add">+ Add folder</span>
         <div class="frows">${[["Class notes", "48 files"], ["Resume and cover letters", "9 files"], ["Fall calendar", "1 file"]].map(([n, c]) => `<div class="frow"><span class="ic"></span><span><b>${n}</b><small>${c}</small></span><span class="tg"></span></div>`).join("")}</div>
         <div class="m foot">Up to 200 files per folder, 2 MB per file. Turn a folder off to stop using it.</div></div>`;
       case "voice": return WINCAP("Anywhere on your screen") + `<div class="voice"><div class="knotbox"><canvas></canvas></div><div class="caps">${K("Ctrl", "Alt", "Space")}</div><div class="gl say"><span class="dot"></span><span class="w"></span></div></div>${NOTEPAD}<div class="gl offer">Want me to save that as a routine?</div>`;
-      case "point": return WINCAP("Ctrl+Shift+T on anything") + `<div class="doc"><div class="bar"><b></b>report-draft.docx</div><div class="body"><div class="ln m"></div><div class="ln"></div><div class="ln s"></div><div class="err">Error: the linked file was not found</div><div class="ln"></div><div class="ln m"></div></div></div>
+      case "point": return WINCAP("Ctrl+Shift+T on anything") + `<div class="doc"><div class="bar">report-draft.docx</div><div class="body"><div class="ln m"></div><div class="ln"></div><div class="ln s"></div><div class="err">Error: the linked file was not found</div><div class="ln"></div><div class="ln m"></div></div></div>
         <div class="gl bub"><div class="k">Explain</div>The link points to a file that moved. Relink it from Insert, then Link.</div><div class="pknot"><canvas></canvas></div>`;
-      case "map": return WINCAP("Companion window · Map") + `<div class="gl mapcard"><div class="mh"><b>A map of what you keep.</b><span>Your folders, routines, and conversations, connected.</span></div><svg class="graph" viewBox="0 0 560 250" aria-label="Map: the Knot in the middle, linked to folders, routines and conversations">
+      case "map": return WINCAP("Companion window, Map") + `<div class="gl mapcard"><div class="mh"><b>A map of what you keep.</b><span>Your folders, routines, and conversations, connected.</span></div><svg class="graph" viewBox="0 0 560 250" aria-label="Map: the Knot in the middle, linked to folders, routines and conversations">
         ${[[280, 128, 0], [110, 60, 1], [120, 196, 1], [450, 58, 2], [470, 190, 3], [300, 30, 2], [285, 226, 3]].slice(1).map(([x, y], i) => `<line class="ed" style="--i:${i}" x1="280" y1="128" x2="${x}" y2="${y}"/>`).join("")}
-        <circle class="hub" cx="280" cy="128" r="22"/><text class="hl" x="280" y="168" text-anchor="middle">THE KNOT · YOUR MEMORY</text>
+        <circle class="hub" cx="280" cy="128" r="22"/><text class="hl" x="280" y="168" text-anchor="middle">The Knot and your memory</text>
         ${[[110, 60, "Class notes", "folder"], [120, 196, "Resume docs", "folder"], [450, 58, "Morning setup", "routine"], [470, 190, "Tuesday call", "conversation"], [300, 30, "Open my notes", "routine"], [285, 226, "Study plan chat", "conversation"]].map(([x, y, t, k], i) =>
           `<g class="nd ${k}" style="--i:${i}"><circle cx="${x}" cy="${y}" r="7"/><text x="${x + (x < 280 ? -12 : 12)}" y="${y + 4}" text-anchor="${x < 280 ? "end" : "start"}">${t}</text></g>`).join("")}
         </svg><div class="legend"><span class="folder">Folders</span><span class="routine">Routines</span><span class="conversation">Conversations</span></div></div>`;
       case "dl": return WINCAP("Pick your download") + `<div class="dl"><div class="b">Windows installer <small>Nus-Setup.exe</small></div><div class="b">${APPLE}Mac beta, Apple silicon <small>Nus-arm64.dmg</small></div><div class="b">${APPLE}Mac beta, Intel <small>Nus-x64.dmg</small></div><p class="note">Mac won’t open it? System Settings, Privacy &amp; Security, Open Anyway. Says it’s damaged? Run <code>xattr -cr</code> on it in Terminal.</p></div>`;
       case "local": return WINCAP("First launch") + `<div class="gl profile"><span class="av">N</span><span><b>You</b><span>Local profile</span></span></div>`;
-      case "prov": return WINCAP("NŪS for Students · Settings") + `<div class="cards">
-        <div class="setcard hi"><div class="kick">AI provider</div><h6>Claude Code detected</h6><p>NŪS uses your own AI to read syllabi. Claude Code is detected automatically; otherwise paste an Anthropic API key.</p></div>
-        <div class="setcard"><div class="kick">Companion AI key</div><h6>Gemini API key</h6><div class="inp">AIza…</div><span class="sv">Save key</span></div></div>`;
-      case "review": return WINCAP("Check what it read") + `<div class="win"><div class="tb"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span>NŪS</span></div><img src="assets/app-review.webp" alt="NŪS for Students review screen: check what it read from a syllabus"></div>`;
+      case "prov": return WINCAP("NŪS for Students, Settings") + `<div class="cards">
+        <div class="setcard hi"><h6>AI provider: Claude Code detected</h6><p>NŪS uses your own AI to read syllabi. Claude Code is detected automatically; otherwise paste an Anthropic API key.</p></div>
+        <div class="setcard"><h6>Companion AI key: Gemini</h6><div class="inp">AIza…</div><span class="sv">Save key</span></div></div>`;
+      case "review": return WINCAP("Check what it read") + `<div class="win"><img src="assets/app-review.webp" alt="NŪS for Students review screen: check what it read from a syllabus"></div>`;
     }
   }
   // scenes that hold a live Knot are built once and reset by hand; the rest are rebuilt to replay
@@ -91,14 +91,14 @@
 
   function ProdTabs(root, onPick) {
     const seg = root.querySelector(".prod .seg"), pill = seg.querySelector(".pill"), btns = [...seg.querySelectorAll("button")];
-    const place = (b) => { pill.style.left = b.offsetLeft + "px"; pill.style.width = b.offsetWidth + "px"; };
+    const place = (b) => { pill.style.transform = `translateX(${b.offsetLeft}px)`; pill.style.width = b.offsetWidth + "px"; };   // glides on transform; the width snaps
     btns.forEach((b) => b.addEventListener("click", () => { btns.forEach((x) => { x.classList.toggle("on", x === b); x.setAttribute("aria-selected", x === b); }); place(b); onPick(b.dataset.p); }));
     requestAnimationFrame(() => place(btns[0])); addEventListener("resize", () => place(btns.find((b) => b.classList.contains("on"))));
   }
 
   function mount(root) {
     root.innerHTML = `<div class="sec">
-      <div class="head reveal"><div class="mono">Setup</div><h2 class="serif">Running in <em>ten minutes.</em></h2><p>Pick your app. Each step shows the screen it happens on.</p></div>
+      <div class="head reveal"><div class="mono">Setup</div><h2 class="serif">Download, add your key, <em>say it.</em></h2><p>Pick your app. Each step shows the screen it happens on.</p></div>
       <div class="prod reveal"><div class="seg" role="tablist" aria-label="Which app"><span class="pill" aria-hidden="true"></span><button type="button" role="tab" class="on" aria-selected="true" data-p="companion">NŪS Companion</button><button type="button" role="tab" aria-selected="false" data-p="students">NŪS for Students</button></div></div>
       <div class="fa reveal"><ol class="gsteps"></ol><div class="screen" aria-live="polite"></div></div></div>`;
     const list = root.querySelector(".gsteps"), screen = root.querySelector(".screen"), fa = root.querySelector(".fa");

@@ -35,9 +35,7 @@
     w.className = "mac";
     w.innerHTML = `
       <div class="mac-title">
-        <div class="lights" aria-hidden="true"><i class="r"></i><i class="y"></i><i class="g"></i></div>
         <div class="mac-name"><span class="doc">${I.doc}</span><span data-file></span><span class="edited">Edited</span></div>
-        <div class="mac-right" aria-hidden="true"><span class="ico">${I.share}</span></div>
       </div>
       <div class="ribbon-tabs" aria-hidden="true"><span class="on">Home</span><span>Insert</span><span>Draw</span><span>Page Layout</span><span>Formulas</span><span>Data</span><span>Review</span><span>View</span></div>
       <div class="ribbon" role="group" aria-label="Spreadsheet tools" tabindex="-1">

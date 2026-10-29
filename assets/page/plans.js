@@ -14,13 +14,13 @@
     ? `<a class="btn solid" href="${L.macArm}">${APPLE}Mac beta</a><a class="btn ghost" href="${L.macIntel}">${APPLE}Intel Mac</a>`
     : `<a class="btn solid" href="${L.win}">Download free</a><a class="btn ghost" href="${L.macArm}">${APPLE}Mac beta</a>`;
   const PLANS = [
-    { k: "The Knot on its own", name: "NŪS Companion", price: "$0", one: "No plan, no account.",
+    { name: "NŪS Companion", price: "$0", one: "No plan, no account.",
       list: ["Your own Jarvis: voice actions and pointing", "Your folders of notes and docs, mapped", "On top of every Windows app", "Your own AI keys"],
       foot: `<a class="btn ghost" href="${L.companion}">Download for Windows</a>`, small: isMac ? "Version 0.1.13. Windows only for now." : "Version 0.1.13. Windows 10 and 11." },
-    { k: "Students", name: "Free", price: "$0", one: "Forever. No trial clock.",
+    { name: "Students Free", price: "$0", one: "Forever. No trial clock.",
       list: ["Unlimited courses, tasks and calendar", "3 syllabus imports, 10 questions a day", "Companion 20 minutes a day", "1 connected account, 1 automation rule", "7 days of history, 512 MB"],
       foot: studentsBtns, small: isMac ? "Apple silicon or Intel. Windows too." : "Windows, and Mac beta." },
-    { k: "Students", name: "Pro", price: "$9.99<small>/ month</small>", one: "Everything in Free, with the caps off.", pro: true,
+    { name: "Students Pro", price: "$9.99<small>/ month</small>", one: "Everything in Free, with the caps off.", pro: true,
       list: ["Unlimited imports and questions", "Unlimited Companion, full history", "Google Calendar and Outlook together", "More automation rules, 2 GB"],
       foot: `<a class="btn brass" href="${PRO_URL}">Get Pro</a>`, small: "Buy here or in the app. Cancel any time." },
   ];
@@ -61,7 +61,7 @@
         const end = clamp(grow * 1.2 - s.s * 0.2);
         for (let k = 1; k <= 30 * end; k++) { const u = k / 30; pen.to(bez(x0, x1, x2, x3, u), bez(y0, y1, y2, y3, u)); }
         pen.stroke();
-        if (grow >= 1 && s.s < (t.hot ? 0.12 : 0.05)) {
+        if (!reduce && grow >= 1 && s.s < (t.hot ? 0.12 : 0.05)) {
           const u = ((now / 1000) * 0.25 + s.s * 9) % 1, bx = bez(x0, x1, x2, x3, u), by = bez(y0, y1, y2, y3, u), gl = Math.sin(Math.PI * u);
           pen.rgb(255, 248, 235); pen.glow(bx, by, 0, 6, 0.85 * gl);
         }
@@ -75,7 +75,7 @@
     root.innerHTML = `<div class="sec">
       <div class="head reveal"><div class="mono">Pricing</div><h2 class="serif">Free to <em>start.</em></h2><p>Both apps are free. Pro is only for the student who hits the caps.</p></div>
       <div class="cols">${PLANS.map((p) => `<article class="col reveal${p.pro ? " pro" : ""}">
-        <div class="k mono">${p.k}</div><h3 class="serif">${p.name}</h3><div class="price">${p.price}</div><p class="one">${p.one}</p>
+        <h3 class="serif">${p.name}</h3><div class="price">${p.price}</div><p class="one">${p.one}</p>
         <ul>${p.list.map((l) => `<li>${TICK}<span>${l}</span></li>`).join("")}</ul>
         <div class="foot"><div class="btns">${p.foot}</div>${p.small ? `<p class="small">${p.small}</p>` : ""}</div>
       </article>`).join("")}</div>

@@ -23,10 +23,10 @@
   const STOP = ["is", "it", "the", "a", "an", "do", "does", "can", "how", "what", "i", "my", "to", "of", "on", "in", "there", "for"];
   function mount(root) {
     root.innerHTML = `<div class="sec">
-      <div class="head reveal"><div class="mono">Questions</div><h2 class="serif">What people <em>asked.</em></h2><p>The questions that came up most under our videos. Ask it like you’d ask the Knot.</p></div>
+      <div class="head reveal"><div class="mono">Questions</div><h2 class="serif">Asked under our videos, <em>answered here.</em></h2><p>Search the twelve, or ask it like you’d ask the Knot.</p></div>
       <label class="ask reveal"><span class="fknot" aria-hidden="true"><canvas></canvas></span><span class="sr">Search the questions</span><input type="text" placeholder="What do you need help with?" autocomplete="off" spellcheck="false"><span class="count">${FAQ.length} questions</span></label>
       <div class="tries reveal" aria-label="Try"><button type="button">Is it free?</button><button type="button">Mac</button><button type="button">Is it local?</button><button type="button">Jev</button><button type="button">Won’t install</button></div>
-      <div class="qlist reveal">${FAQ.map((f, i) => `<div class="qrow" data-i="${i}"><button type="button" class="qh" aria-expanded="false"><span class="n">${String(i + 1).padStart(2, "0")}</span><span class="qt">${f.q}</span><span class="pl" aria-hidden="true"></span></button>
+      <div class="qlist reveal">${FAQ.map((f, i) => `<div class="qrow" data-i="${i}"><button type="button" class="qh" aria-expanded="false"><span class="qt">${f.q}</span><span class="pl" aria-hidden="true"></span></button>
         <div class="body"><div><div class="bub"><div class="k">NŪS</div><div class="ans">${f.a}</div></div></div></div></div>`).join("")}</div>
       <p class="none">Nothing matched. Ask us directly below.</p>
       <div class="more reveal"><div><b>Didn’t see yours?</b><p>Send it. The loudest questions get answered here, and the loudest requests get built first.</p></div><a class="fbtn" href="${FEEDBACK}">Ask a question</a></div></div>`;

@@ -35,9 +35,9 @@
       <div class="head reveal"><div class="mono">Now and next</div><h2 class="serif">What it does <em>today.</em></h2><p>Everything on the left ships now. The right is where it’s heading, and it says so.</p></div>
       <div class="ledger reveal">
         <div class="col l"><div class="colhead ch-now"><b>Now</b><span class="dot"></span></div>
-          ${NOW.map((x) => `<div class="item" tabindex="0"><i class="pin"></i><b><span class="tag ${x.tag}">${TAG[x.tag]}</span>${x.t}</b><span class="d">${x.d}</span></div>`).join("")}</div>
+          ${NOW.map((x) => `<div class="item" tabindex="0"><i class="pin"></i><b>${x.t}<span class="tag ${x.tag}">${TAG[x.tag]}</span></b><span class="d">${x.d}</span></div>`).join("")}</div>
         <div class="mid"><span class="todaylbl mono">Today</span></div>
-        <div class="col r"><div class="colhead ch-next"><span class="dot"></span><b>Where it’s heading</b></div>
+        <div class="col r"><div class="colhead ch-next"><b>Where it’s heading</b></div>
           ${HEAD.map((x) => `<div class="item" tabindex="0"><i class="pin"></i><b>${x.t}</b><span class="d">${x.d}</span></div>`).join("")}</div>
       </div></div>`;
     const root = host.querySelector(".ledger"), L = root.querySelector(".col.l"), mid = root.querySelector(".mid");

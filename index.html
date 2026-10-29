@@ -12,65 +12,69 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add("js")</script>
+<link rel="stylesheet" href="assets/tokens.css?v=3">
+<link rel="stylesheet" href="assets/base.css?v=1">
 <style>
   :root { --ink:#060810; --cream:#f1ecdf; --mist:#b9c1d3; --cobalt:#7890ff; --brass:#d1a75f; --line:rgba(206,216,246,.2); }
   * { box-sizing:border-box; margin:0; padding:0 }
-  html,body { background:var(--ink); color:var(--cream); font-family:Inter,system-ui,sans-serif; -webkit-font-smoothing:antialiased }
-  .hero { position:sticky; top:0; height:100vh; overflow:hidden;
-    background:radial-gradient(95% 75% at 50% 100%, #1e2852 0%, #0c1022 52%, #060810 100%); }
+  html,body { background:var(--ink); color:var(--cream); font-family:var(--font-body); -webkit-font-smoothing:antialiased }
+  .hero { position:sticky; top:0; height:100svh; overflow:hidden;
+    background:radial-gradient(95% 75% at 50% 100%, var(--c-1e2852) 0%, var(--c-0c1022) 52%, var(--c-ink) 100%); }
   #stars { position:absolute; inset:0; width:100%; height:100%; }
-  .mono { font-family:"JetBrains Mono",ui-monospace,monospace; text-transform:uppercase; letter-spacing:.16em; font-size:11px }
+  .mono { font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.16em; font-size:11px }
   nav { position:absolute; top:0; left:0; right:0; height:84px; padding:0 40px; display:flex; align-items:center; justify-content:space-between; z-index:6 }
   .status { display:flex; flex-direction:column; gap:6px }
   .status .a { color:var(--mist) } .status .b { color:var(--cobalt) }
   .status svg.os { width:11px; height:11px; fill:currentColor; vertical-align:-1px; margin-right:5px }
   .links { display:flex; align-items:center; gap:30px; font-size:15px; color:var(--mist) }
-  .links a { color:inherit; text-decoration:none } .links a:hover { color:var(--cream) }
+  .links a { color:inherit; text-decoration:none; white-space:nowrap } .links a:hover { color:var(--cream) }
   .btn { display:inline-flex; align-items:center; white-space:nowrap; border-radius:999px; padding:14px 24px; font-weight:600; font-size:15px; text-decoration:none; transition:transform .25s cubic-bezier(.2,.8,.2,1), background .25s }
   .btn:hover { transform:scale(1.04) }
-  .btn.solid { background:var(--cream); color:#0b1020 } .btn.solid:hover { background:#fff }
-  .btn.ghost { border:1px solid var(--line); color:var(--cream); background:rgba(6,8,16,.35); backdrop-filter:blur(10px) }
+  .btn.solid { background:var(--cream); color:var(--c-night) } .btn.solid:hover { background:var(--c-white) }
+  .btn.ghost { border:1px solid var(--line); color:var(--cream); background:var(--c-ink-35); backdrop-filter:blur(10px) }
   .left { position:absolute; left:40px; top:110px; width:520px; z-index:5 }
   .kicker { color:var(--cobalt); margin-bottom:14px }
-  h1 { font-family:"Instrument Serif",serif; font-weight:400; font-size:58px; line-height:1; letter-spacing:-.02em }
+  h1 { font-family:var(--font-display); font-weight:400; font-size:58px; line-height:1; letter-spacing:-.02em }
   h1 em { color:var(--brass) }
   .right { position:absolute; right:40px; top:108px; width:380px; display:flex; flex-direction:column; align-items:flex-end; gap:22px; z-index:5 }
   .right p { text-align:right; color:var(--mist); font-size:15.5px; line-height:1.6; text-wrap:balance }
   .right .btns { display:flex; gap:12px }
-  .word { position:absolute; left:0; right:0; top:calc(59.8vh - 7.09vw); text-align:center; font-family:"Instrument Serif",serif; font-size:62.2vw; line-height:1; letter-spacing:-.01em;
-    background:linear-gradient(180deg,#c6cce0 0%,#969ec4 22%,#606a96 55%); -webkit-background-clip:text; background-clip:text; color:transparent; z-index:1; user-select:none; pointer-events:none }
+  .word { position:absolute; left:0; right:0; top:calc(59.8vh - 7.09vw); text-align:center; font-family:var(--font-display); font-size:62.2vw; line-height:1; letter-spacing:-.01em;
+    background:linear-gradient(180deg,var(--c-c6cce0) 0%,var(--c-969ec4) 22%,var(--c-606a96) 55%); -webkit-background-clip:text; background-clip:text; color:transparent; z-index:1; user-select:none; pointer-events:none }
   .macron { position:absolute; left:calc(49.7% - 4.17vw); top:calc(59.8vh - 1.5vw); width:8.33vw; height:.5vw; border-radius:99px;
-    background:linear-gradient(90deg,#969ec8,#b0b8d8,#969ec8); z-index:2 }
+    background:linear-gradient(90deg,var(--c-969ec8),var(--c-b0b8d8),var(--c-969ec8)); z-index:2 }
   #orb { position:absolute; inset:0; z-index:3 }
   #orb.grabbing { cursor:grabbing }
-  .orb-node { position:absolute; transform:translate(-4px,-50%); display:flex; align-items:center; gap:12px; padding:6px 8px 6px 0; white-space:nowrap; user-select:none; opacity:0; transition:opacity .8s }
-  .orb-node.in { opacity:1 }
-  .orb-node.flip { flex-direction:row-reverse; transform:translate(calc(-100% + 4px),-50%); padding:6px 0 6px 8px }
-  .orb-dot { width:8px; height:8px; border-radius:50%; background:#eef0fa; box-shadow:0 0 8px 1px rgba(214,219,234,.45); transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s }
-  .orb-label { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#d6dbea; opacity:.85; transition:opacity .3s }
-  .orb-node.on .orb-dot { transform:scale(1.6); box-shadow:0 0 16px 4px rgba(214,219,234,.8) }
-  .orb-node.on .orb-label { opacity:1 }
-  .fade { opacity:0; transform:translateY(24px); transition:opacity 1.2s cubic-bezier(.2,.8,.2,1), transform 1.2s cubic-bezier(.2,.8,.2,1) }
-  .fade.in { opacity:1; transform:none }
+  .js .orb-node { position:absolute; transform:translate(-4px,-50%); display:flex; align-items:center; gap:12px; padding:6px 8px 6px 0; white-space:nowrap; user-select:none; opacity:0; transition:opacity .8s }
+  .js .orb-node.in { opacity:1 }
+  .js .orb-node.flip { flex-direction:row-reverse; transform:translate(calc(-100% + 4px),-50%); padding:6px 0 6px 8px }
+  .orb-dot { width:8px; height:8px; border-radius:50%; background:var(--c-eef0fa); box-shadow:0 0 8px 1px var(--c-silver-45); transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s }
+  .orb-label { font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--c-silver); opacity:.85; transition:opacity .3s }
+  .js .orb-node.on .orb-dot { transform:scale(1.6); box-shadow:0 0 16px 4px var(--c-silver-80) }
+  .js .orb-node.on .orb-label { opacity:1 }
+  .js .fade { opacity:0; transform:translateY(24px); transition:opacity 1.2s cubic-bezier(.2,.8,.2,1), transform 1.2s cubic-bezier(.2,.8,.2,1) }
+  .js .fade.in { opacity:1; transform:none }
   .space { height:60vh }
   .standard { position:relative; z-index:10; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:28px; padding:120px 40px;
-    background:linear-gradient(180deg, rgba(6,8,16,0) 0%, #060810 24%) }
-  .standard p { font-family:"Instrument Serif",serif; font-size:46px; line-height:1.18; max-width:820px; text-align:center; text-wrap:balance }
-  .standard p span { display:inline-block; opacity:0; filter:blur(10px); transform:translateY(14px); transition:opacity .9s, filter .9s, transform .9s }
+    background:linear-gradient(180deg, var(--c-ink-0) 0%, var(--c-ink) 24%) }
+  .standard p { font-family:var(--font-display); font-size:46px; line-height:1.18; max-width:820px; text-align:center; text-wrap:balance }
+  .js .standard p span { display:inline-block; opacity:0; filter:blur(10px); transform:translateY(14px); transition:opacity .9s, filter .9s, transform .9s }
   .standard.in p span { opacity:1; filter:none; transform:none }
 
   .hero-track { height:250vh; position:relative }
-  .tcap { position:absolute; left:0; right:0; bottom:11vh; text-align:center; z-index:6; pointer-events:none; font-family:"Instrument Serif",serif; font-size:clamp(30px,3.4vw,46px); line-height:1.15; letter-spacing:-.01em }
-  .tcap div { opacity:0; transition:opacity .15s linear, transform .15s linear }
+  .tcap { position:absolute; left:0; right:0; bottom:11vh; text-align:center; z-index:6; pointer-events:none; font-family:var(--font-display); font-size:clamp(30px,3.4vw,46px); line-height:1.15; letter-spacing:-.01em }
+  .js .tcap div { opacity:0; transition:opacity .15s linear, transform .15s linear }
   .tcap em { color:var(--brass) }
   /* First time / Next time / Later: the playable lesson (option A, picked 2026-09-29) */
   .ways { position:relative; z-index:10; background:var(--ink); padding-top:6vh }
   .plans, #setup, #now, #faq, #start, #footer { z-index:10; background-color:var(--ink) }
-  .next { position:relative; z-index:10; min-height:100vh; margin-top:-28vh; padding:40vh 40px 5vh; background:linear-gradient(180deg, rgba(6,8,16,0) 0, rgba(6,8,16,.82) 15vh, #060810 26vh) }
+  .next { position:relative; z-index:10; min-height:100vh; margin-top:-28vh; padding:40vh 40px 5vh; background:linear-gradient(180deg, var(--c-ink-0) 0, var(--c-ink-82) 15vh, var(--c-ink) 26vh) }
   /* narrow screens (tablet, phone): headline, intro and buttons stack on top, the orb sits under them, and the
      wordmark is anchored to the bottom edge. Desktop keeps the approved layout. */
   @media (max-width:1000px) {
     nav { padding:0 20px; height:72px }
+    .links { gap:18px }
     .left { left:20px; right:20px; top:84px; width:auto }
     h1 { font-size:clamp(40px, 9.5vw, 72px) }
     .right { left:20px; right:20px; width:auto; align-items:flex-start; gap:16px }
@@ -88,39 +92,45 @@
   #phoneCard { display:none }
   html.is-phone #phoneCard { display:block; position:fixed; left:12px; right:12px;
     bottom:calc(12px + env(safe-area-inset-bottom, 0px)); z-index:9999;
-    background:#0e1224; border:1px solid var(--line); border-radius:18px; isolation:isolate;
-    padding:16px 16px 14px; box-shadow:0 18px 50px rgba(0,0,0,.65); color:var(--cream);
-    font-family:Inter,system-ui,sans-serif; animation:pcIn .35s ease-out both }
+    background:var(--c-0e1224); border:1px solid var(--line); border-radius:18px; isolation:isolate;
+    padding:16px 16px 14px; box-shadow:0 18px 50px var(--c-black-65); color:var(--cream);
+    font-family:var(--font-body); animation:pcIn .35s ease-out both }
   @keyframes pcIn { from { transform:translateY(16px); opacity:0 } to { transform:none; opacity:1 } }
-  #phoneCard .pc-k { font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.12em;
+  #phoneCard .pc-k { font-family:var(--font-mono); font-size:11px; letter-spacing:.12em;
     text-transform:uppercase; color:var(--brass) }
-  #phoneCard .pc-t { font-family:"Instrument Serif",serif; font-size:24px; line-height:1.15; margin:6px 0 4px }
+  #phoneCard .pc-t { font-family:var(--font-display); font-size:24px; line-height:1.15; margin:6px 0 4px }
   #phoneCard .pc-p { font-size:14px; line-height:1.45; color:var(--mist) }
   #phoneCard .pc-row { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap }
   #phoneCard .pc-b { flex:1 1 auto; min-height:44px; border-radius:999px; border:1px solid var(--line);
-    background:transparent; color:var(--cream); font:500 15px Inter,system-ui,sans-serif; padding:0 16px;
+    background:transparent; color:var(--cream); font:500 15px var(--font-body); padding:0 16px;
     display:inline-flex; align-items:center; justify-content:center; text-decoration:none; cursor:pointer }
   #phoneCard .pc-b.solid { background:var(--cream); color:var(--ink); border-color:var(--cream) }
   #phoneCard .pc-x { position:absolute; top:6px; right:8px; width:44px; height:44px; border:0; background:none;
     color:var(--mist); font-size:22px; line-height:1; cursor:pointer }
   #phoneCard .pc-done { font-size:13px; color:var(--brass); margin-top:8px; min-height:1em }
+  .btn:focus-visible, .links a:focus-visible, #phoneCard .pc-b:focus-visible, #phoneCard .pc-x:focus-visible { outline:2px solid var(--focus); outline-offset:3px }
+  @media (prefers-reduced-motion: reduce) {
+    .js .fade, .js .orb-node, .orb-dot, .orb-label, .btn { transition:none }
+    .js .fade { opacity:1; transform:none }
+    .btn:hover { transform:none }
+    html.is-phone #phoneCard { animation:none }
+  }
 </style>
-<link rel="stylesheet" href="assets/page/lesson.css?v=3">
-<link rel="stylesheet" href="assets/page/ways.css?v=14">
-<link rel="stylesheet" href="assets/page/plans.css?v=4">
-<link rel="stylesheet" href="assets/page/guide.css?v=7">
-<link rel="stylesheet" href="assets/page/nowsec.css?v=3">
-<link rel="stylesheet" href="assets/page/faqsec.css?v=3">
-<link rel="stylesheet" href="assets/page/endsec.css?v=4">
-<link rel="stylesheet" href="assets/page/motion-options.css?v=3">
-<link rel="stylesheet" href="assets/page/lesson-ways-options.css?v=4">
+<link rel="stylesheet" href="assets/page/lesson.css?v=5">
+<link rel="stylesheet" href="assets/page/ways.css?v=16">
+<link rel="stylesheet" href="assets/page/plans.css?v=5">
+<link rel="stylesheet" href="assets/page/guide.css?v=9">
+<link rel="stylesheet" href="assets/page/nowsec.css?v=5">
+<link rel="stylesheet" href="assets/page/faqsec.css?v=6">
+<link rel="stylesheet" href="assets/page/endsec.css?v=6">
+<link rel="stylesheet" href="assets/page/motion-options.css?v=4">
+<link rel="stylesheet" href="assets/page/lesson-ways-options.css?v=5">
 <link rel="stylesheet" href="assets/page/ways-plans-flow.css?v=1">
 </head>
 <body>
 <aside id="phoneCard" role="dialog" aria-labelledby="pcTitle">
   <button type="button" class="pc-x" id="pcClose" aria-label="Close">&times;</button>
-  <div class="pc-k">On your phone?</div>
-  <div class="pc-t" id="pcTitle">NŪS runs on your computer.</div>
+  <div class="pc-t" id="pcTitle">On your phone? NŪS runs on your computer.</div>
   <p class="pc-p">It's a free app for Windows 10 and 11 (Mac beta for Students). Send yourself the link and open it on your laptop to install.</p>
   <div class="pc-row">
     <button type="button" class="pc-b solid" id="pcShare">Send me the link</button>
@@ -172,34 +182,34 @@
   <div id="orb"></div>
   <div class="tcap" aria-live="polite"><div id="t1">Most AI gets more capable.</div><div id="t2">NŪS makes <em>you</em> more capable.</div></div>
   <nav class="fade">
-    <div class="status mono"><span class="a">● Companion 0.1.13</span><span class="b">Students · <svg class="os" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.64c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.3-.88-2.29-3.52zM14.2 6.18c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.08 1.96-.49 2.56-1.22z"/></svg>Mac beta</span></div>
+    <div class="status mono"><span class="a">Companion 0.1.13 for Windows</span><span class="b">Students 0.2.7, also on <svg class="os" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.64c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.3-.88-2.29-3.52zM14.2 6.18c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.08 1.96-.49 2.56-1.22z"/></svg>Mac beta</span></div>
     <div class="links"><a href="#now">Vision</a><a href="#ways">Ways in</a><a href="#setup">Setup</a><a href="#faq">FAQ</a><a href="#feedback">Feedback</a><a class="btn ghost" href="#ways">Get NŪS</a></div>
   </nav>
   <div class="left fade" id="left">
     <div class="kicker mono">Personal AI, judged differently</div>
-    <h1>A more capable <em>you.</em></h1>
+    <h1>Say it. NŪS <em>does it.</em></h1>
   </div>
   <div class="right fade" id="right">
-    <p>NŪS handles the busywork you ask for and shows you how to do the rest, so you get better at it along the way.</p>
-    <div class="btns"><a class="btn solid" href="#ways">Get NŪS Companion</a><a class="btn ghost" href="#ways">NŪS for Students</a></div>
+    <p>The free Windows Companion does what you say and answers on screen.</p>
+    <div class="btns"><a class="btn solid" href="#ways">Pick your download</a></div>
   </div>
 </section>
 </div>
 <section class="next" id="next" aria-labelledby="nextTitle">
   <div class="next-head">
     <div class="mono">How it helps</div>
-    <h2 class="serif" id="nextTitle">First time. Next time. <em>Later.</em></h2>
-    <p>Automation handles the setup you repeat. Guidance handles the part worth learning. The help steps back as you get better.</p>
+    <h2 class="serif" id="nextTitle">It shows you once, then <em>steps back.</em></h2>
+    <p>Automation handles the setup you repeat. Guidance handles the part worth learning. Pointing ships today; help that fades as you learn is where it’s heading.</p>
   </div>
   <div class="lesson">
     <ol class="steps">
-      <li class="step"><div class="st-top"><span class="n mono">01 · First time</span><span class="t mono"></span></div><h3 class="serif">It <em>shows you.</em></h3><p>The Knot points at the right button and tells you why.</p></li>
-      <li class="step"><div class="st-top"><span class="n mono">02 · Next time</span><span class="t mono"></span></div><h3 class="serif">Just <em>a hint.</em></h3><p>You kept it, so a ring is all you get. You do the rest.</p></li>
-      <li class="step"><div class="st-top"><span class="n mono">03 · Later</span><span class="t mono"></span></div><h3 class="serif"><em>On your own.</em></h3><p>No help needed. <span class="tag mono">Where it’s heading</span></p></li>
+      <li class="step"><div class="st-top"><span class="t mono"></span></div><h3 class="serif">First time, it <em>shows you.</em></h3><p>The Knot points at the right button and tells you why.</p></li>
+      <li class="step"><div class="st-top"><span class="t mono"></span></div><h3 class="serif">Next time, just <em>a hint.</em></h3><p>You kept it, so a ring is all you get. <span class="tag mono">Where it’s heading</span></p></li>
+      <li class="step"><div class="st-top"><span class="t mono"></span></div><h3 class="serif">Later, <em>on your own.</em></h3><p>No help needed. <span class="tag mono">Where it’s heading</span></p></li>
     </ol>
     <div class="stage" id="aStage">
       <div class="knot" aria-hidden="true"><canvas></canvas></div>
-      <div class="gb glass" role="status" aria-hidden="true"><div class="gb-kicker">Step 1 · Best guess</div><div class="gb-text">Click AutoSum to total the column.</div><div class="gb-hint">It adds up the numbers above the selected cell.</div></div>
+      <div class="gb glass" role="status" aria-hidden="true"><div class="gb-kicker">Step 1, best guess</div><div class="gb-text">Click AutoSum to total the column.</div><div class="gb-hint">It adds up the numbers above the selected cell.</div></div>
       <div class="keep glass" role="dialog" aria-label="Remember this for next time?" aria-hidden="true"><span>Remember this for next time?</span><button type="button" class="yes">Keep</button><button type="button" class="no">Skip</button></div>
       <div class="khint glass" aria-hidden="true"><b>Spreadsheet:</b> 1 saved</div>
       <div class="hring" aria-hidden="true"></div>
@@ -211,8 +221,8 @@
   <div class="fork">
     <div class="head reveal">
       <div class="mono">Two ways in</div>
-      <h2 class="serif" id="waysTitle">Start where <em>you</em> are.</h2>
-      <p>Same Knot, two ways to get it. Hover one to follow its thread.</p>
+      <h2 class="serif" id="waysTitle">Two free apps, one <em>Knot.</em></h2>
+      <p>The Companion is for anyone on Windows. Students is for school, and also runs on Mac in beta.</p>
     </div>
     <div class="gap"></div>
     <div class="pair">
@@ -227,7 +237,6 @@
 <section class="guide" id="setup" aria-label="Setup"></section>
 <section class="nowsec" id="now" aria-label="Now and where it is heading"></section>
 <section class="faqsec" id="faq" aria-label="Questions"></section>
-<section class="endsec full" id="start" aria-label="Get started"></section>
 <section class="fbsec" id="feedback" aria-labelledby="fbTitle">
   <div class="fb-inner">
     <div class="fb-kick">Feedback</div>
@@ -236,6 +245,16 @@
     <div class="fb-card" data-nus-feedback-form="landing" data-hide-pill><noscript><p class="fb-lede">This form needs JavaScript. You can email Pranav at <a href="mailto:pranavfromthegrowth@gmail.com" style="color:inherit">pranavfromthegrowth@gmail.com</a> instead.</p></noscript></div>
   </div>
 </section>
+<section class="endsec full" id="start" aria-label="Get started"><noscript>
+  <div class="nos">
+    <h2>Download NŪS, <em>free.</em></h2>
+    <p><a href="https://github.com/potlakai/nus-desktop/releases/download/companion-v0.1.13/Nus-Companion-Setup.exe">NŪS Companion 0.1.13 for Windows 10 and 11</a></p>
+    <p><a href="https://github.com/potlakai/nus-desktop/releases/latest/download/Nus-Setup.exe">NŪS for Students for Windows</a></p>
+    <p><a href="https://github.com/potlakai/nus-desktop/releases/download/v0.2.7/Nus-arm64.dmg">NŪS for Students, Mac beta for Apple silicon</a></p>
+    <p><a href="https://github.com/potlakai/nus-desktop/releases/download/v0.2.7/Nus-x64.dmg">NŪS for Students, Mac beta for Intel</a></p>
+    <p>You bring your own AI keys. The rest of this page needs JavaScript.</p>
+  </div>
+</noscript></section>
 <footer class="sitefoot" id="footer"></footer>
 <script src="assets/page/gl2d.js?v=2"></script>
 <script src="assets/page/orb.js?v=8"></script>
@@ -243,23 +262,25 @@
 <script src="assets/page/companion/knot3d.js?v=1"></script>
 <script src="assets/page/perf.js?v=3"></script>
 <script src="assets/page/companion/strand.js?v=3"></script>
-<script src="assets/page/lesson.js?v=10"></script>
-<script src="assets/page/ways.js?v=15"></script>
-<script src="assets/page/plans.js?v=14"></script>
-<script src="assets/page/guide.js?v=6"></script>
-<script src="assets/page/nowsec.js?v=6"></script>
-<script src="assets/page/faqsec.js?v=3"></script>
-<script src="assets/page/endsec.js?v=10"></script>
+<script src="assets/page/lesson.js?v=11"></script>
+<script src="assets/page/ways.js?v=16"></script>
+<script src="assets/page/plans.js?v=16"></script>
+<script src="assets/page/guide.js?v=9"></script>
+<script src="assets/page/nowsec.js?v=8"></script>
+<script src="assets/page/faqsec.js?v=6"></script>
+<script src="assets/page/endsec.js?v=13"></script>
 <script>
   // stars that twinkle
   (function () {
-    const c = document.getElementById("stars"), x = c.getContext("2d"); let W, H, dpr, S = [];
+    const c = document.getElementById("stars"), x = c.getContext("2d"); let W, H, dpr, S = [], sky = null;
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;   // reduced motion: one still sky, redrawn only on resize
     function size() { const r = c.getBoundingClientRect(); dpr = 1; W = r.width;   /* one-pixel stars need no more than 1x */ H = r.height; c.width = W * dpr; c.height = H * dpr;
-      S = Array.from({ length: Math.round(W * H / 2600) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.1 + 0.3, p: Math.random() * 6.28, s: 0.4 + Math.random() * 1.2 })); }
-    size(); addEventListener("resize", size);
+      S = Array.from({ length: Math.round(W * H / 2600) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.1 + 0.3, p: Math.random() * 6.28, s: 0.4 + Math.random() * 1.2 }));
+      if (sky && still) { tick = 0; sky.wake(); } }
     let tick = 0;   // the twinkle is slow, so every other frame is enough
-    NusMotion.loop(c, (t) => { if (tick++ & 1) return; x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H); x.fillStyle = "rgb(185,193,211)";
-      for (const s of S) { x.globalAlpha = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin(t / 1000 * s.s + s.p)); x.fillRect(s.x, s.y, s.r, s.r); } });
+    size(); addEventListener("resize", size);
+    sky = NusMotion.loop(c, (t) => { if (tick++ & 1) return; x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H); x.fillStyle = "rgb(185,193,211)";
+      for (const s of S) { x.globalAlpha = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin((still ? 0 : t) / 1000 * s.s + s.p)); x.fillRect(s.x, s.y, s.r, s.r); } }, !still);
   })();
   const heroOrb = new NusOrb(document.getElementById("orb"));
   // narrow screens: place the orb and its four labels in the space between the buttons and the wordmark
@@ -313,10 +334,10 @@
 <script src="assets/page/motion-options.js?v=10"></script>
 <script src="assets/page/lesson-ways-options.js?v=8"></script>
 <script src="assets/page/ways-plans-flow.js?v=9"></script>
-<script src="assets/page/plans-guide-flow.js?v=6"></script>
-<script src="assets/page/guide-now-flow.js?v=7"></script>
+<script src="assets/page/plans-guide-flow.js?v=8"></script>
+<script src="assets/page/guide-now-flow.js?v=9"></script>
 <script src="assets/page/site.js?v=3"></script>
-<script src="assets/feedback.js?v=1"></script>
+<script src="assets/feedback.js?v=3"></script>
 <script src="assets/attrib.js"></script>
 <script data-goatcounter="https://nus.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>

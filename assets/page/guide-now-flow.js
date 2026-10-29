@@ -43,7 +43,7 @@
     if (!list || !screen || !nums.length || !head || !dot || !mid) return null;
     const m = box(mid), tab = [...guide.querySelectorAll('.prod button')].findIndex((b) => b.classList.contains('on'));
     return { list: box(list), screen: box(screen), last: box(nums[nums.length - 1]), stacked: innerWidth <= 980,
-      kicker: text(head.querySelector('.mono')), h2: text(head.querySelector('h2')), sub: text(head.querySelector('p')),
+      kicker: text(head.querySelector('.mono') || head.querySelector('h2')), h2: text(head.querySelector('h2')), sub: text(head.querySelector('p')),
       dot: box(dot), orb: { x: m.cx, y: m.cy - 20, r: 86 }, rgb: tab === 1 ? WARM : COOL,
       low: Math.max(box(list).b, box(screen).b) };
   }

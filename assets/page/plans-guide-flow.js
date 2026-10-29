@@ -42,7 +42,7 @@
     if (!cols.length || !head || !nums.length) return null;
     const on = guide.querySelector('.gsteps button.on .n');
     return { cols, stacked: innerWidth <= 980, keys: text(keys), keyB: box(keys.querySelector('b')),
-      kicker: text(head.querySelector('.mono')), h2: text(head.querySelector('h2')), sub: text(head.querySelector('p')),
+      kicker: text(head.querySelector('.mono') || head.querySelector('h2')), h2: text(head.querySelector('h2')), sub: text(head.querySelector('p')),
       seg: box(guide.querySelector('.prod .seg')), nums: nums.map(box), on: on ? nums.indexOf(on) : 0,
       faOp: +getComputedStyle(guide.querySelector('.fa')).opacity, low: Math.max(...cols.map((c) => c.b)) };
   }

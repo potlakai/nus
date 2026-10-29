@@ -7,7 +7,7 @@ body[data-motion-option]:not([data-motion-option="original"]) #next .knot {
 }
 .nus-motion-bridge { position:fixed; inset:0; width:100%; height:100%; z-index:29; pointer-events:none }
 @media (prefers-reduced-motion:reduce) {
-  body[data-motion-option] .fade { opacity:1; transform:none; transition:none }
-  body[data-motion-option] .tcap div { transition:none }
+  .js body[data-motion-option] .fade { opacity:1; transform:none; transition:none }
+  .js body[data-motion-option] .tcap div { transition:none }
   .nus-motion-bridge { display:none }
 }
