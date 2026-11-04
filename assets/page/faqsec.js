@@ -51,6 +51,16 @@
       count.textContent = shown ? `${shown} ${shown === 1 ? "answer" : "answers"}` : "No match"; none.classList.toggle("on", !shown);
       clearTimeout(t); t = setTimeout(() => { if (best) { open(best.r, true); st("ready"); } else st("idle"); }, reduce ? 0 : 350);
     }
+    // the corner Knot asks here too: the best row for these words, and a way to open it with the list unfiltered
+    window.NusFaq.find = (text) => {
+      const flat = (x) => x.toLowerCase().replace(/[’']/g, "");   // so "wont" and "won't" both find "won’t"
+      const vague = ["nus", "have", "has", "version", "get", "use", "need", "you", "your", "me", "be", "with", "about", "will", "if", "and", "or", "this", "that", "app", "work", "works"];
+      const ws = words(flat(text)).filter((w) => !vague.includes(w)); if (!ws.length) return null;
+      const best = rows.map((r) => { const f = FAQ[+r.dataset.i]; let s = 0;
+        ws.forEach((w) => { if (flat(f.q).includes(w)) s += 3; if (f.k.includes(w)) s += 2; else if ((f.q + " " + plain(f.a)).toLowerCase().includes(w)) s += 1; }); return { r, s }; })
+        .sort((a, b) => b.s - a.s)[0];
+      return best.s >= 2 ? { row: best.r, open() { if (input.value) { input.value = ""; run(); } rows.forEach((x) => open(x, x === best.r)); } } : null;
+    };
     input.addEventListener("input", run);
     root.querySelectorAll(".tries button").forEach((b) => b.addEventListener("click", () => { input.value = b.textContent; run(); input.focus({ preventScroll: true }); }));
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add("in")), { threshold: 0.1 });

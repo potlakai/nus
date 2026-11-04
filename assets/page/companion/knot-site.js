@@ -39,7 +39,10 @@
       getState() { return th.getState(); },
       // flies beside the control and throws the line round it; `landing` is a window point
       lasso(rect, landing) { const l = local({ x: landing.x, y: landing.y, w: 0, h: 0 }); k.travelTo({ x: l.x, y: l.y }, { lasso: local(rect) }); },
-      flyHome() { k.travelTo(homeOf(), {}); },
+      flyHome(o) { k.travelTo(homeOf(), o || {}); },
+      // put the Knot straight on a window point, for dragging it by hand
+      placeAt(p) { const l = local({ x: p.x, y: p.y, w: 0, h: 0 }), r = canvas.parentElement.getBoundingClientRect(), hx = r.left + r.width / 2 - moved.x, hy = r.top + r.height / 2 - moved.y;
+        moved = { x: l.x - hx, y: l.y - hy }; box.style.translate = `${moved.x}px ${moved.y}px`; },
       // after a resize the Knot's corner moved: drop back to it with nothing out
       resetHome() { moved = { x: 0, y: 0 }; box.style.translate = ""; k.cancelTravel(); k.redraw(); },
     };

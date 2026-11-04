@@ -1,0 +1,55 @@
+/* The Knot in the corner of the landing page: it sits above the Feedback pill, and you can ask it where anything is.
+   The strand is drawn by the Companion's own engine. These are only the pieces around it. */
+.pk-box { position:fixed; right:24px; bottom:26px; width:148px; height:148px; z-index:8995; opacity:0; visibility:hidden; pointer-events:none; transition:bottom .35s cubic-bezier(.2,.8,.2,1), opacity .3s ease, visibility 0s .3s }
+.pk-box.in { opacity:1; visibility:visible; pointer-events:auto; transition:bottom .35s cubic-bezier(.2,.8,.2,1), opacity .3s ease }
+.pk-box.low { bottom:-24px }   /* the pill steps aside while the feedback form is on screen, so the Knot drops into its place */
+.pk-box.in.duck, html.nfb-open .pk-box.in, html.is-phone .pk-box.in { opacity:0; visibility:hidden; pointer-events:none; transition:bottom .35s cubic-bezier(.2,.8,.2,1), opacity .3s ease, visibility 0s .3s }
+.pk-knot { position:relative; display:block; width:100%; height:100%; padding:0; border:0; background:none; pointer-events:none; -webkit-tap-highlight-color:transparent; user-select:none; outline:none }
+/* the drawing needs room for its tail and glow; only the middle of it takes the mouse, so the corners never block the page */
+.pk-hit { position:absolute; inset:24%; border-radius:50%; pointer-events:auto; cursor:grab; touch-action:none }
+.pk-knot.held .pk-hit { cursor:grabbing }
+.pk-knot canvas { display:block; width:100%; height:100%; pointer-events:none }
+.pk-knot:focus-visible .pk-hit { outline:2px solid var(--focus); outline-offset:2px }
+.pk-ring { position:fixed; display:none; border:2px solid var(--c-cream); border-radius:18px; pointer-events:none; z-index:8990 }
+.pk-ring.on { display:block }
+.pk-thread { position:fixed; left:0; top:0; width:0; height:0; display:none; pointer-events:none; z-index:8990 }
+
+.pk-ask { position:fixed; right:142px; bottom:77px; width:min(344px, calc(100vw - 154px)); z-index:8996; display:flex; flex-direction:column; align-items:flex-end; gap:10px;
+  opacity:0; visibility:hidden; transform:translateX(14px); transition:opacity .16s ease, transform .22s cubic-bezier(.2,.9,.2,1), visibility 0s .16s }
+.pk-ask.on { opacity:1; visibility:visible; transform:none; transition:opacity .16s ease, transform .22s cubic-bezier(.2,.9,.2,1) }
+.pk-box.low ~ .pk-ask { bottom:27px }
+.pk-say { align-self:stretch; padding:10px 14px; border-radius:14px; color:var(--c-cream); font:400 14px/1.45 var(--font-body); background:var(--c-0a0e1e-82); border:1px solid var(--c-haze-14); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px) }
+.pk-say:empty { display:none }
+.pk-chips { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px }
+.pk-chip { border:1px solid var(--c-haze-26); border-radius:999px; padding:7px 13px; background:var(--c-0a0e1e-82); color:var(--c-mist); font:500 13px/1.2 var(--font-body); cursor:pointer; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); transition:color .15s, border-color .15s, background .15s }
+.pk-chip:hover { color:var(--c-cream); border-color:var(--c-cream); background:var(--c-181e3a-92) }
+.pk-line { align-self:stretch; display:flex; align-items:center; border:1px solid var(--c-haze-26); border-radius:999px; background:var(--c-0a0e1e-82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); box-shadow:0 14px 36px var(--c-black-35); transition:border-color .15s }
+.pk-line:focus-within { border-color:var(--c-cobalt) }
+.pk-line input { flex:1; min-width:0; height:44px; padding:0 4px 0 18px; border:0; outline:0; background:none; color:var(--c-cream); font:400 15px var(--font-body) }
+.pk-line input::placeholder { color:var(--c-muted); opacity:1 }
+.pk-send { flex:none; width:32px; height:32px; margin-right:6px; display:grid; place-items:center; border:0; border-radius:50%; background:var(--c-cream); color:var(--c-night); cursor:pointer }
+.pk-send svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round }
+.pk-note { padding:6px 11px; border-radius:11px; text-align:right; color:var(--c-mist); background:var(--c-0a0e1e-82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); font:400 11.5px/1.4 var(--font-body) }
+.pk-chip:focus-visible, .pk-send:focus-visible { outline:2px solid var(--focus); outline-offset:2px }
+
+.pk-bub, .pk-hint { position:fixed; z-index:8996; background:linear-gradient(150deg, var(--c-12141f-95), var(--c-080a12-92)); border:1px solid var(--c-f2efe6-13); box-shadow:0 18px 42px var(--c-black-50), inset 0 1px 0 var(--c-white-7); color:var(--c-cream); font-family:var(--font-body);
+  opacity:0; visibility:hidden; transition:opacity .2s ease, visibility 0s .2s; pointer-events:none }
+.pk-bub.on, .pk-hint.on { opacity:1; visibility:visible; transition:opacity .2s ease }
+.pk-bub { left:0; top:0; width:max-content; max-width:min(300px, calc(100vw - 24px)); padding:11px 14px 10px; border-radius:14px; font-size:14px; line-height:1.42 }
+.pk-bub .k { margin-bottom:5px; color:var(--c-brass); font:500 10px/1 var(--font-mono); letter-spacing:.14em; text-transform:uppercase }
+.pk-bub .h { margin-top:6px; color:var(--c-mist); font-size:12px; line-height:1.35 }
+.pk-bub .h:empty { display:none }
+.pk-hint { right:142px; bottom:82px; padding:8px 13px; border-radius:999px; font-size:13px; white-space:nowrap }
+.pk-box.low ~ .pk-hint { bottom:32px }
+
+@media (max-width:640px) {
+  .pk-box { right:30px; bottom:39px; width:104px; height:104px }
+  .pk-box.low { bottom:-6px }
+  .pk-ask { right:104px; bottom:68px; width:calc(100vw - 116px) }
+  .pk-hint { right:104px; bottom:73px }
+  .pk-note { display:none }
+  .pk-line input { padding-left:14px; font-size:14px }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pk-box, .pk-box.in, .pk-box.in.duck, .pk-ask, .pk-ask.on, .pk-bub, .pk-bub.on, .pk-hint, .pk-hint.on { transition:none; transform:none }
+}
