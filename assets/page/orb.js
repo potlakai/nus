@@ -103,7 +103,10 @@
       if (p.nodes) p.nodes.forEach((n, i) => { if (nodes[i]) { nodes[i].x = n.x; nodes[i].y = n.y; } }); resize(); };
 
     // pointer
-    const ptr = { x: -1e4, y: -1e4, vx: 0, vy: 0, in: false, t: 0 };
+    // Keep `in` first. Starting x, y, this literal shares a V8 hidden class with the Knot engine's six-key points
+    // ({x, y, z, persp, t, w}). Their fractional x retires that class while ptr sits unwritten on it, and frame()
+    // then recompiles about 24 times a second for good: twice the hero's idle CPU, and nothing ever clears it.
+    const ptr = { in: false, t: 0, x: -1e4, y: -1e4, vx: 0, vy: 0 };
     let dragging = false, spin = 0, lastX = 0, lastT = 0;
     const local = (e) => { const r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, in: e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom }; };
     addEventListener("pointermove", (e) => {
