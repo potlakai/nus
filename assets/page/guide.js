@@ -12,17 +12,17 @@
   const K = (...k) => k.map((x) => `<kbd>${x}</kbd>`).join(" ");
   const KEYS = {
     typesafe: { name: "TypeSafe", role: "Jev, the voice reflexes", unlocks: "Voice actions. Jev, TypeSafe’s voice model, turns “open Notepad, type hello” into the clicks and keys.", get: ext("typesafe.ai"), where: "Companion window, <b>Your keys</b>, TypeSafe", note: "Only for voice actions. Everything else works without it." },
-    gemini: { name: "Gemini", role: "Answers and speech fallback", unlocks: "Everyday answers, and a backup for hearing you.", get: ext("aistudio.google.com/apikey") + " (free key)", where: "Companion window, <b>Your keys</b>, Gemini", note: "The quickest one to get. Start here." },
-    anthropic: { name: "Anthropic", role: "Claude for pointing", unlocks: "Pointing: press Ctrl+Shift+T on anything and Claude answers right there, or walks you through it.", get: ext("console.anthropic.com"), where: "Companion window, <b>Your keys</b>, Anthropic", note: "Have Claude Code installed? Skip this. NŪS finds it." },
+    gemini: { name: "Gemini", role: "Answers and speech fallback", unlocks: "Answers, pointing and walkthroughs, and a backup for hearing you.", get: ext("aistudio.google.com/apikey") + " (free key)", where: "Companion window, <b>Your keys</b>, Gemini", note: "The quickest one to get. Start here." },
+    anthropic: { name: "Anthropic", role: "Another way to answer", unlocks: "Answers, pointing and walkthroughs, the same as a Gemini or Nvidia key. Press Ctrl+Shift+T on anything and it answers right there.", get: ext("console.anthropic.com"), where: "Companion window, <b>Your keys</b>, Anthropic", note: "Have Claude Code installed? Skip this. NŪS finds it." },
     claude: { name: "Claude", role: "For the student app", unlocks: "Reading your syllabi, the Ask bar and the chat.", get: "Nothing, if Claude Code is installed: NŪS finds it. Otherwise an API key from " + ext("console.anthropic.com"), where: "Settings, the <b>AI provider</b> card", note: "Courses, tasks and the calendar work without it." },
     gemini2: { name: "Gemini", role: "For the built-in Companion", unlocks: "The Knot’s AI answers, and cloud speech backup.", get: ext("aistudio.google.com/apikey") + " (free key)", where: "Settings, the <b>Companion AI key</b> card", note: "Optional. Without it, screen guidance can still use your desktop Claude." },
   };
   const GUIDES = {
     companion: [
       { t: "Download and install", d: "Get NŪS Companion 0.1.15 for Windows. If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>. It isn’t code-signed yet. Still stuck? Open <b>Did it install?</b> under the download.", scene: "smart", dur: 6 },
-      { t: "Add your keys", d: "In the Companion window, under <b>Your keys</b>: TypeSafe for voice actions, Gemini for answers, Anthropic for pointing. Have Claude Code? Skip Anthropic.", scene: "keys", dur: 8 },
+      { t: "Add your keys", d: "In the Companion window, under <b>Settings</b>: one key for answers (Gemini and Nvidia have free ones), and TypeSafe for the full set of voice actions. Have Claude Code? It answers with no key. Simple asks like “open YouTube” need no key at all.", scene: "keys", dur: 8 },
       { t: "Give it your stuff", d: "This is what makes it your Jarvis. Under <b>Folders</b>, add your notes, docs and calendar: PDF, Word, text, Markdown and calendar files. It answers from them when they help.", scene: "folders", dur: 7 },
-      { t: "Say it, it acts", d: `Hold ${K("Ctrl", "Alt", "Space")} and say “open Notepad, type hello”. Jev does it while you’re still talking. Say a few in a row and it offers to save them as a routine.`, scene: "voice", dur: 7.5 },
+      { t: "Say it, it acts", d: `Hold ${K("Ctrl", "Alt")} and say “open Notepad, type hello”. Jev does it while you’re still talking. Say a few in a row and it offers to save them as a routine.`, scene: "voice", dur: 7.5 },
       { t: "Point at anything", d: `Press ${K("Ctrl", "Shift", "T")} on a button, an error or a slide. The Knot’s thread runs to that exact spot, and the answer lands right there.`, scene: "point", dur: 7 },
     ],
     students: [
@@ -43,7 +43,7 @@
       case "folders": return WINCAP("Companion window, Folders") + `<div class="gl fold"><h5>A little context goes a long way.</h5><div class="m">Add PDF, Word, text, Markdown, and calendar files.</div><span class="add">+ Add folder</span>
         <div class="frows">${[["Class notes", "48 files"], ["Resume and cover letters", "9 files"], ["Fall calendar", "1 file"]].map(([n, c]) => `<div class="frow"><span class="ic"></span><span><b>${n}</b><small>${c}</small></span><span class="tg"></span></div>`).join("")}</div>
         <div class="m foot">Up to 200 files per folder, 2 MB per file. Turn a folder off to stop using it.</div></div>`;
-      case "voice": return WINCAP("Anywhere on your screen") + `<div class="voice"><div class="knotbox"><canvas></canvas></div><div class="caps">${K("Ctrl", "Alt", "Space")}</div><div class="gl say"><span class="dot"></span><span class="w"></span></div></div>${NOTEPAD}<div class="gl offer">Want me to save that as a routine?</div>`;
+      case "voice": return WINCAP("Anywhere on your screen") + `<div class="voice"><div class="knotbox"><canvas></canvas></div><div class="caps">${K("Ctrl", "Alt")}</div><div class="gl say"><span class="dot"></span><span class="w"></span></div></div>${NOTEPAD}<div class="gl offer">Want me to save that as a routine?</div>`;
       case "point": return WINCAP("Ctrl+Shift+T on anything") + `<div class="doc"><div class="bar">report-draft.docx</div><div class="body"><div class="ln m"></div><div class="ln"></div><div class="ln s"></div><div class="err">Error: the linked file was not found</div><div class="ln"></div><div class="ln m"></div></div></div>
         <div class="gl bub"><div class="k">Explain</div>The link points to a file that moved. Relink it from Insert, then Link.</div><div class="pknot"><canvas></canvas></div>`;
       case "map": return WINCAP("Companion window, Map") + `<div class="gl mapcard"><div class="mh"><b>A map of what you keep.</b><span>Your folders, routines, and conversations, connected.</span></div><svg class="graph" viewBox="0 0 560 250" aria-label="Map: the Knot in the middle, linked to folders, routines and conversations">
@@ -62,9 +62,9 @@
   }
   // scenes that hold a live Knot are built once and reset by hand; the rest are rebuilt to replay
   const KEEP = { voice: 1, point: 1 };
-  function knotIn(el, sel) {
+  function knotIn(el, sel, opts) {
     const cv = el.querySelector(sel);
-    if (!cv._knot && window.NusKnot3D) cv._knot = NusKnot3D.mount(cv, { ground: false, scale: 0.3, focusGate: false });
+    if (!cv._knot && window.NusKnot3D) cv._knot = NusKnot3D.mount(cv, opts);
     const k = cv._knot; return (s) => k && k.setState && k.setState(s);
   }
   const PLAY = {
@@ -81,10 +81,10 @@
       const s = "open notepad, new note, type hello"; for (let i = 1; i <= s.length; i++) { say.textContent = s.slice(0, i); await w(42); if (i === 13) np.classList.add("on"); }
       caps.forEach((c) => c.classList.remove("down")); st("thinking"); for (const ch of "hello") { txt.textContent += ch; await w(90); } st("ready");
       await w(900); offer.classList.add("on"); },
-    async point(el, w, ctx) { const st = knotIn(el, ".pknot canvas"), err = el.querySelector(".err"), bub = el.querySelector(".bub");
+    async point(el, w, ctx) { const st = knotIn(el, ".pknot canvas", { thread: ctx.threadFor(), origin: ctx.screen }), err = el.querySelector(".err"), bub = el.querySelector(".bub");
       bub.classList.remove("on"); st("idle"); err.classList.remove("hot"); await w(600); st("thinking"); err.classList.add("hot"); await w(500);
       const strand = ctx.strandFor(el.querySelector(".pknot canvas"));
-      if (strand) { await new Promise((res) => { ctx.onArrive = res; strand.setTarget(ctx.rect(err)); setTimeout(res, 1600); }); }
+      if (strand) { if (strand.getState() !== "idle") strand.rewind(); await new Promise((res) => { strand.arrive(res); strand.setTarget(ctx.rect(err)); setTimeout(res, 1600); }); }
       st("ready"); bub.classList.add("on"); },
     async map(el, w) { el.querySelector(".mapcard").classList.remove("grown"); await w(200); el.querySelector(".mapcard").classList.add("grown"); },
   };
@@ -103,14 +103,12 @@
       <div class="fa reveal"><ol class="gsteps"></ol><div class="screen" aria-live="polite"></div></div></div>`;
     const list = root.querySelector(".gsteps"), screen = root.querySelector(".screen"), fa = root.querySelector(".fa");
     new ResizeObserver(() => screen.style.setProperty("--k", Math.min(1, screen.clientWidth / 660).toFixed(3))).observe(screen);
-    // one fixed overlay for the Knot's thread (the Companion's own strand.js), following the page as it scrolls
-    let cvs = document.createElement("canvas"); cvs.className = "guide-strand"; cvs.setAttribute("aria-hidden", "true"); document.body.appendChild(cvs);
-    const ctx = { onArrive: null, strands: new Map(), rect: (el) => { const b = el.getBoundingClientRect(); return { x: b.left, y: b.top, w: b.width, h: b.height }; },
-      strandFor(knotCanvas) { if (!window.NusStrand || !knotCanvas._knot) return null; if (!this.strands.has(knotCanvas)) this.strands.set(knotCanvas, NusStrand.mount(cvs, knotCanvas._knot, { onArrive: () => { const f = ctx.onArrive; ctx.onArrive = null; f && f(); } })); return this.strands.get(knotCanvas); } };
+    // the Knot's thread lives inside the screen, so it scrolls with it
+    let cvs = null;
+    const ctx = { screen, threadFor() { if (!cvs) { cvs = document.createElement("canvas"); cvs.className = "guide-strand"; cvs.setAttribute("aria-hidden", "true"); } return cvs; }, strands: new Set(), rect: (el) => { const b = el.getBoundingClientRect(); return { x: b.left, y: b.top, w: b.width, h: b.height }; },
+      strandFor(knotCanvas) { const s = knotCanvas._knot && knotCanvas._knot.strand; if (s) this.strands.add(s); return s || null; } };
     const rewindAll = () => ctx.strands.forEach((s) => s.getState() !== "idle" && s.rewind());
     let prod = "companion", i = 0, timer = 0, run = 0, paused = false, visible = false, ticking = false;
-    addEventListener("scroll", () => { if (ticking) return; ticking = true; requestAnimationFrame(() => { ticking = false; const err = screen.querySelector(".scene.on .err.hot");
-      ctx.strands.forEach((s) => { if (s.getState() !== "idle" && s.redraw) s.redraw(err ? ctx.rect(err) : null); }); }); }, { passive: true });
     function build() {
       rewindAll(); const G = GUIDES[prod];
       list.innerHTML = G.map((s, k) => `<li><button type="button" style="--dur:${s.dur}s"><span class="n">${k + 1}</span><span><span class="ttl">${s.t}</span><span class="d">${s.d}</span></span><i></i></button></li>`).join("");

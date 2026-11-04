@@ -1,8 +1,8 @@
 /* First time / Next time / Later, option A "Try it yourself", v2: the lesson runs in a real-looking
    spreadsheet inside a Mac-style window, guided by the actual NŪS Companion pieces: the chrome Knot
-   (companion/knot3d.js), its thread (companion/strand.js), the glass guide bubble and the
+   (companion/knot-engine.js), its thread, the glass guide bubble and the
    "Remember this for next time?" chip, all copied from nus-desktop-day1's renderer.
-   Round 1: the Knot thinks, the thread unwinds to AutoSum, the bubble explains. Keep it.
+   Round 1: the Knot thinks, flies over and lassos AutoSum, the bubble explains. Keep it.
    Round 2: the Knot shows the saved hint ("Spreadsheet: 1 saved") and a faint ring. Round 3: nothing.
    Usage: new NusLesson(sectionEl)  (needs #aStage, #aStatus, .step cards and #strandLayer) */
 (function () {
@@ -76,16 +76,12 @@
     const knotEl = stage.querySelector(".knot canvas");
 
     // the real Companion Knot and its thread
-    const knot = window.NusKnot3D ? NusKnot3D.mount(knotEl, { ground: false, scale: 0.285, focusGate: false }) : null;
-    let arriveCb = null;
-    const strand = window.NusStrand && knot ? NusStrand.mount(strandCanvas, knot, { onArrive() { const f = arriveCb; arriveCb = null; f && f(); } }) : null;
+    const knot = window.NusKnot3D ? NusKnot3D.mount(knotEl, { thread: strandCanvas, origin: stage }) : null;
+    const strand = knot && knot.strand;
     const knotState = (s) => knot && knot.setState && knot.setState(s);
-    // off screen the thread stops drawing (it would stretch to a button far off the page), and picks up on return
-    let ticking = false, away = false;
-    new IntersectionObserver((es) => { away = !es[0].isIntersecting; strandCanvas.style.visibility = away ? "hidden" : "";
-      if (!strand) return; if (away) strand.pause(); else if (strand.getState() !== "idle") { strand.resume(); strand.redraw(rectOf(target())); place(); } }, { rootMargin: "120px" }).observe(stage);
-    addEventListener("scroll", () => { if (!away && !ticking && strand && strand.getState() !== "idle") { ticking = true; requestAnimationFrame(() => { ticking = false; strand.redraw(rectOf(target())); place(); }); } }, { passive: true });
-    addEventListener("resize", () => requestAnimationFrame(() => { place(); markSelection(); }));
+    // the thread lives inside the stage, so it scrolls with the window and never has to be redrawn
+    let lassoOut = false;
+    addEventListener("resize", () => requestAnimationFrame(() => { place(); markSelection(); if (strand && lassoOut) { strand.resetHome(); flyAndLasso(); } }));
 
     let r = 0, start = 0, times = [], busy = false, revealed = false, tick = 0, sheet = SHEETS[0];
     const target = () => $('[data-t="AutoSum"]');
@@ -139,9 +135,7 @@
       if (mode === "full") {
         knotState("thinking");
         await wait(650);
-        arriveCb = () => { knotState("ready"); place(); show(bubble, true); };
-        // started after the visitor already scrolled past: hold it until the lesson is back on screen
-        if (strand) { strand.setTarget(rectOf(target())); if (away) strand.pause(); } else arriveCb();
+        if (strand) flyAndLasso(); else { knotState("ready"); place(); show(bubble, true); }
       } else if (mode === "hint") {
         knotState("ready");
         show(khint, true); await wait(350); show(hring, true);
@@ -149,9 +143,16 @@
       } else knotState("idle");
     }
     function rectOf(el) { const b = el.getBoundingClientRect(); return { x: b.left, y: b.top, w: b.width, h: b.height }; }
+    // beside the control and below the ribbon, kept inside the window it is helping with
+    function flyAndLasso() {
+      const r = rectOf(target()), s = stage.getBoundingClientRect();
+      lassoOut = true;
+      strand.arrive(() => { knotState("ready"); place(); show(bubble, true); });
+      strand.lasso(r, { x: Math.min(r.x + r.w + 74, s.right - 46), y: r.y + r.h + 54 });
+    }
     function clearHelp() {
       show(bubble, false); show(hring, false); show(khint, false);
-      if (strand && strand.getState() !== "idle") strand.rewind();
+      if (strand && lassoOut) { lassoOut = false; strand.flyHome(); }
       knotState("idle");
     }
 

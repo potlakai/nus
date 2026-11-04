@@ -2,7 +2,7 @@
    Glass, bubble and key rows follow nus-desktop-day1/companion (renderer/styles.css, home/index.html). */
 .guide { --line:var(--c-haze-14); --line2:var(--c-haze-26); --muted:var(--c-muted); --accent:var(--c-thread); --cobaltk:var(--c-506cff);
   --sys:var(--font-system); position:relative }
-canvas.guide-strand { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:30; --thread-accent:var(--c-thread) }
+canvas.guide-strand { position:absolute; left:0; top:0; width:0; height:0; display:none; pointer-events:none; z-index:30 }
 .guide em { color:var(--brass); font-style:italic } .guide .serif { font-family:var(--font-display); font-weight:400 }
 .guide .sec { position:relative; max-width:1180px; margin:0 auto; padding:14vh 40px 16vh }
 .guide .head { text-align:center } .guide .head .mono { color:var(--cobalt); margin-bottom:16px }

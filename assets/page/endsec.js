@@ -48,7 +48,7 @@
   function card(root) {
     root.innerHTML = `<div class="wrap"><div class="box"><div class="inner"><div>${HEAD}<p class="fine" style="margin-top:14px;font-size:16px;color:var(--mist)">A more capable you, one step at a time.</p>${buttons()}</div><div class="knotbig"><canvas aria-hidden="true"></canvas></div></div></div></div>`;
     const cv = root.querySelector(".knotbig canvas");
-    if (window.NusKnot3D) { const k = NusKnot3D.mount(cv, { ground: false, scale: 0.3, focusGate: false }); cv.parentElement.addEventListener("mouseenter", () => k.setState && k.setState("listening")); cv.parentElement.addEventListener("mouseleave", () => k.setState && k.setState("idle")); }
+    if (window.NusKnot3D) { const k = NusKnot3D.mount(cv); cv.parentElement.addEventListener("mouseenter", () => k.setState && k.setState("listening")); cv.parentElement.addEventListener("mouseleave", () => k.setState && k.setState("idle")); }
   }
   function footer(root) {
     root.innerHTML = `<div class="top">

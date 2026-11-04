@@ -14,8 +14,8 @@
     ? `<a class="btn solid" href="${L.macArm}">${APPLE}Mac beta</a><a class="btn ghost" href="${L.macIntel}">${APPLE}Intel Mac</a>`
     : `<a class="btn solid" href="${L.win}">Download free</a><a class="btn ghost" href="${L.macArm}">${APPLE}Mac beta</a>`;
   const PLANS = [
-    { name: "NŪS Companion", price: "$0", one: "No plan, no account.",
-      list: ["Your own Jarvis: voice actions and pointing", "Your folders of notes and docs, mapped", "On top of every Windows app", "Your own AI keys"],
+    { name: "NŪS Companion", price: "$0", one: "No plan. No account needed.",
+      list: ["Your own Jarvis: voice actions, Hands and walkthroughs", "Your folders of notes and docs, mapped", "On top of every Windows app", "Your own AI keys"],
       foot: `<a class="btn ghost" href="${L.companion}">Download for Windows</a>`, small: isMac ? "Version 0.1.15. Windows only for now." : "Version 0.1.15. Windows 10 and 11." },
     { name: "Students Free", price: "$0", one: "Forever. No trial clock.",
       list: ["Unlimited courses, tasks and calendar", "3 syllabus imports, 10 questions a day", "Companion 20 minutes a day", "1 connected account, 1 automation rule", "7 days of history, 512 MB"],

@@ -92,7 +92,7 @@
 .sheetbar .plus { color:var(--tx3); font-size:15px } .sheetbar .grow { flex:1 } .sheetbar .status { color:var(--tx); font-variant-numeric:tabular-nums } .sheetbar .zoom { color:var(--tx3) }
 
 /* the Companion: Knot in the corner, glass bubble at the thread tip, chips by the Knot */
-.knot { position:absolute; right:-86px; bottom:-72px; width:124px; height:124px; opacity:0; transform:scale(.6); transition:opacity .9s .5s, transform 1s .5s cubic-bezier(.2,1.3,.3,1); pointer-events:none }
+.knot { position:absolute; z-index:31; right:-86px; bottom:-72px; width:124px; height:124px; opacity:0; transform:scale(.6); transition:opacity .9s .5s, transform 1s .5s cubic-bezier(.2,1.3,.3,1); pointer-events:none }
 .stage.in .knot { opacity:1; transform:none }
 .knot canvas { width:100%; height:100% }
 .glass { background:linear-gradient(150deg, var(--c-12141f-95), var(--c-080a12-92)); border:1px solid var(--c-f2efe6-13); border-radius:18px;
@@ -110,7 +110,7 @@
 .khint b { color:var(--accent); font-weight:600 }
 .hring { border:1.6px solid var(--c-thread-80); box-shadow:0 0 14px var(--c-thread-25); border-radius:7px; transform:none; animation:hring 1.8s ease-in-out infinite; pointer-events:none }
 @keyframes hring { 50% { border-color:var(--c-thread-30); box-shadow:0 0 0 var(--c-thread-0) } }
-.strand-layer { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:30; --thread-accent:var(--c-thread) }
+.strand-layer { position:absolute; left:0; top:0; width:0; height:0; display:none; pointer-events:none; z-index:30 }
 
 .a-status { margin-top:78px; min-height:96px; text-align:center; color:var(--mist); font-size:15px; line-height:1.6 }
 .a-status b { color:var(--cream); font-weight:600 }
