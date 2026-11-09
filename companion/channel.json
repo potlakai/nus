@@ -1,0 +1,5 @@
+{
+ "key": "nus-channel-2026-a",
+ "body": "{\"latest\":\"0.1.16\",\"min_supported\":\"0.1.5\",\"release_url\":\"https://github.com/potlakai/nus-desktop/releases/tag/companion-v0.1.16\",\"installer\":{\"url\":\"https://github.com/potlakai/nus-desktop/releases/download/companion-v0.1.16/Nus-Companion-Setup.exe\",\"size\":200384051,\"sha512\":\"7jslKFCxfhw1yE/4dOmWiWtWLAgFscLKQJYucXGZuPC16qaYlsw1WKAhYXGyRpqmVYmceRDrkcBgT72wwhZ6Jg==\"},\"messages\":[],\"schema\":1,\"issued_at\":\"2026-11-09T02:49:16.164Z\"}",
+ "sig": "3tRtmQBvKFAAliHmEZoLYCJxoS3Q9KwWgP46/r9AbyCoJBWUcQm9LmW2ASqM6I7efzXWhvqN4M3kQylAf53MDA=="
+}
