@@ -38,7 +38,7 @@
 .plans .btn.ghost { border-color:var(--line2); color:var(--cream); background:var(--c-cream-5) } .plans .btn.ghost:hover { background:var(--c-cream-10) }
 .plans .btn.brass { background:var(--brass); color:var(--c-1a1206) } .plans .btn.brass:hover { background:var(--c-e0b872) }
 .plans svg.os { width:15px; height:15px; fill:currentColor; flex:0 0 auto; transform:translateY(-1px) }
-.plans .keys { margin-top:30px; text-align:center; color:var(--mist); font-size:14.5px; line-height:1.6 } .plans .keys b { color:var(--cream); font-weight:600 }
+.plans .keys { margin-top:30px; text-align:center; color:var(--mist); font-size:14.5px; line-height:1.6 } .plans .keys b { color:var(--cream); font-weight:600 } .plans .keys a { color:var(--cream); text-decoration:none; border-bottom:1px solid var(--line2) } .plans .keys a:hover { border-color:var(--cream) }
 
 @media (max-width:980px) { .plans .cols { grid-template-columns:1fr } }
 @media (prefers-reduced-motion: reduce) {
