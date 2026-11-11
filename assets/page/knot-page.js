@@ -16,12 +16,12 @@
   /* what it can find. el() is looked up when asked, because most sections build themselves. */
   const FIND = {
     download: isMac
-      ? { el: () => $(".fork .card.stu [data-macfix-dl]"), say: "On a Mac, this is the one: NŪS for Students, in beta. The Companion is Windows only for now.", enter: "download it" }
+      ? { el: () => $(".fork .card.stu [data-macwait] input[type=email]"), say: "The Companion is Windows only for now. Leave your email here and you get one message when the Mac build is ready." }
       : { el: () => $(".fork .card:not(.stu) [data-didit-dl]"), say: "The Companion. Free, for Windows 10 and 11.", enter: "download it" },
-    students: { el: () => $(".fork .card.stu .acts .btn.solid"), say: "NŪS for Students. Free, and the Companion comes with it.", enter: "download it" },
-    mac: { el: () => $(".fork .card.stu [data-macfix-dl]"), say: "The Mac beta is the Students app. The Companion is Windows only for now.", enter: "download it" },
-    cost: { el: () => $("#pricing .head h2"), tight: true, aim: .24, say: "Both apps are free. Pro is $9.99 a month, only for students who hit the limits." },
-    setup: { el: () => $("#setup .seg"), say: "Pick your app. Each step shows the screen it happens on." },
+    students: { el: () => $(".fork .card:not(.stu) [data-didit-dl]"), say: "NŪS for Students has moved into the Companion. This is the one download now.", enter: "download it" },
+    mac: { el: () => $(".fork .card.stu [data-macwait] input[type=email]"), say: "The Mac build is in the works. Leave your email here and you get one message when it is ready." },
+    cost: { el: () => $("#pricing .head h2"), tight: true, aim: .24, say: "The Companion is free. The AI runs on your own key, billed by the provider." },
+    setup: { el: () => $("#setup .head h2"), say: "Five steps. Each one shows the screen it happens on." },
     pranav: { el: () => pillEl() || $("#feedback .nfb-msg"), say: "Tell Pranav here. It goes straight to him.", stay: () => !!pillEl(), get enter() { return pillEl() ? "open it" : ""; } },
     questions: { el: () => $("#faq .ask"), say: "Everything else people asked is here. Search it." },
   };

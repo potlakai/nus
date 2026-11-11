@@ -1,6 +1,6 @@
 /* Two ways in, option A "The fork" (picked 2026-09-30). A small NŪS orb splits its strands into two
-   equal product cards: NŪS Companion (a live desk with the real Knot) and NŪS for Students (the real app
-   screens in a Mac-style window). Shared by index.html and twoways.html.
+   equal cards: NŪS Companion (a live desk with the real Knot) and, since NŪS for Students stopped on
+   2026-11-10, the Mac card (a Mac-style window and the Mac waitlist). Shared by index.html and twoways.html.
    Usage: NusWays.mountFork(el)  where el holds .gap and two article.card with .media and .copy */
 (function () {
   // Optional host-driven entry. Existing option pages retain their original entry.
@@ -11,7 +11,6 @@
   const REL = "https://github.com/potlakai/nus-desktop/releases";
   const L = {
     companion: `${REL}/download/companion-v0.1.16/Nus-Companion-Setup.exe`,
-    win: `${REL}/latest/download/Nus-Setup.exe`, macArm: `${REL}/download/v0.2.7/Nus-arm64.dmg`, macIntel: `${REL}/download/v0.2.7/Nus-x64.dmg`,
   };
 
   // "It did not install", then one question: what did you see. Each answer shows its fix right away.
@@ -24,7 +23,7 @@
     ["other", "Something else", "Type what you saw below."],
   ];
 
-  // the Apple mark on Mac downloads, so the Mac beta reads as a real way in
+  // the Apple mark on the Mac card
   const APPLE = '<svg class="os" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.64c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.3-.88-2.29-3.52zM14.2 6.18c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.08 1.96-.49 2.56-1.22z"/></svg>';
 
   /* ---------- the two products (shipped facts only) ---------- */
@@ -71,39 +70,32 @@
         <div class="small">Version 0.1.16${isMac ? ". Windows only for now." : ""}</div>
       </div>`;
   }
-  function studentsCopy() {
-    const main = isMac ? `<a class="btn solid" href="${L.macArm}" data-macfix-dl>${APPLE}Download for Mac (beta)</a>` : `<a class="btn solid" href="${L.win}">Download for Windows</a>`;
-    const alt = isMac ? `<a class="btn ghost" href="${L.macIntel}" data-macfix-dl>${APPLE}Intel Mac</a>` : `<a class="btn ghost" href="${L.macArm}" data-macfix-dl>${APPLE}Mac beta</a>`;
-    return `<h3 class="serif">NŪS for Students</h3>
-      <p class="one">Your whole semester in one app. Drop in a syllabus, check what it read, and see what matters today.</p>
+  /* The Mac card. The Companion is Windows only, so a Mac visitor leaves one email and gets one
+     message when the Mac build is ready. It also tells NŪS for Students users what happened. */
+  function macCopy() {
+    return `<h3 class="serif">${isMac ? "NŪS on Mac" : "On a Mac instead?"}</h3>
+      <p class="one">The Companion runs on Windows today. The Mac build is being worked on now, and there is no date yet.</p>
       <ul>
-        <li><span><b>Syllabus in, semester mapped.</b> <span class="d">Nothing is saved until you check it.</span></span></li>
-        <li><span><b>Today, Review, Map.</b> <span class="d">What’s next, what it read, how it all connects.</span></span></li>
-        <li><span><b>The Companion is inside.</b> <span class="d">The same Knot, built in.</span></span></li>
+        <li><span><b>One email, once.</b> <span class="d">The day the Mac build is ready. Nothing else.</span></span></li>
+        <li><span><b>Used NŪS for Students?</b> <span class="d">It still opens, and your semester stays on your computer. It gets no more updates.</span></span></li>
+        <li><span><b>Have a Windows PC too?</b> <span class="d">The Companion works there today.</span></span></li>
       </ul>
       <div class="bottom">
-        <div class="chips"><span class="chip hi">Free to start</span><span class="chip hi">Windows</span><span class="chip hi">${APPLE}Mac beta</span></div>
-        <div class="acts">${main}${alt}<a class="link" href="#setup" data-guide="students">Setup guide</a></div>
-        <details class="didit" data-macfix>
-          <summary>Mac won’t open it?</summary>
-          <div class="didit-body">
-            <p>Drag Nus into Applications, then open it from there. The Mac beta is not notarized by Apple yet, so macOS blocks the first open. What does the message say?</p>
-            <p><b>“Apple could not verify Nus”</b>: click <b>Done</b>. Open <b>System Settings</b>, then <b>Privacy &amp; Security</b>. Scroll down, click <b>Open Anyway</b> and enter your password.</p>
-            <p><b>“Nus is damaged and can’t be opened”</b>: click <b>Cancel</b>, not Move to Trash. Open <b>Terminal</b> (in Applications, then Utilities) and type this, with a space at the end:</p>
-            <div class="didit-cmd"><code>xattr -cr </code><button type="button" class="didit-copy">Copy</button></div>
-            <p>Drag Nus from Applications into the Terminal window and press <b>Return</b>. Then open Nus again.</p>
-            <p><b>“Not supported on this Mac”</b>: you have an Intel Mac. <a href="${L.macIntel}">Get the Intel version</a>.</p>
-          </div>
-        </details>
-        <div class="small">${isMac ? "" : `Mac beta is for Apple silicon. Intel Mac? <a href="${L.macIntel}" data-macfix-dl>Get the Intel build</a>. `}No account needed unless you go Pro.</div>
+        <div class="chips"><span class="chip hi">${APPLE}Mac</span><span class="chip">In the works</span><span class="chip">No date yet</span></div>
+        <form class="macwait" data-macwait novalidate>
+          <label class="didit-say"><span>Your email</span><input type="email" name="email" autocomplete="email" inputmode="email" maxlength="200" placeholder="you@example.com"></label>
+          <input type="text" name="website" class="macwait-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="acts"><button type="submit" class="btn solid" data-goatcounter-click="mac-waitlist-submit">Tell me when it’s ready</button></div>
+          <p class="didit-note" aria-live="polite" hidden></p>
+        </form>
+        <div class="small">Used only for that one message. Ask any time and it is deleted. <a href="privacy.html">Privacy</a>.</div>
       </div>`;
   }
-  const VIEWS = [["Today", "What matters now", "assets/app-today.webp"], ["Review", "Check what it read", "assets/app-review.webp"], ["Map", "How it connects", "assets/app-map.webp"]];
   const SCENES = [["Say it", "Ctrl+Alt", 5.6], ["Hands", "Asks first", 6.4], ["Point", "Ctrl+Shift+T", 5.4], ["Folders", "Your notes", 6.2], ["Island", "Bar up top", 10.4]];
   const tabRow = (items, label, cls) => `<div class="tabs ${cls}" role="tablist" aria-label="${label}">${items.map((t, i) => `<button type="button" role="tab" aria-selected="${!i}" class="${i ? "" : "on"}">${t[0]}<small>${t[1]}</small><i></i></button>`).join("")}</div>`;
-  function studentsMedia() {
-    return `<div class="appwin"><div class="shots">${VIEWS.map((t, i) => `<img src="${t[2]}" alt="NŪS for Students, ${t[0]} view" class="${i ? "" : "on"}" loading="lazy">`).join("")}</div></div>
-      ${tabRow(VIEWS, "Student app views", "")}`;
+  function macMedia() {
+    return `<div class="appwin macsoon" aria-label="NŪS Companion for Mac, in the works"><div class="shots"><div class="macsoon-in">${APPLE}<b class="serif">NŪS Companion for Mac</b><span>In the works. No date yet.</span></div></div></div>
+      <div class="tabs macrow"><div class="macrow-in"><b>Windows today</b><small>Mac next</small></div></div>`;
   }
   function companionMedia() {
     return `<div class="desk" aria-label="NŪS Companion on a desktop">
@@ -312,17 +304,25 @@
         .finally(() => { if (timer) clearTimeout(timer); });
     });
   }
-  /* "Mac won't open it?" under the student downloads: opens a moment after a Mac download click, and
-     Copy puts the Terminal command (with its trailing space) on the clipboard. */
-  function mountMacFix(card) {
-    const box = card.querySelector("[data-macfix]");
-    if (!box) return;
-    card.querySelectorAll("[data-macfix-dl]").forEach((a) => a.addEventListener("click", () => setTimeout(() => { box.open = true; }, 1200)));
-    const copy = box.querySelector(".didit-copy"), code = box.querySelector(".didit-cmd code");
-    copy.addEventListener("click", () => {
-      const done = () => { copy.textContent = "Copied"; setTimeout(() => (copy.textContent = "Copy"), 1800); };
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.textContent).then(done, () => getSelection().selectAllChildren(code));
-      else getSelection().selectAllChildren(code);
+  /* The Mac waitlist: one email to the same intake feedback.html uses, as a note Pranav can filter on
+     ("Mac waitlist"). The hidden "website" field is the same spam trap the feedback form has. */
+  const MAC_NOTE = "Mac waitlist: tell me when the Companion runs on Mac.";
+  function mountMacWait(card) {
+    const form = card.querySelector("[data-macwait]");
+    if (!form) return;
+    const email = form.querySelector('input[name="email"]'), hp = form.querySelector('input[name="website"]'), btn = form.querySelector("button"), note = form.querySelector(".didit-note");
+    const say = (t) => { note.hidden = false; note.textContent = t; };
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const mail = email.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { say("That email does not look right."); email.focus(); return; }
+      btn.disabled = true; say("Adding you...");
+      const ctrl = window.AbortController ? new AbortController() : null;
+      const timer = ctrl ? setTimeout(() => ctrl.abort(), 6000) : null;
+      fetch(FEEDBACK_API, { method: "POST", headers: { apikey: FEEDBACK_KEY, "content-type": "application/json" }, body: JSON.stringify({ source: "site", kind: "other", message: MAC_NOTE + (isMac ? " Sent from a Mac." : " Sent from another device."), email: mail, install_id: siteId(), website: hp.value }), signal: ctrl ? ctrl.signal : undefined })
+        .then((r) => { if (!r.ok) throw new Error("http " + r.status); email.value = ""; form.classList.add("done"); say("You’re on the list. One email when the Mac build is ready."); })
+        .catch(() => { btn.disabled = false; say("That did not go through. Email pranavfromthegrowth@gmail.com with the word Mac and you are on the list."); })
+        .finally(() => { if (timer) clearTimeout(timer); });
     });
   }
   const rel = (el, host) => { const a = el.getBoundingClientRect(), h = host.getBoundingClientRect(); return { x: a.left - h.left + a.width / 2, y: a.top - h.top, w: a.width }; };
@@ -330,8 +330,8 @@
   function mountFork(root) {
     const cards = [...root.querySelectorAll(".card")];
     cards[0].querySelector(".media").innerHTML = companionMedia(); cards[0].querySelector(".copy").innerHTML = companionCopy(); mountDidIt(cards[0]);
-    cards[1].querySelector(".media").innerHTML = studentsMedia(); cards[1].querySelector(".copy").innerHTML = studentsCopy(); mountMacFix(cards[1]);
-    mountDesk(cards[0]); mountTabs(cards[1].querySelector(".media"));
+    cards[1].querySelector(".media").innerHTML = macMedia(); cards[1].querySelector(".copy").innerHTML = macCopy(); mountMacWait(cards[1]);
+    mountDesk(cards[0]);
     let focus = -1, seen = 0;
     // a phone cannot hover: say what a finger can do
     if (matchMedia("(hover: none)").matches) { const p = root.querySelector(".head p"); if (p) p.textContent = p.textContent.replace("Hover one", "Tap one"); }
@@ -342,5 +342,5 @@
     StrandField(root, { per: 90, bottom: () => { const tops = cards.map((cd) => rel(cd.querySelector(".media"), root).y); return Math.abs(tops[0] - tops[1]) > 40 ? rel(cards[0], root).y : Math.min(...tops) + 60; }, /* stacked cards: the strands tuck in behind the first card */ state: () => ({ orb: { x: root.clientWidth / 2, y: root.querySelector(".gap").offsetTop + 96, r: 58 }, targets: cards.map((cd) => rel(cd.querySelector(".media"), root)), focus, grow: entryProgress.has(root) ? entryProgress.get(root) : seen, scrub: entryProgress.has(root) }) });
   }
   const setEntryProgress = (root, value) => value == null ? entryProgress.delete(root) : entryProgress.set(root, clamp(value));
-  window.NusWays = { mountFork, mountTabs, mountDesk, StrandField, companionCopy, mountDidIt, mountMacFix, studentsCopy, companionMedia, studentsMedia, rel, setEntryProgress };
+  window.NusWays = { mountFork, mountTabs, mountDesk, StrandField, companionCopy, mountDidIt, mountMacWait, macCopy, companionMedia, macMedia, rel, setEntryProgress };
 })();

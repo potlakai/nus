@@ -197,3 +197,20 @@
 .didit-cmd code { font:13px var(--font-mono); color:var(--cream); white-space:pre }
 .didit summary:focus-visible, .didit button:focus-visible { outline:2px solid var(--brass); outline-offset:3px }
 .ways .desk .b1 { z-index:3 }
+
+/* The Mac card (2026-11-10): the Mac-style window says the build is in the works, and the waitlist form sits where the downloads were */
+.ways .macsoon .shots { display:grid; place-items:center }
+.ways .macsoon-in { display:grid; justify-items:center; gap:8px; text-align:center; padding:20px; color:var(--mist) }
+.ways .macsoon-in .os { width:38px; height:38px; fill:var(--cream); opacity:.9 }
+.ways .macsoon-in b { font-weight:400; font-size:clamp(20px,2.2vw,28px); color:var(--cream) }
+.ways .macsoon-in span { font-size:14px; color:var(--muted) }
+.ways .tabs.macrow .macrow-in { flex:1; font:500 13px var(--font-body); color:var(--mist); background:var(--c-cream-3); border:1px solid var(--line); border-radius:10px; padding:9px 10px }
+.ways .tabs.macrow small { display:block; margin-top:2px; font-size:11.5px; color:var(--muted) }
+.ways .macwait { margin-top:14px }
+.ways .macwait .didit-say { max-width:360px }
+.ways .macwait .acts { margin-top:4px }
+.ways .macwait button.btn { cursor:pointer; font:inherit; font-weight:600 }
+.ways .macwait button.btn:disabled { opacity:.55; cursor:wait }
+.ways .macwait.done .didit-say, .ways .macwait.done .acts { display:none }
+.ways .macwait-hp { position:absolute; left:-9999px; width:1px; height:1px; opacity:0 }
+.ways .small a { color:inherit }

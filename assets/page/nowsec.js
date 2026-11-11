@@ -8,20 +8,17 @@
     { t: "Say it, it acts", d: "Voice actions with Jev. It picks each action in about a quarter second.", tag: "companion" },
     { t: "Hands", d: "It clicks and types for you, off until you turn it on. It asks before it sends.", tag: "companion" },
     { t: "Shows you how", d: "Ask how to do something. The Knot flies to the button and lassos it.", tag: "companion" },
-    { t: "Point at anything", d: "Ctrl+Shift+T. The thread runs to the spot and the answer lands there.", tag: "both" },
+    { t: "Point at anything", d: "Ctrl+Shift+T. The thread runs to the spot and the answer lands there.", tag: "companion" },
     { t: "Knows your stuff", d: "Add notes and docs. It answers from them when they help.", tag: "companion" },
     { t: "Routines", d: "Say a few actions in a row, keep them, then say “run my routine”.", tag: "companion" },
     { t: "Projects, in beta", d: "Say “keep this as a project”, then “continue” it another day. Turn on Task list in Settings.", tag: "companion" },
-    { t: "Syllabus in, semester mapped", d: "It reads your syllabus. Nothing is saved until you check it.", tag: "students" },
-    { t: "Today, Review, Map", d: "What matters now, what it read, and how it all connects.", tag: "students" },
-    { t: "Mac beta", d: "The student app on Apple silicon and Intel Macs.", tag: "students" },
-    { t: "Yours, on your computer", d: "Your data stays local, with your own AI keys. A Google account is optional, only to sync a few settings.", tag: "both" },
+    { t: "Yours, on your computer", d: "Your data stays local, with your own AI keys. A Google account is optional, only to sync a few settings.", tag: "companion" },
   ];
   const HEAD = [
     { t: "Guidance that fades", d: "Help that steps back as you get better, like “Later” above." },
     { t: "Noticing patterns", d: "It notices how you work and suggests the next move." },
     { t: "One companion, everywhere", d: "The same Knot across school, work and life." },
-    { t: "Next up", d: "A notarized Mac build, Canvas and Blackboard sync, and a signed installer." },
+    { t: "Next up", d: "The Companion on Mac, and a signed installer." },
   ];
   const TAG = { companion: "Companion", students: "Students", both: "Both apps" };
   const sphere = (() => { const N = 520, g = Math.PI * (3 - Math.sqrt(5)), P = []; for (let i = 0; i < N; i++) { const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), t = g * i; P.push([Math.cos(t) * r, y, Math.sin(t) * r]); } return P; })();

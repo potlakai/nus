@@ -1,4 +1,4 @@
-/* Setup, option A "Follow along" (picked 2026-09-30). Companion / Students tabs; numbered steps on the left
+/* Setup, option A "Follow along" (picked 2026-09-30). One app since 2026-11-10 (the Students tab is gone); numbered steps on the left
    auto-advance and a screen on the right shows each step where it happens. The Companion guide shows it as
    your own Jarvis: keys, your folders, voice actions, and pointing with the Knot's real thread.
    Facts: nus-desktop-day1 Companion window (Saved, Folders, Settings; Your keys rows; folders take PDF,
@@ -14,8 +14,6 @@
     typesafe: { name: "TypeSafe", role: "Jev, the voice reflexes", unlocks: "Voice actions. Jev, TypeSafe’s voice model, turns “open Notepad, type hello” into the clicks and keys.", get: ext("typesafe.ai"), where: "Companion window, <b>Your keys</b>, TypeSafe", note: "Only for voice actions. Everything else works without it." },
     gemini: { name: "Gemini", role: "Answers and speech fallback", unlocks: "Answers, pointing and walkthroughs, and a backup for hearing you.", get: ext("aistudio.google.com/apikey") + " (free key)", where: "Companion window, <b>Your keys</b>, Gemini", note: "The quickest one to get. Start here." },
     anthropic: { name: "Anthropic", role: "Another way to answer", unlocks: "Answers, pointing and walkthroughs, the same as a Gemini or Nvidia key. Press Ctrl+Shift+T on anything and it answers right there.", get: ext("console.anthropic.com"), where: "Companion window, <b>Your keys</b>, Anthropic", note: "Have Claude Code installed? Skip this. NŪS finds it." },
-    claude: { name: "Claude", role: "For the student app", unlocks: "Reading your syllabi, the Ask bar and the chat.", get: "Nothing, if Claude Code is installed: NŪS finds it. Otherwise an API key from " + ext("console.anthropic.com"), where: "Settings, the <b>AI provider</b> card", note: "Courses, tasks and the calendar work without it." },
-    gemini2: { name: "Gemini", role: "For the built-in Companion", unlocks: "The Knot’s AI answers, and cloud speech backup.", get: ext("aistudio.google.com/apikey") + " (free key)", where: "Settings, the <b>Companion AI key</b> card", note: "Optional. Without it, screen guidance can still use your desktop Claude." },
   };
   const GUIDES = {
     companion: [
@@ -24,12 +22,6 @@
       { t: "Give it your stuff", d: "This is what makes it your Jarvis. Under <b>Folders</b>, add your notes, docs and calendar: PDF, Word, text, Markdown and calendar files. It answers from them when they help.", scene: "folders", dur: 7 },
       { t: "Say it, it acts", d: `Hold ${K("Ctrl", "Alt")} and say “open Notepad, type hello”. Jev does it while you’re still talking. Say a few in a row and it offers to save them as a routine.`, scene: "voice", dur: 7.5 },
       { t: "Point at anything", d: `Press ${K("Ctrl", "Shift", "T")} on a button, an error or a slide. The Knot’s thread runs to that exact spot, and the answer lands right there.`, scene: "point", dur: 7 },
-    ],
-    students: [
-      { t: "Download", d: `The Windows installer, or the ${APPLE}Mac beta for Apple silicon or Intel. On a Mac, if it won’t open: System Settings, Privacy &amp; Security, <b>Open Anyway</b>. Says it’s damaged? Open <b>Mac won’t open it?</b> under the download.`, scene: "dl", dur: 6 },
-      { t: "No account needed", d: "It runs in local mode on your computer. You only make an account if you want Pro.", scene: "local", dur: 5 },
-      { t: "Connect your AI", d: "In Settings, the <b>AI provider</b> card uses Claude: it’s found automatically if Claude Code is installed, otherwise paste an Anthropic API key. For the built-in Knot, add a free Gemini key in <b>Companion AI key</b>.", scene: "prov", dur: 7 },
-      { t: "Import a syllabus", d: "Drop in the PDF and check what it read. Nothing is saved until you confirm. The Companion is already inside.", scene: "review", dur: 6 },
     ],
   };
   const NOTEPAD = `<div class="notepad"><div class="bar">Notepad</div><div class="txt"></div></div>`;
@@ -98,8 +90,8 @@
 
   function mount(root) {
     root.innerHTML = `<div class="sec">
-      <div class="head reveal"><div class="mono">Setup</div><h2 class="serif">Download, add your key, <em>say it.</em></h2><p>Pick your app. Each step shows the screen it happens on.</p></div>
-      <div class="prod reveal"><div class="seg" role="tablist" aria-label="Which app"><span class="pill" aria-hidden="true"></span><button type="button" role="tab" class="on" aria-selected="true" data-p="companion">NŪS Companion</button><button type="button" role="tab" aria-selected="false" data-p="students">NŪS for Students</button></div></div>
+      <div class="head reveal"><div class="mono">Setup</div><h2 class="serif">Download, add your key, <em>say it.</em></h2><p>Five steps. Each one shows the screen it happens on.</p></div>
+      <div class="prod reveal" hidden><div class="seg" role="tablist" aria-label="Which app"><span class="pill" aria-hidden="true"></span><button type="button" role="tab" class="on" aria-selected="true" data-p="companion">NŪS Companion</button></div></div>
       <div class="fa reveal"><ol class="gsteps"></ol><div class="screen" aria-live="polite"></div></div></div>`;
     const list = root.querySelector(".gsteps"), screen = root.querySelector(".screen"), fa = root.querySelector(".fa");
     new ResizeObserver(() => screen.style.setProperty("--k", Math.min(1, screen.clientWidth / 660).toFixed(3))).observe(screen);

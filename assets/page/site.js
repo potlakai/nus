@@ -12,9 +12,6 @@
   const name = (a) => {
     const h = a.href, sec = (a.closest("section, footer") || {}).id || "nav";
     if (/Nus-Companion-Setup\.exe$/.test(h)) return `download-windows-companion-${sec}`;
-    if (/Nus-Setup\.exe$/.test(h)) return `download-windows-${sec}`;
-    if (/Nus-arm64\.dmg$/.test(h)) return `download-mac-${sec}`;
-    if (/Nus-x64\.dmg$/.test(h)) return `download-mac-intel-${sec}`;
     if (/pro\.html$/.test(h)) return `pro-click-${sec}`;
     if (/feedback\.html$/.test(h)) return `feedback-${sec}`;
     return null;

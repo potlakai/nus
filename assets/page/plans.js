@@ -1,28 +1,24 @@
-/* Pricing, option C "Three columns" (PICKED 2026-09-30, no receipt): Companion $0 / Students Free $0 /
-   Students Pro $9.99, each with its own buttons, a cursor spotlight, and the fork's strands running in.
-   The Students column carries the Mac beta download with the Apple mark, same as Two ways in.
-   Facts from nus-desktop/src/limits.js. Usage: NusPlans.mount(el)  (el is an empty .plans element) */
+/* Pricing. Since NŪS for Students stopped (2026-11-10) there is one app and no plan: the Companion at $0,
+   what the AI costs on your own key, and where a Mac stands. Same columns, cursor spotlight and strands as
+   the three-plan version it replaces. Usage: NusPlans.mount(el)  (el is an empty .plans element) */
 (function () {
   const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   const isMac = /Mac/.test(navigator.platform || navigator.userAgent) && !/iPhone|iPad/.test(navigator.userAgent);
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
-  const REL = "https://github.com/potlakai/nus-desktop/releases", PRO_URL = "https://potlakai.github.io/nus/pro.html";
-  const L = { companion: `${REL}/download/companion-v0.1.16/Nus-Companion-Setup.exe`, win: `${REL}/latest/download/Nus-Setup.exe`, macArm: `${REL}/download/v0.2.7/Nus-arm64.dmg`, macIntel: `${REL}/download/v0.2.7/Nus-x64.dmg` };
+  const REL = "https://github.com/potlakai/nus-desktop/releases";
+  const L = { companion: `${REL}/download/companion-v0.1.16/Nus-Companion-Setup.exe` };
   const APPLE = '<svg class="os" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.64c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.3-.88-2.29-3.52zM14.2 6.18c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.08 1.96-.49 2.56-1.22z"/></svg>';
   const TICK = '<svg class="tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>';
-  const studentsBtns = isMac
-    ? `<a class="btn solid" href="${L.macArm}">${APPLE}Mac beta</a><a class="btn ghost" href="${L.macIntel}">${APPLE}Intel Mac</a>`
-    : `<a class="btn solid" href="${L.win}">Download free</a><a class="btn ghost" href="${L.macArm}">${APPLE}Mac beta</a>`;
   const PLANS = [
     { name: "NŪS Companion", price: "$0", one: "No plan. No account needed.",
       list: ["Your own Jarvis: voice actions, Hands and walkthroughs", "Your folders of notes and docs, mapped", "On top of every Windows app", "Your own AI keys"],
       foot: `<a class="btn ghost" href="${L.companion}">Download for Windows</a>`, small: isMac ? "Version 0.1.16. Windows only for now." : "Version 0.1.16. Windows 10 and 11." },
-    { name: "Students Free", price: "$0", one: "Forever. No trial clock.",
-      list: ["Unlimited courses, tasks and calendar", "3 syllabus imports, 10 questions a day", "Companion 20 minutes a day", "1 connected account, 1 automation rule", "7 days of history, 512 MB"],
-      foot: studentsBtns, small: isMac ? "Apple silicon or Intel. Windows too." : "Windows, and Mac beta." },
-    { name: "Students Pro", price: "$9.99<small>/ month</small>", one: "Everything in Free, with the caps off.", pro: true,
-      list: ["Unlimited imports and questions", "Unlimited Companion, full history", "Google Calendar and Outlook together", "More automation rules, 2 GB"],
-      foot: `<a class="btn brass" href="${PRO_URL}">Get Pro</a>`, small: "Buy here or in the app. Cancel any time." },
+    { name: "The AI", price: "Your key", one: "Billed by the provider you pick, not by NŪS.",
+      list: ["Simple asks like “open YouTube” need no key", "A free Gemini or Nvidia key covers answers", "Claude Code, if it’s signed in, needs no key", "TypeSafe for the full set of voice actions"],
+      foot: `<a class="btn ghost" href="#setup" data-guide="companion">See the setup</a>`, small: "Check each provider’s own pricing." },
+    { name: "On a Mac", price: "Soon", one: "The Mac build is in the works. No date yet.",
+      list: ["One email the day it is ready", "NŪS for Students still opens on your Mac", "It gets no more updates"],
+      foot: `<a class="btn ghost" href="#ways">${APPLE}Tell me when it’s ready</a>`, small: "The form is under The way in." },
   ];
 
   /* strands coming down from the fork above into the columns */
@@ -73,13 +69,13 @@
 
   function mount(root) {
     root.innerHTML = `<div class="sec">
-      <div class="head reveal"><div class="mono">Pricing</div><h2 class="serif">Free to <em>start.</em></h2><p>Both apps are free. Pro is only for the student who hits the caps.</p></div>
+      <div class="head reveal"><div class="mono">Pricing</div><h2 class="serif">Free. <em>No plan.</em></h2><p>The Companion is free. The AI runs on your own key.</p></div>
       <div class="cols">${PLANS.map((p) => `<article class="col reveal${p.pro ? " pro" : ""}">
         <h3 class="serif">${p.name}</h3><div class="price">${p.price}</div><p class="one">${p.one}</p>
         <ul>${p.list.map((l) => `<li>${TICK}<span>${l}</span></li>`).join("")}</ul>
         <div class="foot"><div class="btns">${p.foot}</div>${p.small ? `<p class="small">${p.small}</p>` : ""}</div>
       </article>`).join("")}</div>
-      <p class="keys reveal"><b>Your AI, your key.</b> On every plan you bring your own AI key, and the provider bills you directly. Cancel Pro any time.</p>
+      <p class="keys reveal"><b>Had Students Pro?</b> It is closed to new sign-ups. <a href="pro.html">Manage or cancel it here</a>.</p>
     </div>`;
     const sec = root.querySelector(".sec"), cols = [...root.querySelectorAll(".col")];
     let hot = -1;
@@ -90,7 +86,7 @@
     });
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add("in")), { threshold: 0.15 });
     root.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-    Threads(sec, () => cols.map((c, i) => { const r = c.getBoundingClientRect(), h = sec.getBoundingClientRect(); return { x: r.left - h.left + r.width / 2, y: r.top - h.top, w: r.width, warm: i === 2, hot: hot === i }; }));
+    Threads(sec, () => cols.map((c, i) => { const r = c.getBoundingClientRect(), h = sec.getBoundingClientRect(); return { x: r.left - h.left + r.width / 2, y: r.top - h.top, w: r.width, warm: false, hot: hot === i }; }));
   }
   window.NusPlans = { mount, APPLE };
 })();
