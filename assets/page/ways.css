@@ -47,6 +47,7 @@
 .ways .chip { font:500 12px var(--font-body); padding:6px 11px; border-radius:999px; border:1px solid var(--line); color:var(--mist); background:var(--c-cream-3) }
 .ways .chip.hi { color:var(--cream); border-color:var(--line2) }
 .ways .acts { display:flex; flex-wrap:wrap; align-items:center; gap:10px 12px; margin-top:20px } .ways .acts .link { margin-left:6px }
+.ways .signin-note { margin:12px 0 0; font:400 13px/1.45 var(--font-body); color:var(--mist) }
 .ways .btn { display:inline-flex; align-items:center; white-space:nowrap; border-radius:999px; padding:13px 22px; font:600 15px var(--font-body); text-decoration:none; border:0; cursor:pointer; transition:transform .25s cubic-bezier(.2,.8,.2,1), background .25s }
 .ways .btn:hover { transform:scale(1.04) }
 .ways .btn.solid { background:var(--cream); color:var(--c-night) } .ways .btn.solid:hover { background:var(--c-white) }

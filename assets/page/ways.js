@@ -38,8 +38,9 @@
         <li><span><b>Knows your stuff.</b> <span class="d">Add folders of notes, docs and your calendar.</span></span></li>
               </ul>
       <div class="bottom">
-        <div class="chips"><span class="chip hi">Free</span><span class="chip">Windows 10 and 11</span><span class="chip">Your own AI keys</span></div>
+        <div class="chips"><span class="chip hi">Free</span><span class="chip">Windows 10 and 11</span><span class="chip">No AI key needed</span></div>
         <div class="acts"><a class="btn solid" href="${L.companion}" data-didit-dl>Download for Windows</a><a class="link" href="#setup" data-guide="companion">Setup guide</a></div>
+        <p class="signin-note">Sign in with publik when it opens and your first 100 or so asks are free. No AI key to paste.</p>
         <details class="didit" data-didit>
           <summary>Did it install?</summary>
           <div class="didit-body">
