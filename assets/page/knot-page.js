@@ -20,7 +20,7 @@
       : { el: () => $(".fork .card:not(.stu) [data-didit-dl]"), say: "The Companion. Free, for Windows 10 and 11.", enter: "download it" },
     students: { el: () => $(".fork .card:not(.stu) [data-didit-dl]"), say: "NŪS for Students has moved into the Companion. This is the one download now.", enter: "download it" },
     mac: { el: () => $(".fork .card.stu [data-macwait] input[type=email]"), say: "The Mac build is in the works. Leave your email here and you get one message when it is ready." },
-    cost: { el: () => $("#pricing .head h2"), tight: true, aim: .24, say: "The Companion is free. The AI runs on your own key, billed by the provider." },
+    cost: { el: () => $("#pricing .head h2"), tight: true, aim: .24, say: "The Companion is free to start. Sign in with publik and your first 100 or so asks are free, no key." },
     setup: { el: () => $("#setup .head h2"), say: "Five steps. Each one shows the screen it happens on." },
     pranav: { el: () => pillEl() || $("#feedback .nfb-msg"), say: "Tell Pranav here. It goes straight to him.", stay: () => !!pillEl(), get enter() { return pillEl() ? "open it" : ""; } },
     questions: { el: () => $("#faq .ask"), say: "Everything else people asked is here. Search it." },
@@ -37,7 +37,7 @@
   const TROUBLE = /(won.?t|can.?t|cannot|fail|error|damaged|warn|blocked|virus|unsafe|not working|mishear)/;
   const TOUR = [
     { go: "setup", say: "Setup first. Pick your app and each step shows the screen it happens on." },
-    { go: "cost", say: "Both apps are free. You bring your own AI key for the bigger asks." },
+    { go: "cost", say: "The Companion is free to start. Sign in with publik, no AI key needed." },
     { go: "questions", say: "Stuck on something? Everything people asked is searchable here." },
     { go: "download", say: isMac ? "That’s the tour. On a Mac, this is the one to get." : "That’s the tour. This is the one to get." },
   ];

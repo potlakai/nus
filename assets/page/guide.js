@@ -12,13 +12,13 @@
   const K = (...k) => k.map((x) => `<kbd>${x}</kbd>`).join(" ");
   const KEYS = {
     typesafe: { name: "TypeSafe", role: "Jev, the voice reflexes", unlocks: "Voice actions. Jev, TypeSafe’s voice model, turns “open Notepad, type hello” into the clicks and keys.", get: ext("typesafe.ai"), where: "Companion window, <b>Your keys</b>, TypeSafe", note: "Only for voice actions. Everything else works without it." },
-    gemini: { name: "Gemini", role: "Answers and speech fallback", unlocks: "Answers, pointing and walkthroughs, and a backup for hearing you.", get: ext("aistudio.google.com/apikey") + " (free key)", where: "Companion window, <b>Your keys</b>, Gemini", note: "The quickest one to get. Start here." },
+    gemini: { name: "Gemini", role: "Answers and speech fallback", unlocks: "Answers, pointing and walkthroughs, and a backup for hearing you.", get: ext("aistudio.google.com/apikey") + " (free key)", where: "Companion window, <b>Your keys</b>, Gemini", note: "Optional. publik answers with no key." },
     anthropic: { name: "Anthropic", role: "Another way to answer", unlocks: "Answers, pointing and walkthroughs, the same as a Gemini or Nvidia key. Press Ctrl+Shift+T on anything and it answers right there.", get: ext("console.anthropic.com"), where: "Companion window, <b>Your keys</b>, Anthropic", note: "Have Claude Code installed? Skip this. NŪS finds it." },
   };
   const GUIDES = {
     companion: [
       { t: "Download and install", d: "Get NŪS Companion 0.1.18 for Windows. If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>. It isn’t code-signed yet. Still stuck? Open <b>Did it install?</b> under the download.", scene: "smart", dur: 6 },
-      { t: "Add your keys", d: "In the Companion window, under <b>Settings</b>: one key for answers (Gemini and Nvidia have free ones), and TypeSafe for the full set of voice actions. Have Claude Code? It answers with no key. Simple asks like “open YouTube” need no key at all.", scene: "keys", dur: 8 },
+      { t: "Sign in, no key needed", d: "The Companion opens with <b>Sign in with publik</b>. Sign in and answers work with no key, and your first 100 or so asks are free. Under <b>Settings</b>, add a TypeSafe key for the full set of voice actions. Rather use your own Gemini, Nvidia or Anthropic key, or Claude Code? Pick <b>Use my own key</b>. Simple asks like “open YouTube” need no key at all.", scene: "keys", dur: 8 },
       { t: "Give it your stuff", d: "This is what makes it your Jarvis. Under <b>Folders</b>, add your notes, docs and calendar: PDF, Word, text, Markdown and calendar files. It answers from them when they help.", scene: "folders", dur: 7 },
       { t: "Say it, it acts", d: `Hold ${K("Ctrl", "Alt")} and say “open Notepad, type hello”. Jev does it while you’re still talking. Say a few in a row and it offers to save them as a routine.`, scene: "voice", dur: 7.5 },
       { t: "Point at anything", d: `Press ${K("Ctrl", "Shift", "T")} on a button, an error or a slide. The Knot’s thread runs to that exact spot, and the answer lands right there.`, scene: "point", dur: 7 },

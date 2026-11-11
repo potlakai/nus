@@ -12,7 +12,7 @@
     { t: "Knows your stuff", d: "Add notes and docs. It answers from them when they help.", tag: "companion" },
     { t: "Routines", d: "Say a few actions in a row, keep them, then say “run my routine”.", tag: "companion" },
     { t: "Projects, in beta", d: "Say “keep this as a project”, then “continue” it another day. Turn on Task list in Settings.", tag: "companion" },
-    { t: "Yours, on your computer", d: "Your data stays local, with your own AI keys. A Google account is optional, only to sync a few settings.", tag: "companion" },
+    { t: "Yours, on your computer", d: "Your notes and files stay on your computer. Answers come through publik with no key, or on your own key if you prefer.", tag: "companion" },
   ];
   const HEAD = [
     { t: "Guidance that fades", d: "Help that steps back as you get better, like “Later” above." },

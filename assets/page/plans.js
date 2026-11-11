@@ -10,12 +10,12 @@
   const APPLE = '<svg class="os" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.64c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.3-.88-2.29-3.52zM14.2 6.18c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.08 1.96-.49 2.56-1.22z"/></svg>';
   const TICK = '<svg class="tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>';
   const PLANS = [
-    { name: "NŪS Companion", price: "$0", one: "No plan. No account needed.",
-      list: ["Your own Jarvis: voice actions, Hands and walkthroughs", "Your folders of notes and docs, mapped", "On top of every Windows app", "Your own AI keys"],
+    { name: "NŪS Companion", price: "$0", one: "Free to start. Sign in with publik.",
+      list: ["Your own Jarvis: voice actions, Hands and walkthroughs", "Your folders of notes and docs, mapped", "On top of every Windows app", "No AI key needed"],
       foot: `<a class="btn ghost" href="${L.companion}">Download for Windows</a>`, small: isMac ? "Version 0.1.18. Windows only for now." : "Version 0.1.18. Windows 10 and 11." },
-    { name: "The AI", price: "Your key", one: "Billed by the provider you pick, not by NŪS.",
-      list: ["Simple asks like “open YouTube” need no key", "A free Gemini or Nvidia key covers answers", "Claude Code, if it’s signed in, needs no key", "TypeSafe for the full set of voice actions"],
-      foot: `<a class="btn ghost" href="#setup" data-guide="companion">See the setup</a>`, small: "Check each provider’s own pricing." },
+    { name: "The AI", price: "Free to start", one: "Your first 100 or so asks are free with publik.",
+      list: ["Simple asks like “open YouTube” use no balance", "After the free asks, top up on publik", "Or use your own key: Gemini and Nvidia have free ones", "TypeSafe for the full set of voice actions"],
+      foot: `<a class="btn ghost" href="#setup" data-guide="companion">See the setup</a>`, small: "publik and each provider set their own prices." },
     { name: "On a Mac", price: "Soon", one: "The Mac build is in the works. No date yet.",
       list: ["One email the day it is ready", "NŪS for Students still opens on your Mac", "It gets no more updates"],
       foot: `<a class="btn ghost" href="#ways">${APPLE}Tell me when it’s ready</a>`, small: "The form is under The way in." },
@@ -69,7 +69,7 @@
 
   function mount(root) {
     root.innerHTML = `<div class="sec">
-      <div class="head reveal"><div class="mono">Pricing</div><h2 class="serif">Free. <em>No plan.</em></h2><p>The Companion is free. The AI runs on your own key.</p></div>
+      <div class="head reveal"><div class="mono">Pricing</div><h2 class="serif">Free <em>to start.</em></h2><p>The Companion is free. Sign in with publik and your first 100 or so asks are free, with no AI key.</p></div>
       <div class="cols">${PLANS.map((p) => `<article class="col reveal${p.pro ? " pro" : ""}">
         <h3 class="serif">${p.name}</h3><div class="price">${p.price}</div><p class="one">${p.one}</p>
         <ul>${p.list.map((l) => `<li>${TICK}<span>${l}</span></li>`).join("")}</ul>

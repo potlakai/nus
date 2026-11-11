@@ -12,9 +12,9 @@
   // Windows gets the Companion; a Mac gets the waitlist, because the Companion is Windows only for now
   const buttons = () => isMac
     ? `<div class="btns"><a class="cbtn solid" href="#ways">${APPLE}Tell me when it’s on Mac</a><a class="cbtn ghost" href="${L.companion}">Windows download</a></div>
-    <p class="fine">NŪS Companion is Windows only for now. The Mac build is in the works. Free. You bring the AI keys.</p>`
+    <p class="fine">NŪS Companion is Windows only for now. The Mac build is in the works. Free to start: sign in with publik, no AI key to paste.</p>`
     : `<div class="btns"><a class="cbtn solid" href="${L.companion}">Download NŪS Companion</a><a class="cbtn ghost" href="#ways">${APPLE}On a Mac?</a></div>
-    <p class="fine">Windows 10 or 11. Free. You bring the AI keys.</p>`;
+    <p class="fine">Windows 10 or 11. Free to start: sign in with publik, no AI key to paste.</p>`;
   const HEAD = `<div class="kick mono">Your move</div><h2 class="serif">Download NŪS, <em>free.</em></h2>`;   // short enough to clear the orb label "you" at every width
 
   function full(root) {
@@ -57,7 +57,7 @@
       <div><h4 class="mono">Set up</h4><ul><li><a href="#setup" data-guide="companion">Companion setup</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#faq">Questions</a></li></ul></div>
       <div><h4 class="mono">Open</h4><ul><li><a href="${L.repo}">GitHub</a></li><li><a href="${L.releases}">All releases</a></li><li><a href="${L.privacy}">Privacy</a></li></ul></div>
       <div><h4 class="mono">Talk to us</h4><ul><li><a href="${L.feedback}">Give feedback</a></li><li><a href="#now">Where it’s heading</a></li></ul></div></div>
-      <div class="meta"><span>NŪS, ${new Date().getFullYear()}</span><span>Your data stays on your computer. You bring your own AI keys.</span></div>
+      <div class="meta"><span>NŪS, ${new Date().getFullYear()}</span><span>Your notes and files stay on your computer. What you ask goes to an AI to be answered.</span></div>
       <div class="mark" aria-hidden="true"><div class="w">NUS</div><div class="m"></div></div>`;
     const mark = root.querySelector(".mark");
     // the wordmark rises into view as you reach the bottom, the way the hero's sank away
