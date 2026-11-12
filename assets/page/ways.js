@@ -41,7 +41,7 @@
         <div class="chips"><span class="chip hi">Free</span><span class="chip">Windows 10 and 11</span><span class="chip">No AI key needed</span></div>
         <div class="acts"><a class="btn solid" href="${L.companion}" data-didit-dl>Download for Windows</a><a class="link" href="#setup" data-guide="companion">Setup guide</a></div>
         <p class="heads-up"><b>Heads up:</b> the first time, Windows says it protected your PC, because Nūs is new and not signed yet. Click <b>More info</b>, then <b>Run anyway</b>.</p>
-        <p class="signin-note">Then sign in with publik: your first 100 or so asks are free, no card. publik shows its plans after you sign in. You do not need one.</p>
+        <p class="signin-note">Then sign in with publik: about 100 asks for free, no card. <b>You do not need to buy publik's plan.</b></p>
         <details class="didit" data-didit>
           <summary>Did it install?</summary>
           <div class="didit-body">
