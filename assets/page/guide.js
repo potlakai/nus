@@ -17,7 +17,7 @@
   };
   const GUIDES = {
     companion: [
-      { t: "Download and install", d: "Get NŪS Companion 0.1.20 for Windows. If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>. It isn’t code-signed yet. Still stuck? Open <b>Did it install?</b> under the download.", scene: "smart", dur: 6 },
+      { t: "Download and install", d: "Get NŪS Companion 0.1.21 for Windows. If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>. It isn’t code-signed yet. Still stuck? Open <b>Did it install?</b> under the download.", scene: "smart", dur: 6 },
       { t: "Sign in, no key needed", d: "The Companion opens with <b>Sign in with publik</b>. Sign in and answers work with no key, and your first 100 or so asks are free. Under <b>Settings</b>, add a TypeSafe key for the full set of voice actions. Rather use your own Gemini, Nvidia or Anthropic key, or Claude Code? Pick <b>Use my own key</b>. Simple asks like “open YouTube” need no key at all.", scene: "keys", dur: 8 },
       { t: "Give it your stuff", d: "This is what makes it your Jarvis. Under <b>Folders</b>, add your notes, docs and calendar: PDF, Word, text, Markdown and calendar files. It answers from them when they help.", scene: "folders", dur: 7 },
       { t: "Say it, it acts", d: `Hold ${K("Ctrl", "Alt")} and say “open Notepad, type hello”. Jev does it while you’re still talking. Say a few in a row and it offers to save them as a routine.`, scene: "voice", dur: 7.5 },
