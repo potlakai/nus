@@ -10,7 +10,7 @@
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
   const REL = "https://github.com/potlakai/nus-desktop/releases";
   const L = {
-    companion: `${REL}/download/companion-v0.1.19/Nus-Companion-Setup.exe`,
+    companion: `${REL}/download/companion-v0.1.20/Nus-Companion-Setup.exe`,
   };
 
   // "It did not install", then one question: what did you see. Each answer shows its fix right away.
@@ -69,7 +69,7 @@
             <p class="didit-note" aria-live="polite" hidden></p>
           </div>
         </details>
-        <div class="small">Version 0.1.19${isMac ? ". Windows only for now." : ""}</div>
+        <div class="small">Version 0.1.20${isMac ? ". Windows only for now." : ""}</div>
       </div>`;
   }
   /* The Mac card. The Companion is Windows only, so a Mac visitor leaves one email and gets one
