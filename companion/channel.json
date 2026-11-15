@@ -1,5 +1,5 @@
 {
  "key": "nus-channel-2026-a",
- "body": "{\"latest\":\"0.1.21\",\"min_supported\":\"0.1.5\",\"release_url\":\"https://github.com/potlakai/nus-desktop/releases/tag/companion-v0.1.21\",\"installer\":{\"url\":\"https://github.com/potlakai/nus-desktop/releases/download/companion-v0.1.21/Nus-Companion-Setup.exe\",\"size\":527561997,\"sha512\":\"0Wxf/wDQhYzuoe7OS6jUr0uh484eUKlTq88SciNh+WJICSinM1VMgF51LITmApzz1jYgHqqBXYaxGOWJv4pnEw==\"},\"messages\":[],\"schema\":1,\"issued_at\":\"2026-11-12T01:43:49.366Z\"}",
- "sig": "msYcFHEXHIL1YgNIc/HEE3ZqR17oZbLo/454kj7MUTfoQVtiFh7v0PEXjsNKXgVEQMT93ZnUL/mc51EkECnhCg=="
+ "body": "{\"latest\":\"0.1.22\",\"min_supported\":\"0.1.5\",\"release_url\":\"https://github.com/potlakai/nus-desktop/releases/tag/companion-v0.1.22\",\"installer\":{\"url\":\"https://github.com/potlakai/nus-desktop/releases/download/companion-v0.1.22/Nus-Companion-Setup.exe\",\"size\":527733855,\"sha512\":\"A0EWMd2QyHh5MBshW6sGcsj9CvCGbCrmR1rKFf0vPaAMwep8c4gXgtRZJe6onlVXMN4ErF8WsucKEswMz2u73w==\"},\"messages\":[],\"schema\":1,\"issued_at\":\"2026-11-15T22:29:37.928Z\"}",
+ "sig": "QVtQH3gyUdtyICSyWXsklgkVHJPnJy3aiEdzRqtwC5rGhlvg5Js9LaZp248vTTHN/N/w8jCNDw1ZRUUeaJUqDA=="
 }
