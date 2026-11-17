@@ -80,7 +80,9 @@
       <p class="one">The Companion now runs on Mac too. It is a beta, for Apple Silicon Macs (M1 or newer).</p>
       <ul>
         <li><span><b>Hold to talk.</b> <span class="d">Hold Control+Option+Space, ask, and let go.</span></span></li>
+        <li><span><b>Or type it.</b> <span class="d">Click the Knot and ask in a line.</span></span></li>
         <li><span><b>Shows you how.</b> <span class="d">The Knot flies to the button and lassos it.</span></span></li>
+        <li><span><b>Point and ask.</b> <span class="d">Control+Shift+T on anything, and the answer lands there.</span></span></li>
         <li><span><b>Not on Mac yet.</b> <span class="d">Hands, and updates inside the app. For a new version, download it again.</span></span></li>
       </ul>
       <div class="bottom">
