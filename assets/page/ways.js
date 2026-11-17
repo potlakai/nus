@@ -1,6 +1,6 @@
 /* Two ways in, option A "The fork" (picked 2026-09-30). A small NŪS orb splits its strands into two
    equal cards: NŪS Companion (a live desk with the real Knot) and, since NŪS for Students stopped on
-   2026-11-10, the Mac card (a Mac-style window and the Mac waitlist). Shared by index.html and twoways.html.
+   2026-11-10, the Mac card (a Mac-style window and, since 2026-11-16, the Mac beta download). Shared by index.html and twoways.html.
    Usage: NusWays.mountFork(el)  where el holds .gap and two article.card with .media and .copy */
 (function () {
   // Optional host-driven entry. Existing option pages retain their original entry.
@@ -11,6 +11,7 @@
   const REL = "https://github.com/potlakai/nus-desktop/releases";
   const L = {
     companion: `${REL}/download/companion-v0.1.29/Nus-Companion-Setup.exe`,
+    mac: `${REL}/download/companion-v0.1.29/Nus-Companion-mac-arm64.dmg`,
   };
 
   // "It did not install", then one question: what did you see. Each answer shows its fix right away.
@@ -69,35 +70,47 @@
             <p class="didit-note" aria-live="polite" hidden></p>
           </div>
         </details>
-        <div class="small">Version 0.1.29${isMac ? ". Windows only for now." : ""}</div>
+        <div class="small">Version 0.1.29${isMac ? ". This is the Windows download." : ""}</div>
       </div>`;
   }
-  /* The Mac card. The Companion is Windows only, so a Mac visitor leaves one email and gets one
-     message when the Mac build is ready. It also tells NŪS for Students users what happened. */
+  /* The Mac card. Since 2026-11-16 the Companion runs on Apple Silicon Macs as a beta: the download
+     and the first-open steps, because the build is not signed with an Apple Developer ID yet. */
   function macCopy() {
     return `<h3 class="serif">${isMac ? "NŪS on Mac" : "On a Mac instead?"}</h3>
-      <p class="one">The Companion runs on Windows today. The Mac build is being worked on now, and there is no date yet.</p>
+      <p class="one">The Companion now runs on Mac too. It is a beta, for Apple Silicon Macs (M1 or newer).</p>
       <ul>
-        <li><span><b>One email, once.</b> <span class="d">The day the Mac build is ready. Nothing else.</span></span></li>
-        <li><span><b>Used NŪS for Students?</b> <span class="d">It still opens, and your semester stays on your computer. It gets no more updates.</span></span></li>
-        <li><span><b>Have a Windows PC too?</b> <span class="d">The Companion works there today.</span></span></li>
+        <li><span><b>Hold to talk.</b> <span class="d">Hold Control+Option+Space, ask, and let go.</span></span></li>
+        <li><span><b>Shows you how.</b> <span class="d">The Knot flies to the button and lassos it.</span></span></li>
+        <li><span><b>Not on Mac yet.</b> <span class="d">Hands, and updates inside the app. For a new version, download it again.</span></span></li>
       </ul>
       <div class="bottom">
-        <div class="chips"><span class="chip hi">${APPLE}Mac</span><span class="chip">In the works</span><span class="chip">No date yet</span></div>
-        <form class="macwait" data-macwait novalidate>
-          <label class="didit-say"><span>Your email</span><input type="email" name="email" autocomplete="email" inputmode="email" maxlength="200" placeholder="you@example.com"></label>
-          <input type="text" name="website" class="macwait-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <div class="acts"><button type="submit" class="btn solid" data-goatcounter-click="mac-waitlist-submit">Tell me when it’s ready</button></div>
-          <p class="didit-note" aria-live="polite" hidden></p>
-        </form>
-        <div class="small">Used only for that one message. Ask any time and it is deleted. <a href="privacy.html">Privacy</a>.</div>
+        <div class="chips"><span class="chip hi">${APPLE}Mac</span><span class="chip">Beta</span><span class="chip">Apple Silicon</span></div>
+        <div class="acts"><a class="btn solid" href="${L.mac}" data-mac-dl data-goatcounter-click="download-mac-companion">Download for Mac</a></div>
+        <p class="heads-up"><b>Heads up:</b> the first time, macOS will not open it, because Nūs is new and not signed with Apple yet. Click <b>Done</b>, then open <b>System Settings</b>, <b>Privacy &amp; Security</b>, and click <b>Open Anyway</b>.</p>
+        <p class="signin-note">Then sign in with publik: about 100 asks for free, no card. <b>You do not need to buy publik's plan.</b></p>
+        <details class="didit" data-mac-steps>
+          <summary>First open on a Mac</summary>
+          <div class="didit-body">
+            <ol class="mac-steps">
+              <li>Open the downloaded file and drag <b>Nus Companion</b> into <b>Applications</b>.</li>
+              <li>Open it from Applications. macOS says it could not verify the app. Click <b>Done</b>.</li>
+              <li>Open <b>System Settings</b>, then <b>Privacy &amp; Security</b>, and scroll down. Next to Nus Companion, click <b>Open Anyway</b>, then <b>Open Anyway</b> again, and enter your password or use Touch ID.</li>
+              <li>The first time you talk, allow the microphone. The first time it reads your screen, turn Nus Companion on under <b>Screen &amp; System Audio Recording</b>, then open it again.</li>
+            </ol>
+            <p class="didit-h">Comfortable with Terminal?</p>
+            <p>This one line does steps 2 and 3. It removes the downloaded-from-the-internet mark from Nus Companion only, then opens it.</p>
+            <pre class="mac-cmd"><code>xattr -dr com.apple.quarantine "/Applications/Nus Companion.app" &amp;&amp; open "/Applications/Nus Companion.app"</code></pre>
+            <p>You do this once per version. Intel Macs are not supported yet.</p>
+          </div>
+        </details>
+        <div class="small">Version 0.1.29 beta. About 580 MB.</div>
       </div>`;
   }
   const SCENES = [["Say it", "Ctrl+Alt", 5.6], ["Hands", "Asks first", 6.4], ["Point", "Ctrl+Shift+T", 5.4], ["Folders", "Your notes", 6.2], ["Island", "Bar up top", 10.4]];
   const tabRow = (items, label, cls) => `<div class="tabs ${cls}" role="tablist" aria-label="${label}">${items.map((t, i) => `<button type="button" role="tab" aria-selected="${!i}" class="${i ? "" : "on"}">${t[0]}<small>${t[1]}</small><i></i></button>`).join("")}</div>`;
   function macMedia() {
-    return `<div class="appwin macsoon" aria-label="NŪS Companion for Mac, in the works"><div class="shots"><div class="macsoon-in">${APPLE}<b class="serif">NŪS Companion for Mac</b><span>In the works. No date yet.</span></div></div></div>
-      <div class="tabs macrow"><div class="macrow-in"><b>Windows today</b><small>Mac next</small></div></div>`;
+    return `<div class="appwin macsoon" aria-label="NŪS Companion for Mac, beta"><div class="shots"><div class="macsoon-in">${APPLE}<b class="serif">NŪS Companion for Mac</b><span>Beta. Apple Silicon (M1 or newer).</span></div></div></div>
+      <div class="tabs macrow"><div class="macrow-in"><b>Mac beta</b><small>Hold Control+Option+Space</small></div></div>`;
   }
   function companionMedia() {
     return `<div class="desk" aria-label="NŪS Companion on a desktop">

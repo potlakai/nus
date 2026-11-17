@@ -16,10 +16,10 @@
   /* what it can find. el() is looked up when asked, because most sections build themselves. */
   const FIND = {
     download: isMac
-      ? { el: () => $(".fork .card.stu [data-macwait] input[type=email]"), say: "The Companion is Windows only for now. Leave your email here and you get one message when the Mac build is ready." }
+      ? { el: () => $(".fork .card.stu [data-mac-dl]"), say: "The Mac beta. Free, for Apple Silicon Macs.", enter: "download it" }
       : { el: () => $(".fork .card:not(.stu) [data-didit-dl]"), say: "The Companion. Free, for Windows 10 and 11.", enter: "download it" },
     students: { el: () => $(".fork .card:not(.stu) [data-didit-dl]"), say: "NŪS for Students has moved into the Companion. This is the one download now.", enter: "download it" },
-    mac: { el: () => $(".fork .card.stu [data-macwait] input[type=email]"), say: "The Mac build is in the works. Leave your email here and you get one message when it is ready." },
+    mac: { el: () => $(".fork .card.stu [data-mac-dl]"), say: "The Mac beta is here, for Apple Silicon Macs. The first-open steps are right under it.", enter: "download it" },
     cost: { el: () => $("#pricing .head h2"), tight: true, aim: .24, say: "The Companion is free to start. Sign in with publik and your first 100 or so asks are free, no key." },
     setup: { el: () => $("#setup .head h2"), say: "Five steps. Each one shows the screen it happens on." },
     pranav: { el: () => pillEl() || $("#feedback .nfb-msg"), say: "Tell Pranav here. It goes straight to him.", stay: () => !!pillEl(), get enter() { return pillEl() ? "open it" : ""; } },

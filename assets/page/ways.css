@@ -218,3 +218,8 @@
 .ways .macwait.done .didit-say, .ways .macwait.done .acts { display:none }
 .ways .macwait-hp { position:absolute; left:-9999px; width:1px; height:1px; opacity:0 }
 .ways .small a { color:inherit }
+/* The Mac card's first-open steps (2026-11-16) */
+.ways .card .mac-steps { display:block; list-style:decimal; margin:0 0 12px; padding:0 0 0 18px }
+.ways .card .mac-steps li { display:list-item; margin:0 0 6px; font-size:12.5px; line-height:1.5; color:var(--muted) }
+.ways .mac-cmd { margin:0 0 10px; padding:9px 11px; border:1px solid var(--line); border-radius:6px; background:var(--c-thread-6); overflow-x:auto; white-space:pre-wrap; word-break:break-word; user-select:all }
+.ways .mac-cmd code { font:400 11.5px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color:var(--cream) }
