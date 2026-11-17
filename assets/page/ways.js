@@ -85,12 +85,19 @@
       </ul>
       <div class="bottom">
         <div class="chips"><span class="chip hi">${APPLE}Mac</span><span class="chip">Beta</span><span class="chip">Apple Silicon</span></div>
-        <div class="acts"><a class="btn solid" href="${L.mac}" data-mac-dl data-goatcounter-click="download-mac-companion">Download for Mac</a></div>
+        <div class="acts"><a class="btn solid" href="${L.mac}" data-mac-dl data-goatcounter-click="download-mac-companion">Download for Mac</a><a class="link" href="#setup" data-guide="mac">Setup guide</a></div>
         <p class="heads-up"><b>Heads up:</b> the first time, macOS will not open it, because Nūs is new and not signed with Apple yet. Click <b>Done</b>, then open <b>System Settings</b>, <b>Privacy &amp; Security</b>, and click <b>Open Anyway</b>.</p>
         <p class="signin-note">Then sign in with publik: about 100 asks for free, no card. <b>You do not need to buy publik's plan.</b></p>
         <details class="didit" data-mac-steps>
           <summary>First open on a Mac</summary>
           <div class="didit-body">
+            <p>macOS stops the first open, because Nūs is new and not signed with Apple yet. Three clicks get past it.</p>
+            <ol class="didit-steps">
+              <li><img src="assets/page/companion/mac-open-1.svg" width="160" height="100" alt="macOS says Nus Companion was not opened, with Done circled" loading="lazy"><span>1. Click <b>Done</b>.</span></li>
+              <li><img src="assets/page/companion/mac-open-2.svg" width="160" height="100" alt="System Settings, Privacy and Security, with Open Anyway circled next to Nus Companion" loading="lazy"><span>2. In <b>Privacy &amp; Security</b>, <b>Open Anyway</b>.</span></li>
+              <li><img src="assets/page/companion/mac-open-3.svg" width="160" height="100" alt="macOS asks to open Nus Companion, with Open Anyway circled" loading="lazy"><span>3. Click <b>Open Anyway</b> again.</span></li>
+            </ol>
+            <p class="didit-h">Every step, in order</p>
             <ol class="mac-steps">
               <li>Open the downloaded file and drag <b>Nus Companion</b> into <b>Applications</b>.</li>
               <li>Open it from Applications. macOS says it could not verify the app. Click <b>Done</b>.</li>
@@ -98,7 +105,7 @@
               <li>The first time you talk, allow the microphone. The first time it reads your screen, turn Nus Companion on under <b>Screen &amp; System Audio Recording</b>, then open it again.</li>
             </ol>
             <p class="didit-h">Comfortable with Terminal?</p>
-            <p>This one line does steps 2 and 3. It removes the downloaded-from-the-internet mark from Nus Companion only, then opens it.</p>
+            <p>This one line does the three clicks. It removes the downloaded-from-the-internet mark from Nus Companion only, then opens it.</p>
             <pre class="mac-cmd"><code>xattr -dr com.apple.quarantine "/Applications/Nus Companion.app" &amp;&amp; open "/Applications/Nus Companion.app"</code></pre>
             <p>You do this once per version. Intel Macs are not supported yet.</p>
           </div>
@@ -108,9 +115,19 @@
   }
   const SCENES = [["Say it", "Ctrl+Alt", 5.6], ["Hands", "Asks first", 6.4], ["Point", "Ctrl+Shift+T", 5.4], ["Folders", "Your notes", 6.2], ["Island", "Bar up top", 10.4]];
   const tabRow = (items, label, cls) => `<div class="tabs ${cls}" role="tablist" aria-label="${label}">${items.map((t, i) => `<button type="button" role="tab" aria-selected="${!i}" class="${i ? "" : "on"}">${t[0]}<small>${t[1]}</small><i></i></button>`).join("")}</div>`;
+  // The Mac card's desk: the same live desk as the Windows card, with a menu bar, a Mac window and the Mac keys.
+  const MAC_SCENES = [["Talk", "Control+Option+Space", 7], ["Point", "Control+Shift+T", 5.2], ["Type", "Click the Knot", 6.4]];
   function macMedia() {
-    return `<div class="appwin macsoon" aria-label="NŪS Companion for Mac, beta"><div class="shots"><div class="macsoon-in">${APPLE}<b class="serif">NŪS Companion for Mac</b><span>Beta. Apple Silicon (M1 or newer).</span></div></div></div>
-      <div class="tabs macrow"><div class="macrow-in"><b>Mac beta</b><small>Hold Control+Option+Space</small></div></div>`;
+    return `<div class="desk macdesk" aria-label="NŪS Companion on a Mac">
+      <div class="mbar" aria-hidden="true"><span class="ml">${APPLE}<b>Pages</b><span>File</span><span>Edit</span><span>View</span></span><span class="mr"><i class="mk"></i><span>Mon 9:41 AM</span></span></div>
+      <div class="appish"><div class="bar"><i class="tl r"></i><i class="tl y"></i><i class="tl g"></i><span>report-draft.pages</span></div><div class="body"><div class="ln m"></div><div class="ln"></div><div class="ln s"></div><div class="ln m"></div><div class="err">Error: the linked file was not found</div><div class="ln"></div><div class="ln s"></div></div></div>
+      <svg class="cursor" viewBox="0 0 18 24" style="opacity:0" aria-hidden="true"><path d="M1 1 L1 19 L6 14.5 L9.5 22 L12.5 20.7 L9 13.3 L16 13.3 Z" fill="#fff" stroke="#111" stroke-width="1.2"/></svg>
+      <div class="gl pill"><span class="dot"></span><span class="words"></span></div>
+      <div class="gl keys"></div>
+      <div class="gl ask"><span class="words"></span></div>
+      <div class="gl bub b1"><div class="k"></div><span class="bt"></span></div>
+      <div class="dknot"><canvas></canvas></div></div>
+      ${tabRow(MAC_SCENES, "What the Companion does on a Mac", "cool")}`;
   }
   function companionMedia() {
     return `<div class="desk" aria-label="NŪS Companion on a desktop">
@@ -216,6 +233,51 @@
     }
     btns.forEach((b, k) => b.addEventListener("click", () => play(k)));
     if (reduce) { tab(3); on(b2, true); return; }
+    play(0);
+  }
+
+  /* The Mac desk: three short scenes of what works on a Mac today (talk, point, type). No Hands, no island. */
+  function mountMacDesk(root) {
+    const desk = root.querySelector(".macdesk"); if (!desk) return;
+    const q = (s) => desk.querySelector(s);
+    const strandCv = document.createElement("canvas"); strandCv.className = "desk-strand"; strandCv.setAttribute("aria-hidden", "true");
+    const knot = window.NusKnot3D ? NusKnot3D.mount(q(".dknot canvas"), { thread: strandCv, origin: desk }) : null;
+    const st = (s) => knot && knot.setState && knot.setState(s);
+    const pill = q(".pill"), words = q(".pill .words"), keys = q(".keys"), ask = q(".ask"), askWords = q(".ask .words"), b1 = q(".b1"), bk = q(".b1 .k"), bt = q(".b1 .bt"), cur = q(".cursor"), err = q(".err"), dk = q(".dknot");
+    const btns = [...root.querySelectorAll(".tabs button")];
+    let visible = false, run = 0; new IntersectionObserver((es) => (visible = es[0].isIntersecting), { threshold: 0.3 }).observe(desk);
+    const on = (el, v) => el.classList.toggle("on", v);
+    const curAt = (fx, fy) => { cur.style.transform = `translate(${fx * desk.clientWidth}px,${fy * desk.clientHeight}px)`; };
+    curAt(0.55, 0.86);
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const caps = (...k) => { keys.innerHTML = k.map((x) => `<kbd>${x}</kbd>`).join(""); };
+    const say = (k, t) => { bk.textContent = k; bt.textContent = t; on(b1, true); };
+    function tab(k) { btns.forEach((b, j) => { b.classList.toggle("on", j === k); b.setAttribute("aria-selected", j === k); }); btns[k].style.setProperty("--dur", MAC_SCENES[k][2] + "s"); restartBar(btns[k]); }
+    function reset() { [pill, keys, ask, b1].forEach((e) => on(e, false)); if (knot && knot.strand && knot.strand.getState() !== "idle") knot.strand.rewind(); cur.style.opacity = 0; curAt(0.55, 0.86); words.textContent = ""; askWords.textContent = ""; st("idle"); }
+    const scenes = [
+      // hold the keys, ask, let go: the answer comes back in words
+      async (w, type) => { caps("Control", "Option", "Space"); on(keys, true); await w(1100); on(keys, false); on(pill, true); st("listening");
+        await type(words, "how do I export this as a PDF?", 44); await w(350); on(pill, false); st("thinking"); await w(700);
+        say("Answer", "File, then Export To, then PDF. Want me to point at it?"); st("speaking"); await w(3100); st("idle"); },
+      // point at anything: the thread runs to that exact spot
+      async (w) => { const dr = desk.getBoundingClientRect(), er = err.getBoundingClientRect();
+        cur.style.opacity = 1; await w(60); curAt((er.left - dr.left + er.width * 0.6) / dr.width, (er.top - dr.top + er.height * 0.5) / dr.height); await w(950);
+        caps("Control", "Shift", "T"); on(keys, true); st("thinking"); cur.style.opacity = 0; if (knot && knot.strand) knot.strand.setTarget({ x: er.left, y: er.top, w: er.width, h: er.height });
+        await w(900); on(keys, false); say("Explain", "The link points to a file that moved. Relink it from Insert, then Link."); st("ready"); await w(2900); },
+      // or click the Knot and type
+      async (w, type) => { const dr = desk.getBoundingClientRect(), kr = dk.getBoundingClientRect();
+        cur.style.opacity = 1; await w(60); curAt((kr.left - dr.left + kr.width * 0.42) / dr.width, (kr.top - dr.top + kr.height * 0.42) / dr.height); await w(950);
+        st("ready"); cur.style.opacity = 0; on(ask, true); await type(askWords, "summarize this page", 55); await w(350); on(ask, false); st("thinking"); await w(700);
+        say("Answer", "A lab report draft. One chart is missing because its data file moved."); st("ready"); await w(2900); },
+    ];
+    function play(k) {
+      const tok = ++run;
+      const w = async (ms) => { await sleep(ms); if (tok !== run) throw 0; };
+      const type = async (el, s, ms) => { for (let n = 0; n <= s.length; n++) { el.textContent = s.slice(0, n); await w(ms); } };
+      (async () => { try { let i = k; while (true) { while (!visible) await w(300); reset(); tab(i); await scenes[i](w, type); i = (i + 1) % scenes.length; } } catch (e) {} })();
+    }
+    btns.forEach((b, k) => b.addEventListener("click", () => play(k)));
+    if (reduce) { tab(0); say("Answer", "File, then Export To, then PDF. Want me to point at it?"); return; }
     play(0);
   }
 
@@ -345,7 +407,7 @@
   function mountFork(root) {
     const cards = [...root.querySelectorAll(".card")];
     cards[0].querySelector(".media").innerHTML = companionMedia(); cards[0].querySelector(".copy").innerHTML = companionCopy(); mountDidIt(cards[0]);
-    cards[1].querySelector(".media").innerHTML = macMedia(); cards[1].querySelector(".copy").innerHTML = macCopy(); mountMacWait(cards[1]);
+    cards[1].querySelector(".media").innerHTML = macMedia(); cards[1].querySelector(".copy").innerHTML = macCopy(); mountMacWait(cards[1]); mountMacDesk(cards[1]);
     mountDesk(cards[0]);
     let focus = -1, seen = 0;
     // a phone cannot hover: say what a finger can do
@@ -357,5 +419,5 @@
     StrandField(root, { per: 90, bottom: () => { const tops = cards.map((cd) => rel(cd.querySelector(".media"), root).y); return Math.abs(tops[0] - tops[1]) > 40 ? rel(cards[0], root).y : Math.min(...tops) + 60; }, /* stacked cards: the strands tuck in behind the first card */ state: () => ({ orb: { x: root.clientWidth / 2, y: root.querySelector(".gap").offsetTop + 96, r: 58 }, targets: cards.map((cd) => rel(cd.querySelector(".media"), root)), focus, grow: entryProgress.has(root) ? entryProgress.get(root) : seen, scrub: entryProgress.has(root) }) });
   }
   const setEntryProgress = (root, value) => value == null ? entryProgress.delete(root) : entryProgress.set(root, clamp(value));
-  window.NusWays = { mountFork, mountTabs, mountDesk, StrandField, companionCopy, mountDidIt, mountMacWait, macCopy, companionMedia, macMedia, rel, setEntryProgress };
+  window.NusWays = { mountFork, mountTabs, mountDesk, mountMacDesk, StrandField, companionCopy, mountDidIt, mountMacWait, macCopy, companionMedia, macMedia, rel, setEntryProgress };
 })();

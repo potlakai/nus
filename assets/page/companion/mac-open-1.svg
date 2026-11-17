@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200" role="img" aria-label="macOS says Nus Companion was not opened. Click Done.">
+  <rect width="320" height="200" rx="6" fill="#1c1d22"/>
+  <rect x="80" y="12" width="160" height="176" rx="14" fill="#2f3036" stroke="#55565e"/>
+  <rect x="140" y="24" width="40" height="40" rx="10" fill="#14151f" stroke="#6a6c78"/>
+  <path d="M150 44c0-9 10-9 10 0s10 9 10 0" fill="none" stroke="#f3f0e8" stroke-width="3" stroke-linecap="round"/>
+  <g font-family="-apple-system,'SF Pro Text','Helvetica Neue',system-ui,sans-serif" fill="#fff" text-anchor="middle">
+    <text x="160" y="82" font-size="10.5" font-weight="700">“Nus Companion”</text>
+    <text x="160" y="95" font-size="10.5" font-weight="700">Not Opened</text>
+    <text x="160" y="111" font-size="7.6" opacity=".82">Apple could not verify “Nus Companion”</text>
+    <text x="160" y="121" font-size="7.6" opacity=".82">is free of malware that may harm your</text>
+    <text x="160" y="131" font-size="7.6" opacity=".82">Mac or compromise your privacy.</text>
+  </g>
+  <rect x="94" y="141" width="132" height="18" rx="5" fill="#5b5c66"/>
+  <text x="160" y="153.5" font-family="-apple-system,'SF Pro Text','Helvetica Neue',system-ui,sans-serif" font-size="8.6" fill="#fff" text-anchor="middle">Done</text>
+  <rect x="94" y="163" width="132" height="18" rx="5" fill="#44454d"/>
+  <text x="160" y="175.5" font-family="-apple-system,'SF Pro Text','Helvetica Neue',system-ui,sans-serif" font-size="8.6" fill="#fff" text-anchor="middle">Move to Trash</text>
+  <rect x="89" y="137" width="142" height="26" rx="7" fill="none" stroke="#ffd166" stroke-width="2.5"/>
+</svg>

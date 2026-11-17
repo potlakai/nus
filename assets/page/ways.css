@@ -223,3 +223,18 @@
 .ways .card .mac-steps li { display:list-item; margin:0 0 6px; font-size:12.5px; line-height:1.5; color:var(--muted) }
 .ways .mac-cmd { margin:0 0 10px; padding:9px 11px; border:1px solid var(--line); border-radius:6px; background:var(--c-thread-6); overflow-x:auto; white-space:pre-wrap; word-break:break-word; user-select:all }
 .ways .mac-cmd code { font:400 11.5px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color:var(--cream) }
+/* The Mac card's desk (2026-11-16): the live desk with a menu bar, a Mac window and the Mac keys */
+.ways .macdesk .mbar { position:absolute; z-index:1; left:0; right:0; top:0; height:22px; display:flex; align-items:center; justify-content:space-between; padding:0 10px; background:var(--c-black-40); border-bottom:1px solid var(--c-white-7); font:500 10.5px var(--sys); color:var(--c-c9ccd8) }
+.ways .macdesk .mbar .ml, .ways .macdesk .mbar .mr { display:flex; align-items:center; gap:11px; white-space:nowrap }
+.ways .macdesk .mbar svg.os { width:11px; height:11px; transform:none }
+.ways .macdesk .mbar b { font-weight:700; color:var(--cream) }
+.ways .macdesk .mbar .mk { width:10px; height:10px; border-radius:50%; border:2px solid var(--cream); opacity:.85 }
+.ways .macdesk .appish { top:15%; height:63% }
+.ways .macdesk .appish .bar { display:flex; align-items:center; gap:5px; padding-top:9px }
+.ways .macdesk .tl { flex:0 0 8px; width:8px; height:8px; border-radius:50% }
+.ways .macdesk .tl.r { background:#ff5f57 } .ways .macdesk .tl.y { background:#febc2e } .ways .macdesk .tl.g { background:#28c840; margin-right:7px }
+.ways .macdesk .ask { right:21%; bottom:8%; min-width:36%; border-radius:999px; padding:7px 14px; font-size:12px; white-space:nowrap }
+.ways .macdesk .ask .words::after { content:"|"; animation:waysblink 1s steps(1) infinite }
+@media (max-width:640px) { .ways .macdesk .ask { right:23%; font-size:10.5px; padding:6px 10px } .ways .macdesk .mbar .ml span { display:none } }
+.ways .card [data-mac-steps] .didit-steps li { flex:0 0 calc(50% - 5px); min-width:0 }
+.ways .card [data-mac-steps] .didit-steps img { width:100% }

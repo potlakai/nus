@@ -7,6 +7,7 @@
 (function () {
   const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sleep = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
+  const isMac = /Mac/.test(navigator.platform || navigator.userAgent) && !/iPhone|iPad/.test(navigator.userAgent);
   const APPLE = '<svg class="os" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.64c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.3-.88-2.29-3.52zM14.2 6.18c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.08 1.96-.49 2.56-1.22z"/></svg>';
   const ext = (href, t) => `<a class="ext" href="https://${href}" target="_blank" rel="noopener">${t || href}</a>`;
   const K = (...k) => k.map((x) => `<kbd>${x}</kbd>`).join(" ");
@@ -23,11 +24,20 @@
       { t: "Say it, it acts", d: `Hold ${K("Ctrl", "Alt")} and say “open Notepad, type hello”. Jev does it while you’re still talking. Say a few in a row and it offers to save them as a routine.`, scene: "voice", dur: 7.5 },
       { t: "Point at anything", d: `Press ${K("Ctrl", "Shift", "T")} on a button, an error or a slide. The Knot’s thread runs to that exact spot, and the answer lands right there.`, scene: "point", dur: 7 },
     ],
+    // The Mac beta (2026-11-16): the same app, with the first-open steps macOS adds and the Mac keys.
+    mac: [
+      { t: "Download and drag it in", d: "Get the NŪS Companion 0.1.29 beta for Apple Silicon Macs (M1 or newer). Open the downloaded file and drag <b>Nus Companion</b> into <b>Applications</b>.", scene: "macdrag", dur: 6 },
+      { t: "Click Open Anyway, once", d: "Open it from Applications. macOS will not open it the first time, because NŪS is not signed with Apple yet. Click <b>Done</b>, then open <b>System Settings</b>, <b>Privacy &amp; Security</b>, scroll down and click <b>Open Anyway</b>. Confirm with your password or Touch ID.", scene: "macgate", dur: 9 },
+      { t: "Sign in, no key needed", d: "The Companion opens with <b>Sign in with publik</b>. Sign in and answers work with no key, and your first 100 or so asks are free. Rather use your own Gemini, Nvidia or Anthropic key? Pick <b>Use my own key</b>.", scene: "keys", dur: 7 },
+      { t: "Hold to talk", d: `Hold ${K("Control", "Option", "Space")}, ask, and let go. The first time, macOS asks to use the microphone: click <b>Allow</b>. Or click the Knot and type.`, scene: "macvoice", dur: 7.5 },
+      { t: "Point at anything", d: `Press ${K("Control", "Shift", "T")} on a button, an error or a slide. The Knot’s thread runs to that exact spot. The first time it reads your screen, turn Nus Companion on under <b>Screen &amp; System Audio Recording</b>, then open it again.`, scene: "point", dur: 8 },
+    ],
   };
   const NOTEPAD = `<div class="notepad"><div class="bar">Notepad</div><div class="txt"></div></div>`;
   const WINCAP = (t) => `<div class="cap">${t}</div>`;
 
-  function sceneHTML(name) {
+  const KNOTICO = '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M9 20c0-10 11-10 11 0s11 10 11 0"/></svg>';
+  function sceneHTML(name, mac) {
     switch (name) {
       case "smart": return WINCAP("Windows, first launch") + `<div class="smart"><h4>Windows protected your PC</h4><p>Microsoft Defender SmartScreen prevented an unrecognized app from starting.</p><div class="more">More info</div><div class="row"><span class="run">Run anyway</span><span>Don’t run</span></div><div class="ring"></div></div>`;
       case "keys": return WINCAP("Companion window, Settings") + `<div class="gl keys-card"><h5>Your keys</h5><div class="m">Stored on this device. Saved keys are never shown here.</div>
@@ -36,8 +46,12 @@
         <div class="frows">${[["Class notes", "48 files"], ["Resume and cover letters", "9 files"], ["Fall calendar", "1 file"]].map(([n, c]) => `<div class="frow"><span class="ic"></span><span><b>${n}</b><small>${c}</small></span><span class="tg"></span></div>`).join("")}</div>
         <div class="m foot">Up to 200 files per folder, 2 MB per file. Turn a folder off to stop using it.</div></div>`;
       case "voice": return WINCAP("Anywhere on your screen") + `<div class="voice"><div class="knotbox"><canvas></canvas></div><div class="caps">${K("Ctrl", "Alt")}</div><div class="gl say"><span class="dot"></span><span class="w"></span></div></div>${NOTEPAD}<div class="gl offer">Want me to save that as a routine?</div>`;
-      case "point": return WINCAP("Ctrl+Shift+T on anything") + `<div class="doc"><div class="bar">report-draft.docx</div><div class="body"><div class="ln m"></div><div class="ln"></div><div class="ln s"></div><div class="err">Error: the linked file was not found</div><div class="ln"></div><div class="ln m"></div></div></div>
+      case "point": return WINCAP(mac ? "Control+Shift+T on anything" : "Ctrl+Shift+T on anything") + `<div class="doc"><div class="bar">report-draft.docx</div><div class="body"><div class="ln m"></div><div class="ln"></div><div class="ln s"></div><div class="err">Error: the linked file was not found</div><div class="ln"></div><div class="ln m"></div></div></div>
         <div class="gl bub"><div class="k">Explain</div>The link points to a file that moved. Relink it from Insert, then Link.</div><div class="pknot"><canvas></canvas></div>`;
+      case "macdrag": return WINCAP("Mac, the downloaded file") + `<div class="macwin dmg"><div class="tb"><i class="tl r"></i><i class="tl y"></i><i class="tl g"></i><span>Nus Companion</span></div><div class="dmg-in"><div class="app"><span class="ico">${KNOTICO}</span><b>Nus Companion</b></div><div class="arrow" aria-hidden="true">&rarr;</div><div class="fold"><span class="ico f"></span><b>Applications</b></div></div></div>`;
+      case "macgate": return WINCAP("Mac, first open") + `<div class="macgate"><div class="mdlg"><span class="ico">${KNOTICO}</span><h4>“Nus Companion” Not Opened</h4><p>Apple could not verify “Nus Companion” is free of malware that may harm your Mac or compromise your privacy.</p><div class="mb done">Done</div><div class="mb">Move to Trash</div></div>
+        <div class="mset"><h5>Privacy &amp; Security</h5><div class="row"><span>“Nus Companion” was blocked to protect your Mac.</span><span class="mb any">Open Anyway</span></div></div><div class="ring"></div></div>`;
+      case "macvoice": return WINCAP("Anywhere on your Mac") + `<div class="voice macv"><div class="knotbox"><canvas></canvas></div><div class="caps">${K("Control", "Option", "Space")}</div><div class="gl say"><span class="dot"></span><span class="w"></span></div></div><div class="gl macans"><div class="k">Answer</div>File, then Export To, then PDF. Want me to point at it?</div>`;
       case "map": return WINCAP("Companion window, Map") + `<div class="gl mapcard"><div class="mh"><b>A map of what you keep.</b><span>Your folders, routines, and conversations, connected.</span></div><svg class="graph" viewBox="0 0 560 250" aria-label="Map: the Knot in the middle, linked to folders, routines and conversations">
         ${[[280, 128, 0], [110, 60, 1], [120, 196, 1], [450, 58, 2], [470, 190, 3], [300, 30, 2], [285, 226, 3]].slice(1).map(([x, y], i) => `<line class="ed" style="--i:${i}" x1="280" y1="128" x2="${x}" y2="${y}"/>`).join("")}
         <circle class="hub" cx="280" cy="128" r="22"/><text class="hl" x="280" y="168" text-anchor="middle">The Knot and your memory</text>
@@ -53,7 +67,7 @@
     }
   }
   // scenes that hold a live Knot are built once and reset by hand; the rest are rebuilt to replay
-  const KEEP = { voice: 1, point: 1 };
+  const KEEP = { voice: 1, point: 1, macvoice: 1 };
   function knotIn(el, sel, opts) {
     const cv = el.querySelector(sel);
     if (!cv._knot && window.NusKnot3D) cv._knot = NusKnot3D.mount(cv, opts);
@@ -78,6 +92,17 @@
       const strand = ctx.strandFor(el.querySelector(".pknot canvas"));
       if (strand) { if (strand.getState() !== "idle") strand.rewind(); await new Promise((res) => { strand.arrive(res); strand.setTarget(ctx.rect(err)); setTimeout(res, 1600); }); }
       st("ready"); bub.classList.add("on"); },
+    async macdrag(el, w) { const app = el.querySelector(".app"), fold = el.querySelector(".fold");
+      await w(800); app.style.setProperty("--dx", fold.offsetLeft - app.offsetLeft + "px"); app.classList.add("go"); await w(850); fold.classList.add("got"); },
+    async macgate(el, w) { const g = el.querySelector(".macgate"), ring = el.querySelector(".ring"), done = el.querySelector(".done"), any = el.querySelector(".any");
+      // measured on screen and scaled back, because the scene is drawn at --k
+      const at = (t) => { const a = t.getBoundingClientRect(), b = g.getBoundingClientRect(), k = b.width / g.offsetWidth || 1; ring.style.cssText = `opacity:1;left:${(a.left - b.left) / k - 6}px;top:${(a.top - b.top) / k - 5}px;width:${a.width / k + 12}px;height:${a.height / k + 10}px`; };
+      await w(600); at(done); await w(1900); ring.style.opacity = 0; g.classList.add("step2"); await w(800); at(any); any.classList.add("hi"); },
+    async macvoice(el, w) { const st = knotIn(el, ".knotbox canvas"), caps = el.querySelectorAll(".caps kbd"), say = el.querySelector(".say .w"), ans = el.querySelector(".macans");
+      say.textContent = ""; ans.classList.remove("on"); st("idle");
+      await w(400); caps.forEach((c) => c.classList.add("down")); st("listening");
+      const s = "how do I export this as a PDF?"; for (let i = 1; i <= s.length; i++) { say.textContent = s.slice(0, i); await w(42); }
+      caps.forEach((c) => c.classList.remove("down")); st("thinking"); await w(800); st("speaking"); ans.classList.add("on"); await w(1600); st("ready"); },
     async map(el, w) { el.querySelector(".mapcard").classList.remove("grown"); await w(200); el.querySelector(".mapcard").classList.add("grown"); },
   };
 
@@ -85,13 +110,13 @@
     const seg = root.querySelector(".prod .seg"), pill = seg.querySelector(".pill"), btns = [...seg.querySelectorAll("button")];
     const place = (b) => { pill.style.transform = `translateX(${b.offsetLeft}px)`; pill.style.width = b.offsetWidth + "px"; };   // glides on transform; the width snaps
     btns.forEach((b) => b.addEventListener("click", () => { btns.forEach((x) => { x.classList.toggle("on", x === b); x.setAttribute("aria-selected", x === b); }); place(b); onPick(b.dataset.p); }));
-    requestAnimationFrame(() => place(btns[0])); addEventListener("resize", () => place(btns.find((b) => b.classList.contains("on"))));
+    requestAnimationFrame(() => place(btns.find((b) => b.classList.contains("on")) || btns[0])); addEventListener("resize", () => place(btns.find((b) => b.classList.contains("on"))));
   }
 
   function mount(root) {
     root.innerHTML = `<div class="sec">
       <div class="head reveal"><div class="mono">Setup</div><h2 class="serif">Download, add your key, <em>say it.</em></h2><p>Five steps. Each one shows the screen it happens on.</p></div>
-      <div class="prod reveal" hidden><div class="seg" role="tablist" aria-label="Which app"><span class="pill" aria-hidden="true"></span><button type="button" role="tab" class="on" aria-selected="true" data-p="companion">NŪS Companion</button></div></div>
+      <div class="prod reveal"><div class="seg" role="tablist" aria-label="Which computer"><span class="pill" aria-hidden="true"></span><button type="button" role="tab" class="on" aria-selected="true" data-p="companion">On Windows</button><button type="button" role="tab" aria-selected="false" data-p="mac">${APPLE}On a Mac</button></div></div>
       <div class="fa reveal"><ol class="gsteps"></ol><div class="screen" aria-live="polite"></div></div></div>`;
     const list = root.querySelector(".gsteps"), screen = root.querySelector(".screen"), fa = root.querySelector(".fa");
     new ResizeObserver(() => screen.style.setProperty("--k", Math.min(1, screen.clientWidth / 660).toFixed(3))).observe(screen);
@@ -104,7 +129,7 @@
     function build() {
       rewindAll(); const G = GUIDES[prod];
       list.innerHTML = G.map((s, k) => `<li><button type="button" style="--dur:${s.dur}s"><span class="n">${k + 1}</span><span><span class="ttl">${s.t}</span><span class="d">${s.d}</span></span><i></i></button></li>`).join("");
-      screen.innerHTML = G.map((s) => `<div class="scene" data-s="${s.scene}">${sceneHTML(s.scene)}</div>`).join("");
+      screen.innerHTML = G.map((s) => `<div class="scene" data-s="${s.scene}">${sceneHTML(s.scene, prod === "mac")}</div>`).join("");
       [...list.querySelectorAll("button")].forEach((b, k) => b.addEventListener("click", () => go(k, true)));
       go(0);
     }
@@ -113,7 +138,7 @@
       [...list.querySelectorAll("button")].forEach((b, j) => { b.classList.toggle("on", j === i); b.setAttribute("aria-current", j === i ? "step" : "false"); const bar = b.querySelector("i"); bar.style.animation = "none"; void bar.offsetWidth; bar.style.animation = ""; });
       const scenes = [...screen.querySelectorAll(".scene")]; scenes.forEach((s, j) => s.classList.toggle("on", j === i));
       const el = scenes[i], name = G[i].scene;
-      if (!KEEP[name]) el.innerHTML = sceneHTML(name);
+      if (!KEEP[name]) el.innerHTML = sceneHTML(name, prod === "mac");
       const w = async (ms) => { await sleep(ms); if (tok !== run) throw 0; };
       if (visible && PLAY[name]) PLAY[name](el, w, ctx).catch(() => {});
       clearTimeout(timer); if (!reduce && !paused) timer = setTimeout(() => visible && go((i + 1) % G.length), (user ? G[i].dur * 1.6 : G[i].dur) * 1000);
@@ -125,6 +150,8 @@
     root.querySelectorAll(".reveal").forEach((el) => io.observe(el));
     ProdTabs(root, (p) => { prod = p; build(); });
     build();
+    // a Mac visitor starts on the Mac steps
+    if (isMac) { const m = root.querySelector('.prod button[data-p="mac"]'); if (m) m.click(); }
   }
   window.NusGuide = { mount, KEYS, GUIDES, ProdTabs, ext, APPLE };
 })();

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200" role="img" aria-label="macOS asks to open Nus Companion. Click Open Anyway, then enter your password or use Touch ID.">
+  <rect width="320" height="200" rx="6" fill="#1c1d22"/>
+  <rect x="80" y="8" width="160" height="184" rx="14" fill="#2f3036" stroke="#55565e"/>
+  <rect x="142" y="18" width="36" height="36" rx="9" fill="#14151f" stroke="#6a6c78"/>
+  <path d="M151 36c0-8 9-8 9 0s9 8 9 0" fill="none" stroke="#f3f0e8" stroke-width="2.8" stroke-linecap="round"/>
+  <g font-family="-apple-system,'SF Pro Text','Helvetica Neue',system-ui,sans-serif" fill="#fff" text-anchor="middle">
+    <text x="160" y="71" font-size="10.5" font-weight="700">Open “Nus Companion”?</text>
+    <text x="160" y="87" font-size="7.6" opacity=".82">Apple is not able to verify that it is</text>
+    <text x="160" y="97" font-size="7.6" opacity=".82">free from malware that could harm</text>
+    <text x="160" y="107" font-size="7.6" opacity=".82">your Mac or compromise your privacy.</text>
+    <rect x="94" y="118" width="132" height="18" rx="5" fill="#5b5c66"/>
+    <text x="160" y="130.5" font-size="8.6">Open Anyway</text>
+    <rect x="94" y="140" width="132" height="18" rx="5" fill="#44454d"/>
+    <text x="160" y="152.5" font-size="8.6">Move to Trash</text>
+    <rect x="94" y="162" width="132" height="18" rx="5" fill="#44454d"/>
+    <text x="160" y="174.5" font-size="8.6">Done</text>
+  </g>
+  <rect x="89" y="114" width="142" height="26" rx="7" fill="none" stroke="#ffd166" stroke-width="2.5"/>
+</svg>
