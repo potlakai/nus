@@ -18,7 +18,7 @@
   };
   const GUIDES = {
     companion: [
-      { t: "Download and install", d: "Get NŪS Companion 0.1.29 for Windows. If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>. It isn’t code-signed yet. Still stuck? Open <b>Did it install?</b> under the download.", scene: "smart", dur: 6 },
+      { t: "Download and install", d: "Get NŪS Companion 0.1.30 for Windows. If Windows says it protected your PC, click <b>More info</b>, then <b>Run anyway</b>. It isn’t code-signed yet. Still stuck? Open <b>Did it install?</b> under the download.", scene: "smart", dur: 6 },
       { t: "Sign in, no key needed", d: "The Companion opens with <b>Sign in with publik</b>. Sign in and answers work with no key, and your first 100 or so asks are free. Under <b>Settings</b>, add a TypeSafe key for the full set of voice actions. Rather use your own Gemini, Nvidia or Anthropic key, or Claude Code? Pick <b>Use my own key</b>. Simple asks like “open YouTube” need no key at all.", scene: "keys", dur: 8 },
       { t: "Give it your stuff", d: "This is what makes it your Jarvis. Under <b>Folders</b>, add your notes, docs and calendar: PDF, Word, text, Markdown and calendar files. It answers from them when they help.", scene: "folders", dur: 7 },
       { t: "Say it, it acts", d: `Hold ${K("Ctrl", "Alt")} and say “open Notepad, type hello”. Jev does it while you’re still talking. Say a few in a row and it offers to save them as a routine.`, scene: "voice", dur: 7.5 },
@@ -26,7 +26,7 @@
     ],
     // The Mac beta (2026-11-16): the same app, with the first-open steps macOS adds and the Mac keys.
     mac: [
-      { t: "Download and drag it in", d: "Get the NŪS Companion 0.1.29 beta for Apple Silicon Macs (M1 or newer). Open the downloaded file and drag <b>Nus Companion</b> into <b>Applications</b>.", scene: "macdrag", dur: 6 },
+      { t: "Download and drag it in", d: "Get the NŪS Companion 0.1.30 beta for Apple Silicon Macs (M1 or newer). Open the downloaded file and drag <b>Nus Companion</b> into <b>Applications</b>.", scene: "macdrag", dur: 6 },
       { t: "Click Open Anyway, once", d: "Open it from Applications. macOS will not open it the first time, because NŪS is not signed with Apple yet. Click <b>Done</b>, then open <b>System Settings</b>, <b>Privacy &amp; Security</b>, scroll down and click <b>Open Anyway</b>. Confirm with your password or Touch ID.", scene: "macgate", dur: 9 },
       { t: "Sign in, no key needed", d: "The Companion opens with <b>Sign in with publik</b>. Sign in and answers work with no key, and your first 100 or so asks are free. Rather use your own Gemini, Nvidia or Anthropic key? Pick <b>Use my own key</b>.", scene: "keys", dur: 7 },
       { t: "Hold to talk", d: `Hold ${K("Control", "Option", "Space")}, ask, and let go. The first time, macOS asks to use the microphone: click <b>Allow</b>. Or click the Knot and type.`, scene: "macvoice", dur: 7.5 },

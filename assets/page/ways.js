@@ -10,8 +10,8 @@
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
   const REL = "https://github.com/potlakai/nus-desktop/releases";
   const L = {
-    companion: `${REL}/download/companion-v0.1.29/Nus-Companion-Setup.exe`,
-    mac: `${REL}/download/companion-v0.1.29/Nus-Companion-mac-arm64.dmg`,
+    companion: `${REL}/download/companion-v0.1.30/Nus-Companion-Setup.exe`,
+    mac: `${REL}/download/companion-v0.1.30/Nus-Companion-mac-arm64.dmg`,
   };
 
   // "It did not install", then one question: what did you see. Each answer shows its fix right away.
@@ -70,7 +70,7 @@
             <p class="didit-note" aria-live="polite" hidden></p>
           </div>
         </details>
-        <div class="small">Version 0.1.29${isMac ? ". This is the Windows download." : ""}</div>
+        <div class="small">Version 0.1.30${isMac ? ". This is the Windows download." : ""}</div>
       </div>`;
   }
   /* The Mac card. Since 2026-11-16 the Companion runs on Apple Silicon Macs as a beta: the download
@@ -112,7 +112,7 @@
             <p>You do this once per version. Intel Macs are not supported yet.</p>
           </div>
         </details>
-        <div class="small">Version 0.1.29 beta. About 580 MB.</div>
+        <div class="small">Version 0.1.30 beta. About 580 MB.</div>
       </div>`;
   }
   const SCENES = [["Say it", "Ctrl+Alt", 5.6], ["Hands", "Asks first", 6.4], ["Point", "Ctrl+Shift+T", 5.4], ["Folders", "Your notes", 6.2], ["Island", "Bar up top", 10.4]];
